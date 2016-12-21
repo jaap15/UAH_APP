@@ -117,6 +117,113 @@ public class JsoupLearningNetbeans {
             System.out.println("Reading file"); 
             String line = reader.readLine();
             System.out.println(line);
+            
+            int min = 0;
+            int max = tokens[0].length();
+            
+            System.out.println("Sec Type"); 
+            String secType = line.substring(min, max);
+            System.out.println(secType);
+            
+            min = min + tokens[0].length() + 1;
+            max = min + tokens[1].length();
+            
+            System.out.println("CRN"); 
+            String crn = line.substring(min, max);
+            System.out.println(crn);
+            
+            min = max + 1;
+            max = min + tokens[2].length();
+            
+            System.out.println("Course"); 
+            String course = line.substring(min, max);
+            System.out.println(course);
+            
+            min = max + 1;
+            max = min + tokens[3].length();
+            
+            System.out.println("Title"); 
+            String title = line.substring(min, max);
+            System.out.println(title);
+            
+            
+            min = max + 1;
+            max = min + tokens[4].length();
+            
+            System.out.println("Credit"); 
+            String credit = line.substring(min, max);
+            System.out.println(credit);
+            
+            min = max + 1;
+            max = min + tokens[5].length();
+            
+            System.out.println("Max Enrl"); 
+            String maxEnrl = line.substring(min, max);
+            System.out.println(maxEnrl);
+            
+            min = max + 1;
+            max = min + tokens[6].length();
+            
+            System.out.println("Enrl"); 
+            String enrl = line.substring(min, max);
+            System.out.println(enrl);
+            
+            min = max + 1;
+            max = min + tokens[7].length();
+            
+            System.out.println("Avail"); 
+            String avail = line.substring(min, max);
+            System.out.println(avail);
+            
+            min = max + 1;
+            max = min + tokens[8].length();
+            
+            System.out.println("Wait List"); 
+            String waitList = line.substring(min, max);
+            System.out.println(waitList);
+            
+            min = max + 1;
+            max = min + tokens[9].length();
+            
+            System.out.println("Days"); 
+            String days = line.substring(min, max);
+            System.out.println(days);
+            
+            min = max + 1;
+            max = min + tokens[10].length();
+            
+            System.out.println("Start"); 
+            String startTime = line.substring(min, max);
+            System.out.println(startTime);
+            
+            min = max + 1;
+            max = min + tokens[11].length();
+            
+            System.out.println("End"); 
+            String endTime = line.substring(min, max);
+            System.out.println(endTime);
+            
+            min = max + 1;
+            max = min + tokens[12].length();
+            
+            System.out.println("Bldg"); 
+            String bldg = line.substring(min, max);
+            System.out.println(bldg);
+            
+            min = max + 1;
+            max = min + tokens[13].length();
+            
+            System.out.println("Room"); 
+            String room = line.substring(min, max);
+            System.out.println(room);
+            
+            min = max + 1;
+            max = min + tokens[3].length();
+            
+            System.out.println("Instructor"); 
+            String instructor = line.substring(min, max);
+            System.out.println(instructor);
+            
         } catch (IOException ex) {
             System.out.println("Unable to read file"); 
             Logger.getLogger(JsoupLearningNetbeans.class.getName()).log(Level.SEVERE, null, ex);
