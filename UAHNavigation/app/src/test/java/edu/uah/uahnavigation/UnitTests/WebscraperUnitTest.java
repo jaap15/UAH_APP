@@ -4,16 +4,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.uah.uahnavigation.Vebscraper;
+import edu.uah.uahnavigation.Webscraper;
 
 import static org.junit.Assert.*;
 
 /**
  * Created by Jairo on 12/22/2016.
  */
-public class VebscraperUnitTest {
+public class WebscraperUnitTest {
 
-    Vebscraper scraper;
+    Webscraper scraper;
     @Before
     public void setUp() throws Exception {
 
@@ -23,7 +23,7 @@ public class VebscraperUnitTest {
     public void testWebscraperConstructorNoParameter()
     {
         String url = "http://www.uah.edu/cgi-bin/schedule.pl?";
-        scraper = new Vebscraper();
+        scraper = new Webscraper();
         assertEquals(url, scraper.getUrl());
 
     }
@@ -32,7 +32,7 @@ public class VebscraperUnitTest {
     public void testWebscraperConstructorWithParameter()
     {
         String url = "http://www.uah.edu";
-        scraper = new Vebscraper(url);
+        scraper = new Webscraper(url);
         assertEquals(url, scraper.getUrl());
 
     }
