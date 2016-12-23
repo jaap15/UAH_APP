@@ -8,7 +8,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.net.InetAddress;
 
-import edu.uah.uahnavigation.networking;
+import edu.uah.uahnavigation.NetworkManager;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,8 +17,8 @@ import static org.junit.Assert.assertEquals;
  */
 //@RunWith(MockitoJUnitRunner.class)
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({networking.class})
-public class networkingUnitTest {
+@PrepareForTest({NetworkManager.class})
+public class NetworkManagerUnitTest {
 
     //https://raseshmori.wordpress.com/2015/01/07/mockito-and-power-mockito-cheatsheet/
 
@@ -27,7 +27,7 @@ public class networkingUnitTest {
     {
         PowerMockito.mockStatic(InetAddress.class);
         PowerMockito.doThrow(new Exception()).when(InetAddress.class);
-        assertEquals(false, networking.hasInternetConnection());
+        assertEquals(false, NetworkManager.hasInternetConnection());
     }
 
     @Test
@@ -36,7 +36,7 @@ public class networkingUnitTest {
         InetAddress temp = InetAddress.getLocalHost();
         PowerMockito.mockStatic(InetAddress.class);
         PowerMockito.when(InetAddress.getByName("google.com")).thenReturn(temp);
-        assertEquals(true, networking.hasInternetConnection());
+        assertEquals(true, NetworkManager.hasInternetConnection());
     }
 
 

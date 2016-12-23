@@ -7,7 +7,7 @@ import java.net.InetAddress;
  * Created by Jairo on 12/22/2016.
  */
 
-public class networking {
+public class NetworkManager {
 
 
     public static boolean hasInternetConnection() {
