@@ -4,16 +4,16 @@ package edu.uah.uahnavigation;
  * Created by Jairo on 12/22/2016.
  */
 
-public class Webscraper {
+public class Vebscraper {
 
     private String url;
 
-    public Webscraper()
+    public Vebscraper()
     {
         url = "http://www.uah.edu/cgi-bin/schedule.pl?";
     }
 
-    public Webscraper(String urlToUse)
+    public Vebscraper(String urlToUse)
     {
         url = urlToUse;
     }
