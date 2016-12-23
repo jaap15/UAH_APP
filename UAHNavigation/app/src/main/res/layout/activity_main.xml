@@ -10,8 +10,31 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.uah.uahnavigation.MainActivity">
 
-    <TextView
+
+    <!--Temporary code used for testing the first use of espresso for acceptance testing can be removed later-->
+    <EditText
+        android:id="@+id/greetEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:inputType="textCapSentences"/>
+
+    <Button
+        android:id="@+id/greetButton"
+        android:text="@string/greetButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_below="@+id/greetEditText"
+        android:layout_centerHorizontal="true"
+        android:onClick="didTapGreetButton" />
+
+    <TextView
+        android:id="@+id/messageTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/greetButton"
+        android:gravity="center"
+        android:textSize="30sp"/>
+
+
 </RelativeLayout>
