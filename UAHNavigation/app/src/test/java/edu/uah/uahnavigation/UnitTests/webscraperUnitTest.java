@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 /**
  * Created by Jairo on 12/22/2016.
  */
-public class webscraperTest {
+public class webscraperUnitTest {
 
     webscraper scraper;
     @Before
