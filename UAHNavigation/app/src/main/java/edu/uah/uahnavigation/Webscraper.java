@@ -6,21 +6,35 @@ package edu.uah.uahnavigation;
 
 public class Webscraper {
 
-    private String url;
+    private String homePageUrl = null;
+    private String semesterUrlToScrape = null;
 
     public Webscraper()
     {
-        url = "http://www.uah.edu/cgi-bin/schedule.pl?";
+        this.homePageUrl = "http://www.uah.edu/cgi-bin/schedule.pl";
     }
 
-    public Webscraper(String urlToUse)
+    public Webscraper(String homePageUrl)
     {
-        url = urlToUse;
+        this.homePageUrl = homePageUrl;
     }
 
-    public String getUrl()
+    public String getHomePageUrl()
     {
-        return url;
+        return this.homePageUrl;
+    }
+
+    public void setSemesterUrlToScrape(String semesterUrlToScrape)
+    {
+        if(semesterUrlToScrape.startsWith("http") || semesterUrlToScrape.startsWith("www."))
+        {
+            this.semesterUrlToScrape = semesterUrlToScrape;
+        }
+    }
+
+    public String getSemesterUrlToScrape()
+    {
+        return this.semesterUrlToScrape;
     }
 
 }

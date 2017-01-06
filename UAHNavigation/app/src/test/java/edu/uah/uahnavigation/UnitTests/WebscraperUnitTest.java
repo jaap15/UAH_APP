@@ -22,18 +22,44 @@ public class WebscraperUnitTest {
     @Test
     public void testWebscraperConstructorNoParameter()
     {
-        String url = "http://www.uah.edu/cgi-bin/schedule.pl?";
+        String url = "http://www.uah.edu/cgi-bin/schedule.pl";
         scraper = new Webscraper();
-        assertEquals(url, scraper.getUrl());
+        assertEquals(url, scraper.getHomePageUrl());
 
     }
 
     @Test
     public void testWebscraperConstructorWithParameter()
     {
-        String url = "http://www.uah.edu";
+        String url = "http://www.Arreola.com";
         scraper = new Webscraper(url);
-        assertEquals(url, scraper.getUrl());
+        assertEquals(url, scraper.getHomePageUrl());
+
+    }
+
+    @Test
+    public void testWebscraperSetAndGetSemesterUrlToScrape()
+    {
+        String url = "";
+        scraper = new Webscraper();
+        scraper.setSemesterUrlToScrape(url);
+        assertEquals(null, scraper.getSemesterUrlToScrape());
+
+        url = "123456";
+        scraper.setSemesterUrlToScrape(url);
+        assertEquals(null, scraper.getSemesterUrlToScrape());
+
+        url = "Jairo.com";
+        scraper.setSemesterUrlToScrape(url);
+        assertEquals(null, scraper.getSemesterUrlToScrape());
+
+        url = "http://www.Jairo.com";
+        scraper.setSemesterUrlToScrape(url);
+        assertEquals(url, scraper.getSemesterUrlToScrape());
+
+        url = "www.Jairo.com";
+        scraper.setSemesterUrlToScrape(url);
+        assertEquals(url, scraper.getSemesterUrlToScrape());
 
     }
 
