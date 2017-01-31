@@ -27,7 +27,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         dbSource = new DatabaseSource(this);
+        if (dbSource.isOpen()) {
+            Log.i(LOGTAG, "DATABASE IS OPEN");
+        } else {
+            Log.i(LOGTAG, "DATABASE IS CLOSED");
+        }
         dbSource.open();
+        if (dbSource.isOpen()) {
+            Log.i(LOGTAG, "DATABASE IS OPEN");
+        } else {
+            Log.i(LOGTAG, "DATABASE IS CLOSED");
+        }
         majors = dbSource.GetFromMajors(null, null, null); // Checking if table is empty
         if (majors.size() == 0) {
             createMajorsData();

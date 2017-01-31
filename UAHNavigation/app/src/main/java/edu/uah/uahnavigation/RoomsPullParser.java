@@ -23,7 +23,7 @@ public class RoomsPullParser {
 
 	private static final String BUILDING_ID = "buildingId";
 	private static final String ROOM_NUM = "roomNum";
-	
+
 	private Rooms currentRoom  = null;
 	private String currentTag = null;
 	List<Rooms> room = new ArrayList<Rooms>();

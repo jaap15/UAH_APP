@@ -69,8 +69,12 @@ public class DatabaseSource {
     }
 
     public boolean isOpen() {
-        if (database.isOpen()) {
-            return true;
+        if (database != null) {
+            if (database.isOpen()) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
