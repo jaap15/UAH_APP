@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.io.File;
@@ -65,17 +63,17 @@ public class DatabaseSource {
         dbhelper = new DatabaseManager(context);
     }
 
-    public boolean exists(Context context) {
-        File file = context.getFileStreamPath("database.db");
-        if (file == null || !file.exists()) {
-            return false;
-        }
-        return true;
-    }
-
     public void open() {
         Log.i(LOGTAG, "Databased Opened");
         database = dbhelper.getWritableDatabase();
+    }
+
+    public boolean isOpen() {
+        if (database.isOpen()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void close() {
@@ -83,10 +81,10 @@ public class DatabaseSource {
         dbhelper.close();
     }
 
-    public List<Majors> GetFromMajors(String selection, String orderBy) {
-        Cursor cursor = database.query(DatabaseManager.TABLE_1, majorsColumns, selection, null, null, null, orderBy);
-        Log.i(LOGTAG , "Returned " + cursor.getCount() + " rows");
-        Log.i(LOGTAG , dumpCursorToString(cursor));
+    public List<Majors> GetFromMajors(String selection, String[] selectionArgs, String orderBy) {
+        Cursor cursor = database.query(DatabaseManager.TABLE_1, majorsColumns, selection, selectionArgs, null, null, orderBy);
+       // Log.i(LOGTAG , "Returned " + cursor.getCount() + " rows");
+       // Log.i(LOGTAG , dumpCursorToString(cursor));
         List<Majors> majors = new ArrayList<Majors>();
         if (cursor.getCount() > 0){
             while (cursor.moveToNext()) {
@@ -100,10 +98,10 @@ public class DatabaseSource {
         return majors;
     }
 
-    public List<Courses> GetFromCourses(String selection, String orderBy) {
-        Cursor cursor = database.query(DatabaseManager.TABLE_2, coursesColumns, selection, null, null, null, orderBy);
-        Log.i(LOGTAG , "Returned " + cursor.getCount() + " rows");
-        Log.i(LOGTAG , dumpCursorToString(cursor));
+    public List<Courses> GetFromCourses(String selection, String[] selectionArgs, String orderBy) {
+        Cursor cursor = database.query(DatabaseManager.TABLE_2, coursesColumns, selection, selectionArgs, null, null, orderBy);
+        //Log.i(LOGTAG , "Returned " + cursor.getCount() + " rows");
+        //Log.i(LOGTAG , dumpCursorToString(cursor));
         List<Courses> courses = new ArrayList<Courses>();
         if (cursor.getCount() > 0){
             while (cursor.moveToNext()) {
@@ -125,10 +123,10 @@ public class DatabaseSource {
         return courses;
     }
 
-    public List<Buildings> GetFromBuildings(String selection, String orderBy) {
-        Cursor cursor = database.query(DatabaseManager.TABLE_3, buildingsColumns, selection, null, null, null, orderBy);
-        Log.i(LOGTAG , "Returned " + cursor.getCount() + " rows");
-        Log.i(LOGTAG , dumpCursorToString(cursor));
+    public List<Buildings> GetFromBuildings(String selection, String[] selectionArgs, String orderBy) {
+        Cursor cursor = database.query(DatabaseManager.TABLE_3, buildingsColumns, selection, selectionArgs, null, null, orderBy);
+        //Log.i(LOGTAG , "Returned " + cursor.getCount() + " rows");
+        //Log.i(LOGTAG , dumpCursorToString(cursor));
         List<Buildings> buildings = new ArrayList<Buildings>();
         if (cursor.getCount() > 0){
             while (cursor.moveToNext()) {
@@ -144,17 +142,17 @@ public class DatabaseSource {
         return buildings;
     }
 
-    public List<Rooms> GetFromRooms(String selection, String orderBy) {
-        Cursor cursor = database.query(DatabaseManager.TABLE_1, majorsColumns, selection, null, null, null, orderBy);
-        Log.i(LOGTAG , "Returned " + cursor.getCount() + " rows");
-        Log.i(LOGTAG , dumpCursorToString(cursor));
+    public List<Rooms> GetFromRooms(String selection, String[] selectionArgs, String orderBy) {
+        Cursor cursor = database.query(DatabaseManager.TABLE_4, roomsColumns, selection, selectionArgs, null, null, orderBy);
+        //Log.i(LOGTAG , "Returned " + cursor.getCount() + " rows");
+       // Log.i(LOGTAG , dumpCursorToString(cursor));
         List<Rooms> rooms = new ArrayList<Rooms>();
         if (cursor.getCount() > 0){
             while (cursor.moveToNext()) {
                 Rooms room = new Rooms();
                 room.setId(cursor.getLong(cursor.getColumnIndex(DatabaseManager.TABLE_4_COL_1)));
                 room.setBuilding(cursor.getInt(cursor.getColumnIndex(DatabaseManager.TABLE_4_COL_2)));
-                room.setRoom(cursor.getInt(cursor.getColumnIndex(DatabaseManager.TABLE_4_COL_3)));
+                room.setRoom(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_4_COL_3)));
                 rooms.add(room);
             }
         }
@@ -163,10 +161,14 @@ public class DatabaseSource {
 
     /**
      *
-     * @param majors
+     * @param name
+     * @param desc
      * @return
      */
-    public boolean InsertIntoMajors(Majors majors) {
+    public boolean InsertIntoMajors(String name, String desc) {
+        Majors majors = new Majors();
+        majors.setAll(name, desc);
+
         ContentValues values = new ContentValues();
         values.put(DatabaseManager.TABLE_1_COL_2, majors.getTitle());
         values.put(DatabaseManager.TABLE_1_COL_3, majors.getDescription());
@@ -181,10 +183,34 @@ public class DatabaseSource {
 
     /**
      *
-     * @param courses
+     * @param major_str
+     * @param bldg_str
+     * @param room_str
+     * @param crn
+     * @param course
+     * @param title
+     * @param credits
+     * @param days
+     * @param start
+     * @param end
+     * @param instructor
      * @return
      */
-    public boolean InsertIntoCourses(Courses courses) {
+    public boolean InsertIntoCourses(String major_str, String bldg_str, String room_str, int crn, String course, String title,
+                                     int credits, String days, String start, String end, String instructor) {
+        Courses courses = new Courses();
+
+        String[] selectArgs = new String[] {major_str};
+        long major_id = GetFromMajors("name=?", selectArgs, null).get(0).getId();
+
+        selectArgs = new String[] {bldg_str};
+        long bldg_id = GetFromBuildings("description=?", selectArgs, null).get(0).getId();
+        String bldg_id_str = String.valueOf(bldg_id);
+
+        selectArgs = new String[] {room_str, bldg_id_str};
+        long room_id = GetFromRooms("room_number=? AND building_id=?", selectArgs, null).get(0).getId();
+        courses.setAll(major_id, room_id, crn, course, title, credits, days, start, end, instructor);
+
         ContentValues values = new ContentValues();
         values.put(DatabaseManager.TABLE_2_COL_2, courses.getMajor());
         values.put(DatabaseManager.TABLE_2_COL_3, courses.getRoom());
@@ -198,6 +224,7 @@ public class DatabaseSource {
         values.put(DatabaseManager.TABLE_2_COL_11, courses.getInstructor());
         long insertid = database.insert(DatabaseManager.TABLE_2, null, values);
 
+        Log.i(LOGTAG, "Created Courses entry");
         if (insertid == -1) {
             return false;
         } else {

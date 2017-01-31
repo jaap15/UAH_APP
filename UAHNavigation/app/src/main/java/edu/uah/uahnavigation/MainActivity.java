@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     List<Majors> majors;
     List<Courses> courses;
     List<Buildings> buildings;
+    List<Rooms> rooms;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,16 +28,24 @@ public class MainActivity extends AppCompatActivity {
 
         dbSource = new DatabaseSource(this);
         dbSource.open();
-        majors = dbSource.GetFromMajors(null, null); // Checking if table is empty
+        majors = dbSource.GetFromMajors(null, null, null); // Checking if table is empty
         if (majors.size() == 0) {
             createMajorsData();
-            createCoursesData();
-            majors = dbSource.GetFromMajors(null, null); // Returns all entries
-            courses = dbSource.GetFromCourses(null, null); // Returns all entries
         }
-        buildings = dbSource.GetFromBuildings(null, null);
+
+        buildings = dbSource.GetFromBuildings(null, null, null);
         if (buildings.size() == 0) {
             createBuildingsData();
+        }
+
+        rooms = dbSource.GetFromRooms(null, null, null);
+        if (rooms.size() == 0) {
+            createRoomsData();
+        }
+
+        courses = dbSource.GetFromCourses(null, null,  null);
+        if (courses.size() == 0) {
+            createCoursesData();
         }
     }
 
@@ -47,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
         String name = greetEditText.getText().toString();
         String greeting = String.format("Hello, %s!", name);
 
-        majors = dbSource.GetFromMajors("id<=5", "id DESC"); // Returns entries with id <= 5
-        courses = dbSource.GetFromCourses("id<=5", "id DESC"); // Returns entries with id <= 5
+        majors = dbSource.GetFromMajors("id<=5", null, "id DESC"); // Returns entries with id <= 5
+        courses = dbSource.GetFromCourses("id<=5", null, "id DESC"); // Returns entries with id <= 5
 
         TextView messageTextView =
                 (TextView) findViewById(R.id.messageTextView);
@@ -73,16 +82,13 @@ public class MainActivity extends AppCompatActivity {
         Majors majors = new Majors();
 
         // Creating 3 entry into Majors table
-        majors.setAll("CPE", "Computer Engineering");
-        if (!dbSource.InsertIntoMajors(majors)) {
+        if (!dbSource.InsertIntoMajors("CPE", "Computer Engineering")) {
             Log.i(LOGTAG, "Error inserting Data into majors");
         }
-        majors.setAll("EE", "Electrical Engineering");
-        if (!dbSource.InsertIntoMajors(majors)) {
+        if (!dbSource.InsertIntoMajors("EE", "Electrical Engineering")) {
             Log.i(LOGTAG, "Error inserting Data into majors");
         }
-        majors.setAll("ME", "Mechanical Engineering");
-        if (!dbSource.InsertIntoMajors(majors)) {
+        if (!dbSource.InsertIntoMajors("ME", "Mechanical Engineering")) {
             Log.i(LOGTAG, "Error inserting Data into majors");
         }
     }
@@ -90,12 +96,10 @@ public class MainActivity extends AppCompatActivity {
     private void createCoursesData() {
         Courses courses = new Courses();
 
-        courses.setAll(7, 134, 10165, "211 01", "INTRO COMPUTER PROG FOR ENGR", 3, "TR", "12:45", "02:05", "Bowman Ronald");
-        if (!dbSource.InsertIntoCourses(courses)) {
+        if (!dbSource.InsertIntoCourses("CPE", "ENG", "134", 10165, "211 01", "INTRO COMPUTER PROG FOR ENGR", 3, "TR", "12:45", "02:05", "Bowman Ronald")) {
             Log.i(LOGTAG, "Error inserting Data into courses");
         }
-        courses.setAll(15, 114, 10173, "323 01", "INTRO TO EMBEDDED COMPUTER SYS", 3, "MW", "12:45", "02:05", "Milenkovic Aleksander");
-        if (!dbSource.InsertIntoCourses(courses)) {
+        if (!dbSource.InsertIntoCourses("ME", "NUR", "111", 10173, "323 01", "INTRO TO EMBEDDED COMPUTER SYS", 3, "MW", "12:45", "02:05", "Milenkovic Aleksander")) {
             Log.i(LOGTAG, "Error inserting Data into courses");
         }
     }
@@ -106,6 +110,15 @@ public class MainActivity extends AppCompatActivity {
 
         for (Buildings building : buildings) {
             dbSource.InsertIntoBuildings(building);
+        }
+    }
+
+    private void createRoomsData() {
+        RoomsPullParser parser = new RoomsPullParser();
+        List<Rooms> rooms = parser.parseXML(this);
+
+        for (Rooms room : rooms) {
+            dbSource.InsertIntoRooms(room);
         }
 
     }

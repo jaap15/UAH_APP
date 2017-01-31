@@ -6,8 +6,8 @@ package edu.uah.model;
 
 public class Courses {
     private long id;
-    private int major_id;
-    private int rooms_id;
+    private long major_id;
+    private long rooms_id;
     private int crn;
     private String course;
     private String title;
@@ -30,7 +30,7 @@ public class Courses {
      * @param end
      * @param instructor
      */
-    public void setAll(int major_id, int room_id, int crn, String course, String title,
+    public void setAll(long major_id, long room_id, int crn, String course, String title,
                        int credits, String days, String start, String end, String instructor) {
         this.major_id = major_id;
         this.rooms_id = room_id;
@@ -64,7 +64,7 @@ public class Courses {
      *
      * @return
      */
-    public int getMajor() {
+    public long getMajor() {
         return major_id;
     }
 
@@ -72,7 +72,7 @@ public class Courses {
      *
      * @param major_id
      */
-    public void setMajor(int major_id) {
+    public void setMajor(long major_id) {
         this.major_id = major_id;
     }
 
@@ -80,7 +80,7 @@ public class Courses {
      *
      * @return
      */
-    public int getRoom() {
+    public long getRoom() {
         return rooms_id;
     }
 
