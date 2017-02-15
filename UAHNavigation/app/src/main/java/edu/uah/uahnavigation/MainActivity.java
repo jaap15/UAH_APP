@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,10 +29,13 @@ public class MainActivity extends AppCompatActivity {
     List<Buildings> buildings;
     List<Rooms> rooms;
 
+    private Courses[] coursesArray;
     private Spinner spinnerMajors;
     private Spinner spinnerCourses;
     private MajorsSpinAdapter adapterMajors;
     private CoursesSpinAdapter adapterCourses;
+
+    private ProgressBar spinner;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,26 +74,16 @@ public class MainActivity extends AppCompatActivity {
             createCoursesData();
         }
 
-        Courses[] coursesArray;
+        spinner = (ProgressBar)findViewById(R.id.progressBar1);
+        spinner.setVisibility(View.GONE);
+
+
         coursesArray = courses.toArray(new Courses[courses.size()]);
         spinnerCourses = (Spinner) findViewById(R.id.spinnerCourses);
         adapterCourses = new CoursesSpinAdapter(this, android.R.layout.simple_spinner_item, coursesArray);
         spinnerCourses.setEnabled(false);
         spinnerCourses.setClickable(false);
         spinnerCourses.setAdapter(adapterCourses);
-        spinnerCourses.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view,
-                                       int position, long id) {
-                // Here you get the current item (a User object) that is selected by its position
-                Courses user = adapterCourses.getItem(position);
-                // Here you can do the action you want to...
-
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterMajors) {  }
-        });
 
         Majors[] majorsArray;
         majorsArray = majors.toArray(new Majors[majors.size()]);
@@ -102,11 +96,20 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view,
                                        int position, long id) {
                 // Here you get the current item (a User object) that is selected by its position
-                Majors user = adapterMajors.getItem(position);
+                Majors major = adapterMajors.getItem(position);
                 // Here you can do the action you want to...
                 spinnerCourses.setEnabled(true);
                 spinnerCourses.setClickable(true);
+                spinner.setVisibility(View.VISIBLE);
 
+                long selected_major_id = major.getId();
+
+                courses = dbSource.GetFromCourses("major_id=="+selected_major_id, null, null); // Returns entries with id <= 5
+                coursesArray = courses.toArray(new Courses[courses.size()]);
+                adapterCourses.setCourses(coursesArray);
+                adapterCourses.notifyDataSetChanged();
+
+                spinner.setVisibility(View.GONE);
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterMajors) {  }

@@ -23,6 +23,10 @@ public class CoursesSpinAdapter extends ArrayAdapter<Courses>{
         this.values = values;
     }
 
+    public void setCourses(Courses[] values) {
+        this.values = values;
+    }
+
     public int getCount(){
         return values.length;
     }
