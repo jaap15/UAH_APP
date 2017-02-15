@@ -5,12 +5,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.uah.model.*;
+
+import static android.R.id.list;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +28,11 @@ public class MainActivity extends AppCompatActivity {
     List<Buildings> buildings;
     List<Rooms> rooms;
 
+    private Spinner spinnerMajors;
+    private Spinner spinnerCourses;
+    private MajorsSpinAdapter adapterMajors;
+    private CoursesSpinAdapter adapterCourses;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +69,48 @@ public class MainActivity extends AppCompatActivity {
         if (courses.size() == 0) {
             createCoursesData();
         }
+
+        Courses[] coursesArray;
+        coursesArray = courses.toArray(new Courses[courses.size()]);
+        spinnerCourses = (Spinner) findViewById(R.id.spinnerCourses);
+        adapterCourses = new CoursesSpinAdapter(this, android.R.layout.simple_spinner_item, coursesArray);
+        spinnerCourses.setEnabled(false);
+        spinnerCourses.setClickable(false);
+        spinnerCourses.setAdapter(adapterCourses);
+        spinnerCourses.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view,
+                                       int position, long id) {
+                // Here you get the current item (a User object) that is selected by its position
+                Courses user = adapterCourses.getItem(position);
+                // Here you can do the action you want to...
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterMajors) {  }
+        });
+
+        Majors[] majorsArray;
+        majorsArray = majors.toArray(new Majors[majors.size()]);
+        spinnerMajors = (Spinner) findViewById(R.id.spinnerMajors);
+        adapterMajors = new MajorsSpinAdapter(this, android.R.layout.simple_spinner_item, majorsArray);
+        spinnerMajors.setAdapter(adapterMajors);
+        spinnerMajors.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view,
+                                       int position, long id) {
+                // Here you get the current item (a User object) that is selected by its position
+                Majors user = adapterMajors.getItem(position);
+                // Here you can do the action you want to...
+                spinnerCourses.setEnabled(true);
+                spinnerCourses.setClickable(true);
+
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterMajors) {  }
+        });
     }
 
     public void didTapGreetButton(View view) {
