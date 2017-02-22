@@ -36,31 +36,38 @@
         android:gravity="center"
         android:textSize="30sp"/>
 
-    <ProgressBar
-        android:id="@+id/progressBar1"
-        style="?android:attr/progressBarStyleLarge"
+    <Button
+        android:id="@+id/classbtn"
+        android:text="CLASS"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinnerCourses"
+        android:layout_marginBottom="133dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="156dp" />
+        android:layout_alignLeft="@+id/greetButton"
+        android:layout_alignStart="@+id/greetButton" />
 
-    <Spinner
-        android:layout_width="match_parent"
+    <Button
+        android:text="BUILDING"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/spinnerMajors"
-        android:layout_above="@+id/spinnerCourses"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="21dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/classbtn"
+        android:layout_alignStart="@+id/classbtn"
+        android:layout_marginBottom="54dp"
+        android:id="@+id/buildingbtn" />
+
+    <TextView
+        android:text="Where would you like to go?"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:layout_above="@+id/classbtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="19dp" />
 
 
 </RelativeLayout>

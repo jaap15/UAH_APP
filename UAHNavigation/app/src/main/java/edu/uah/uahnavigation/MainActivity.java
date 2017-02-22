@@ -1,10 +1,13 @@
 package edu.uah.uahnavigation;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -14,13 +17,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import edu.uah.model.*;
 
 import static android.R.id.list;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     DatabaseSource dbSource;
     private String LOGTAG = "QWER";
@@ -41,6 +44,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Button clbtn = (Button) findViewById(R.id.classbtn);
+        Button Bbtn = (Button) findViewById(R.id.buildingbtn);
+        // bClass = (Button) findViewById(R.id.bClass);
+        // bBuilding = (Button) findViewById(R.id.bBuilding);
+        clbtn.setOnClickListener(this);
+        Bbtn.setOnClickListener(this);
 
         dbSource = new DatabaseSource(this);
         if (dbSource.isOpen()) {
@@ -73,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         if (courses.size() == 0) {
             createCoursesData();
         }
-
+/*
         spinner = (ProgressBar)findViewById(R.id.progressBar1);
         spinner.setVisibility(View.GONE);
 
@@ -114,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> adapterMajors) {  }
         });
+    */
     }
 
     public void didTapGreetButton(View view) {
@@ -188,5 +199,16 @@ public class MainActivity extends AppCompatActivity {
             dbSource.InsertIntoRooms(room);
         }
 
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        if(v.getId() == R.id.classbtn){
+            startActivity(new Intent(this, ClassTabActivity.class));
+        }
+        else if(v.getId() == R.id.buildingbtn){
+            startActivity(new Intent(this, BuildingTabActivity.class));
+        }
     }
 }
