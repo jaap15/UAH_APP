@@ -10,6 +10,7 @@ public class Courses {
     private long rooms_id;
     private int crn;
     private String course;
+    private String section;
     private String title;
     private int credits;
     private String days;
@@ -30,12 +31,13 @@ public class Courses {
      * @param end
      * @param instructor
      */
-    public void setAll(long major_id, long room_id, int crn, String course, String title,
+    public void setAll(long major_id, long room_id, int crn, String course, String section, String title,
                        int credits, String days, String start, String end, String instructor) {
         this.major_id = major_id;
         this.rooms_id = room_id;
         this.crn = crn;
         this.course = course;
+        this.section = section;
         this.title = title;
         this.credits = credits;
         this.days = days;
@@ -123,6 +125,23 @@ public class Courses {
     public void setCourse(String course) {
         this.course = course;
     }
+
+    /**
+     *
+     * @return
+     */
+    public String getSection() {
+        return section;
+    }
+
+    /**
+     *
+     * @param section
+     */
+    public void setSection(String section) {
+        this.section = section;
+    }
+
 
     /**
      *

@@ -15,6 +15,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.testng.PowerMockTestCase;
+import org.robolectric.RobolectricTestRunner;
 
 import edu.uah.uahnavigation.DatabaseManager;
 import edu.uah.uahnavigation.DatabaseSource;
@@ -25,8 +26,9 @@ import static org.junit.Assert.assertEquals;
  * Created by Daniel on 1/21/2017.
  */
 @PrepareForTest({DatabaseSource.class, Log.class, SQLiteOpenHelper.class, DatabaseManager.class})
-@RunWith(PowerMockRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class DatabaseUnitTest  {
+
 
     @Mock
     Context context;

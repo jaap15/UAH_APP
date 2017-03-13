@@ -2,6 +2,7 @@ package edu.uah.model;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -13,19 +14,19 @@ import java.util.Arrays;
  * Created by Daniel on 2/14/2017.
  */
 
-public class CoursesSpinAdapter extends ArrayAdapter<Courses>{
+public class RoomsSpinAdapter extends ArrayAdapter<Rooms>{
 
     private Context context;
     // Custom values for the spinner (Courses)
-    private Courses[] values;
+    private Rooms[] values;
 
-    public CoursesSpinAdapter(Context context, int textViewResourceId, Courses[] values) {
+    public RoomsSpinAdapter(Context context, int textViewResourceId, Rooms[] values) {
         super(context, textViewResourceId, values);
         this.context = context;
         this.values = values;
     }
 
-    public void setCourses(Courses[] values) {
+    public void setCourses(Rooms[] values) {
         this.values = values;
     }
 
@@ -33,7 +34,7 @@ public class CoursesSpinAdapter extends ArrayAdapter<Courses>{
         return values.length;
     }
 
-    public Courses getItem(int position){
+    public Rooms getItem(int position){
         return values[position];
     }
 
@@ -51,7 +52,7 @@ public class CoursesSpinAdapter extends ArrayAdapter<Courses>{
         label.setTextColor(Color.BLACK);
         // Then you can get the current item using the values array (Users array) and the current position
         // You can NOW reference each method you has created in your bean object (Majors class)
-        label.setText(values[position].getCourse());
+        label.setText(values[position].getRoom());
 
         // And finally return your dynamic (or custom) view for each spinner item
         return label;
@@ -63,7 +64,7 @@ public class CoursesSpinAdapter extends ArrayAdapter<Courses>{
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         TextView label = new TextView(context);
         label.setTextColor(Color.BLACK);
-        label.setText(values[position].getCourse());
+        label.setText(values[position].getRoom());
 
         return label;
     }

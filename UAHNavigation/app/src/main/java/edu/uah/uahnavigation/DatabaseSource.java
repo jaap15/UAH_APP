@@ -42,7 +42,8 @@ public class DatabaseSource {
             DatabaseManager.TABLE_2_COL_8,
             DatabaseManager.TABLE_2_COL_9,
             DatabaseManager.TABLE_2_COL_10,
-            DatabaseManager.TABLE_2_COL_11
+            DatabaseManager.TABLE_2_COL_11,
+            DatabaseManager.TABLE_2_COL_12,
     };
 
     private static final String[] buildingsColumns = {
@@ -115,12 +116,13 @@ public class DatabaseSource {
                 course.setRoom(cursor.getInt(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_3)));
                 course.setCRN(cursor.getInt(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_4)));
                 course.setCourse(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_5)));
-                course.setTitle(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_6)));
-                course.setCredits(cursor.getInt(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_7)));
-                course.setDays(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_8)));
-                course.setStart(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_9)));
-                course.setEnd(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_10)));
-                course.setInstructor(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_11)));
+                course.setSection(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_6)));
+                course.setTitle(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_7)));
+                course.setCredits(cursor.getInt(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_8)));
+                course.setDays(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_9)));
+                course.setStart(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_10)));
+                course.setEnd(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_11)));
+                course.setInstructor(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_12)));
                 courses.add(course);
             }
         }
@@ -213,19 +215,23 @@ public class DatabaseSource {
 
         selectArgs = new String[] {room_str, bldg_id_str};
         long room_id = GetFromRooms("room_number=? AND building_id=?", selectArgs, null).get(0).getId();
-        courses.setAll(major_id, room_id, crn, course, title, credits, days, start, end, instructor);
+
+        String[] tokensVal = course.split("\\s+");
+
+        courses.setAll(major_id, room_id, crn, tokensVal[0], tokensVal[1], title, credits, days, start, end, instructor);
 
         ContentValues values = new ContentValues();
         values.put(DatabaseManager.TABLE_2_COL_2, courses.getMajor());
         values.put(DatabaseManager.TABLE_2_COL_3, courses.getRoom());
         values.put(DatabaseManager.TABLE_2_COL_4, courses.getCRN());
         values.put(DatabaseManager.TABLE_2_COL_5, courses.getCourse());
-        values.put(DatabaseManager.TABLE_2_COL_6, courses.getTitle());
-        values.put(DatabaseManager.TABLE_2_COL_7, courses.getCredits());
-        values.put(DatabaseManager.TABLE_2_COL_8, courses.getDays());
-        values.put(DatabaseManager.TABLE_2_COL_9, courses.getStart());
-        values.put(DatabaseManager.TABLE_2_COL_10, courses.getEnd());
-        values.put(DatabaseManager.TABLE_2_COL_11, courses.getInstructor());
+        values.put(DatabaseManager.TABLE_2_COL_6, courses.getSection());
+        values.put(DatabaseManager.TABLE_2_COL_7, courses.getTitle());
+        values.put(DatabaseManager.TABLE_2_COL_8, courses.getCredits());
+        values.put(DatabaseManager.TABLE_2_COL_9, courses.getDays());
+        values.put(DatabaseManager.TABLE_2_COL_10, courses.getStart());
+        values.put(DatabaseManager.TABLE_2_COL_11, courses.getEnd());
+        values.put(DatabaseManager.TABLE_2_COL_12, courses.getInstructor());
         long insertid = database.insert(DatabaseManager.TABLE_2, null, values);
 
         Log.i(LOGTAG, "Created Courses entry");

@@ -29,12 +29,13 @@ public class DatabaseManager extends SQLiteOpenHelper {
         public static final String TABLE_2_COL_3 = "rooms_id";
         public static final String TABLE_2_COL_4 = "crn";
         public static final String TABLE_2_COL_5 = "course";
-        public static final String TABLE_2_COL_6 = "title";
-        public static final String TABLE_2_COL_7 = "credits";
-        public static final String TABLE_2_COL_8 = "days";
-        public static final String TABLE_2_COL_9 = "start";
-        public static final String TABLE_2_COL_10 = "end";
-        public static final String TABLE_2_COL_11 = "instructor";
+        public static final String TABLE_2_COL_6 = "section";
+        public static final String TABLE_2_COL_7 = "title";
+        public static final String TABLE_2_COL_8 = "credits";
+        public static final String TABLE_2_COL_9 = "days";
+        public static final String TABLE_2_COL_10 = "start";
+        public static final String TABLE_2_COL_11 = "end";
+        public static final String TABLE_2_COL_12 = "instructor";
     public static final String TABLE_3 = "buildings";
         public static final String TABLE_3_COL_1 = "id";
         public static final String TABLE_3_COL_2 = "name";
@@ -63,11 +64,12 @@ public class DatabaseManager extends SQLiteOpenHelper {
                     TABLE_2_COL_4  + " INTEGER, " +
                     TABLE_2_COL_5  + " VARCHAR, " +
                     TABLE_2_COL_6  + " VARCHAR, " +
-                    TABLE_2_COL_7  + " INTEGER, " +
-                    TABLE_2_COL_8  + " VARCHAR, " +
+                    TABLE_2_COL_7  + " VARCHAR, " +
+                    TABLE_2_COL_8  + " INTEGER, " +
                     TABLE_2_COL_9  + " VARCHAR, " +
                     TABLE_2_COL_10 + " VARCHAR, " +
-                    TABLE_2_COL_11 + " VARCHAR" +
+                    TABLE_2_COL_11 + " VARCHAR, " +
+                    TABLE_2_COL_12 + " VARCHAR" +
                     ")";
 
     private static final String BUILDINGS_TABLE_CREATE =

@@ -178,6 +178,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (!dbSource.InsertIntoCourses("CPE", "ENG", "134", 10165, "211 01", "INTRO COMPUTER PROG FOR ENGR", 3, "TR", "12:45", "02:05", "Bowman Ronald")) {
             Log.i(LOGTAG, "Error inserting Data into courses");
         }
+
+        if (!dbSource.InsertIntoCourses("CPE", "ENG", "207", 10166, "211 02", "INTRO COMPUTER PROG FOR ENGR", 3, "MW", "12:45", "02:05", "Bowman Ronald")) {
+            Log.i(LOGTAG, "Error inserting Data into courses");
+        }
+
         if (!dbSource.InsertIntoCourses("ME", "NUR", "111", 10173, "323 01", "INTRO TO EMBEDDED COMPUTER SYS", 3, "MW", "12:45", "02:05", "Milenkovic Aleksander")) {
             Log.i(LOGTAG, "Error inserting Data into courses");
         }

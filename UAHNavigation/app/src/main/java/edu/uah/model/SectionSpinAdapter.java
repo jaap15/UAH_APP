@@ -7,19 +7,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.Arrays;
-
 /**
  * Created by Daniel on 2/14/2017.
  */
 
-public class CoursesSpinAdapter extends ArrayAdapter<Courses>{
+public class SectionSpinAdapter extends ArrayAdapter<Courses>{
 
     private Context context;
     // Custom values for the spinner (Courses)
     private Courses[] values;
 
-    public CoursesSpinAdapter(Context context, int textViewResourceId, Courses[] values) {
+    public SectionSpinAdapter(Context context, int textViewResourceId, Courses[] values) {
         super(context, textViewResourceId, values);
         this.context = context;
         this.values = values;
@@ -51,7 +49,7 @@ public class CoursesSpinAdapter extends ArrayAdapter<Courses>{
         label.setTextColor(Color.BLACK);
         // Then you can get the current item using the values array (Users array) and the current position
         // You can NOW reference each method you has created in your bean object (Majors class)
-        label.setText(values[position].getCourse());
+        label.setText(values[position].getSection());
 
         // And finally return your dynamic (or custom) view for each spinner item
         return label;
@@ -63,32 +61,8 @@ public class CoursesSpinAdapter extends ArrayAdapter<Courses>{
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         TextView label = new TextView(context);
         label.setTextColor(Color.BLACK);
-        label.setText(values[position].getCourse());
+        label.setText(values[position].getSection());
 
         return label;
-    }
-
-    static String[] removeDuplicates(String[] arrayWithDuplicates)
-    {
-        //Assuming all elements in input array are unique
-        int noOfUniqueElements = arrayWithDuplicates.length;
-        //Comparing each element with all other elements
-        for (int i = 0; i < noOfUniqueElements; i++) {
-            for (int j = i+1; j < noOfUniqueElements; j++) {
-                //If any two elements are found equal
-                if(arrayWithDuplicates[i] == arrayWithDuplicates[j]) {
-                    //Replace duplicate element with last unique element
-                    arrayWithDuplicates[j] = arrayWithDuplicates[noOfUniqueElements-1];
-                    //Decrementing noOfUniqueElements
-                    noOfUniqueElements--;
-                    //Decrementing j
-                    j--;
-                }
-            }
-        }
-
-        //Copying only unique elements of arrayWithDuplicates into arrayWithoutDuplicates
-        String[] arrayWithoutDuplicates = Arrays.copyOf(arrayWithDuplicates, noOfUniqueElements);
-        return  arrayWithoutDuplicates;
     }
 }
