@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Majors majors = new Majors();
 
         // Creating empty space in majors for spinner
-        if (!dbSource.InsertIntoMajors("Select Major", "")) {
+        if (!dbSource.InsertIntoMajors("Select_Major", "")) {
             Log.i(LOGTAG, "Error inserting Data into majors");
         }
         // Creating 3 entry into Majors table
@@ -178,6 +178,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void createCoursesData() {
         Courses courses = new Courses();
+
+        if (!dbSource.InsertIntoCourses("Select_Major", "NULL", "Select_Room", 99999, "Select_Course Select_Section", "NULL", 9, "NULL", "NULL", "NULL", "NULL")) {
+            Log.i(LOGTAG, "Error inserting Data into courses");
+        }
 
         if (!dbSource.InsertIntoCourses("CPE", "ENG", "134", 10165, "211 01", "INTRO COMPUTER PROG FOR ENGR", 3, "TR", "12:45", "02:05", "Bowman Ronald")) {
             Log.i(LOGTAG, "Error inserting Data into courses");

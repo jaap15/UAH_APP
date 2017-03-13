@@ -1,6 +1,13 @@
 <?xml version="1.0"?>
 <buildings>
   <building>
+    <buildingId>0</buildingId>
+    <buildingName>Select Building</buildingName>
+    <description>NULL</description>
+    <address>NULL</address>
+    <image>NULL</image>
+  </building>
+  <building>
     <buildingId>1</buildingId>
     <buildingName>Engineering Building</buildingName>
     <description>ENG</description>

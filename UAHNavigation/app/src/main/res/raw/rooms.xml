@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <rooms>
   <building>
+    <buildingId>NULL</buildingId>
+    <roomNum>Select_Room</roomNum>
     <buildingId>ENG</buildingId>
     <roomNum>100</roomNum>
     <roomNum>105</roomNum>
