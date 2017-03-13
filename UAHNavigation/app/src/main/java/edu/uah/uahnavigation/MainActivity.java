@@ -160,6 +160,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void createMajorsData() {
         Majors majors = new Majors();
 
+        // Creating empty space in majors for spinner
+        if (!dbSource.InsertIntoMajors("Select Major", "")) {
+            Log.i(LOGTAG, "Error inserting Data into majors");
+        }
         // Creating 3 entry into Majors table
         if (!dbSource.InsertIntoMajors("CPE", "Computer Engineering")) {
             Log.i(LOGTAG, "Error inserting Data into majors");
