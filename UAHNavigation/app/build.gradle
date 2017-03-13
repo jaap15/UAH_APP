@@ -23,15 +23,22 @@ android {
     buildTypes {
         debug {
             debuggable true
-            buildConfigField "String", "CONFIG", '"configTest"'
+            buildConfigField "String", "CONFIG", '"config.properties"'
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "CONFIG", '"config"'
+            buildConfigField "String", "CONFIG", '"config.properties"'
             signingConfig signingConfigs.releaseConfig
         }
     }
+
+//    sourceSets {
+//        androidTest {
+////            assets.srcDirs = ['src/main/assets', 'src/androidTest/assets/', 'src/debug/assets/']
+////            java.srcDirs = ['src/main/java', 'src/androidTest/java', 'src/debug/java']
+//        }
+//    }
 }
 
 dependencies {
