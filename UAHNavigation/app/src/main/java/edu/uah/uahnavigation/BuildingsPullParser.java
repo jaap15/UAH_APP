@@ -9,11 +9,15 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import android.app.assist.AssistStructure;
 import android.content.Context;
 import android.content.res.Resources.NotFoundException;
 import android.util.Log;
 
 import edu.uah.model.Buildings;
+import android.content.res.AssetManager;
+
+import java.util.Properties;
 
 public class BuildingsPullParser {
 
@@ -35,9 +39,15 @@ public class BuildingsPullParser {
 			XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
 			factory.setNamespaceAware(true);
 			XmlPullParser xpp = factory.newPullParser();
-			
-			InputStream stream = context.getResources().openRawResource(R.raw.buildings);
-			xpp.setInput(stream, null);
+
+			AssetManager mngr = context.getAssets();
+			try {
+				InputStream stream = mngr.open("buildings.xml");
+				xpp.setInput(stream, null);
+			} catch (final IOException e) {
+				e.printStackTrace();
+			}
+
 
 			int eventType = xpp.getEventType();
 			while (eventType != XmlPullParser.END_DOCUMENT) {
