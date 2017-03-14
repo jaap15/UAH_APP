@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -50,6 +51,12 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
             setContentView(R.layout.activity_class_tab);
             spinner = (ProgressBar)findViewById(R.id.progressBar1);
             spinner.setVisibility(View.GONE);
+
+            final Button returnBtn = (Button)findViewById(R.id.returnbtn);
+            final Button findBtn = (Button)findViewById(R.id.findbtn);
+
+            returnBtn.setOnClickListener(this);
+            findBtn.setOnClickListener(this);
 
             dbSource = new DatabaseSource(this);
             if (dbSource.isOpen()) {
