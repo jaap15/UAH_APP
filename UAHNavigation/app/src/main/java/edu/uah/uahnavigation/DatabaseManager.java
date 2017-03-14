@@ -15,7 +15,6 @@ import java.io.File;
 
 public class DatabaseManager extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "database.db";
     private static final int DATABASE_VERSION = 1;
 
     // Each database will have these four tables in them.
@@ -89,7 +88,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
                     ")";
 
     public DatabaseManager(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, Util.getProperty("DATABASE_NAME", context), null, DATABASE_VERSION);
     }
 
     @Override
