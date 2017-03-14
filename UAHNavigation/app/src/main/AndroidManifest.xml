@@ -16,11 +16,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".SplashScreenActivity" />
-        <activity android:name=".CourseTabActivity">
-        </activity>
-        <activity android:name=".ClassTabActivity">
-        </activity>
-        <activity android:name=".BuildingTabActivity">
+        <activity android:name=".CourseTabActivity"></activity>
+        <activity android:name=".ClassTabActivity"></activity>
+        <activity android:name=".BuildingTabActivity"></activity>
+        <activity android:name=".InteriorNavigationActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
