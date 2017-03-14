@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toast.makeText(this, "Config URL: "+ Util.getProperty("URL", this), Toast.LENGTH_LONG).show();
+
         Button clbtn = (Button) findViewById(R.id.classbtn);
         Button Bbtn = (Button) findViewById(R.id.buildingbtn);
         // bClass = (Button) findViewById(R.id.bClass);
