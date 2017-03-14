@@ -90,7 +90,6 @@ public class BuildingTabActivity extends AppCompatActivity implements View.OnCli
                 spinner.setVisibility(View.VISIBLE);
 
                 Long selected_building = building.getId();
-                Log.i(LOGTAG, "Selected Course is : " + building.getName());
                 rooms = dbSource.GetFromRooms("building_id=="+selected_building, null, null);
                 roomsArray = rooms.toArray(new Rooms[rooms.size()]);
 

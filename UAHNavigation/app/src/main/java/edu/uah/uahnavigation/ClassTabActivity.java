@@ -27,14 +27,16 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
         private String LOGTAG = "QWER";
         List<Majors> majors;
         List<Courses> courses;
-        List<Buildings> buildings;
-        List<Rooms> rooms;
+        List<Courses> sections;
 
+        private Majors[] majorsArray;
         private Courses[] coursesArray;
         private Courses[] sectionsArray;
+
         private Spinner spinnerMajors;
         private Spinner spinnerCourses;
         private Spinner spinnerSection;
+
         private MajorsSpinAdapter adapterMajors;
         private CoursesSpinAdapter adapterCourses;
         private SectionSpinAdapter adapterSection;
@@ -60,11 +62,10 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                 Log.i(LOGTAG, "DATABASE IS CLOSED");
             }
             majors = dbSource.GetFromMajors(null, null, null); // Checking if table is empty
-            buildings = dbSource.GetFromBuildings(null, null, null);
-            rooms = dbSource.GetFromRooms(null, null, null);
             courses = dbSource.GetFromCourses(null, null, null);
+            sections = dbSource.GetFromCourses(null, null, null);
 
-            sectionsArray = courses.toArray(new Courses[courses.size()]);
+            sectionsArray = sections.toArray(new Courses[sections.size()]);
             spinnerSection = (Spinner) findViewById(R.id.spinnerSection);
             adapterSection = new SectionSpinAdapter(this, android.R.layout.simple_spinner_item, sectionsArray);
             spinnerSection.setEnabled(false);
@@ -90,9 +91,8 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                     spinner.setVisibility(View.VISIBLE);
 
                     String selected_course = course.getCourse();
-                    Log.i(LOGTAG, "Selected Course is : " + course.getCourse());
-                    courses = dbSource.GetFromCourses("course==\""+selected_course+"\"", null, null);
-                    sectionsArray = courses.toArray(new Courses[courses.size()]);
+                    sections = dbSource.GetFromCourses("course==\""+selected_course+"\"", null, null);
+                    sectionsArray = sections.toArray(new Courses[sections.size()]);
 
                     adapterSection.setCourses(sectionsArray);
                     adapterSection.notifyDataSetChanged();
@@ -106,8 +106,6 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                 }
             });
 
-
-            Majors[] majorsArray;
             majorsArray = majors.toArray(new Majors[majors.size()]);
             spinnerMajors = (Spinner) findViewById(R.id.spinnerMajor);
             adapterMajors = new MajorsSpinAdapter(this, android.R.layout.simple_spinner_item, majorsArray);
@@ -127,11 +125,12 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
 
                     long selected_major_id = major.getId();
                     courses = dbSource.GetFromCourses("major_id=="+selected_major_id, null, null);
+                    coursesArray = courses.toArray(new Courses[courses.size()]);
+
                     adapterCourses.setCourses(coursesArray);
                     adapterCourses.notifyDataSetChanged();
 
                     spinner.setVisibility(View.GONE);
-
                 }
 
                 @Override
