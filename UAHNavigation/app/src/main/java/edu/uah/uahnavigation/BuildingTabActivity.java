@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.Arrays;
 import java.util.List;
 
 import edu.uah.model.Buildings;
@@ -72,11 +73,13 @@ public class BuildingTabActivity extends AppCompatActivity implements View.OnCli
         spinnerRooms.setEnabled(false);
         spinnerRooms.setClickable(false);
         spinnerRooms.setAdapter(adapterRooms);
+        spinnerRooms.setSelection(0);
 
         buildingsArray = buildings.toArray(new Buildings[buildings.size()]);
         spinnerBuildings = (Spinner) findViewById(R.id.spinnerBuilding);
         adapterBuildings = new BuildingsSpinAdapter(this, android.R.layout.simple_spinner_item, buildingsArray);
         spinnerBuildings.setAdapter(adapterBuildings);
+        spinnerBuildings.setSelection(0);
 
         spinnerBuildings.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -97,6 +100,7 @@ public class BuildingTabActivity extends AppCompatActivity implements View.OnCli
                 adapterRooms.notifyDataSetChanged();
 
                 spinner.setVisibility(View.GONE);
+                spinnerRooms.setSelection(0);
             }
 
             @Override
@@ -116,4 +120,6 @@ public class BuildingTabActivity extends AppCompatActivity implements View.OnCli
             startActivity(new Intent(this, MainActivity.class));
         }
     }
+
+
 }

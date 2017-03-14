@@ -41,6 +41,8 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
         private CoursesSpinAdapter adapterCourses;
         private SectionSpinAdapter adapterSection;
 
+        int remove_first_item = 0;
+
         private ProgressBar spinner;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
             adapterSection = new SectionSpinAdapter(this, android.R.layout.simple_spinner_item, sectionsArray);
             spinnerSection.setEnabled(false);
             spinnerSection.setClickable(false);
+            spinnerSection.setSelection(0);
             spinnerSection.setAdapter(adapterSection);
 
             coursesArray = courses.toArray(new Courses[courses.size()]);
@@ -77,6 +80,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
             adapterCourses = new CoursesSpinAdapter(this, android.R.layout.simple_spinner_item, coursesArray);
             spinnerCourses.setEnabled(false);
             spinnerCourses.setClickable(false);
+            spinnerCourses.setSelection(0);
             spinnerCourses.setAdapter(adapterCourses);
 
             spinnerCourses.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -98,6 +102,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                     adapterSection.notifyDataSetChanged();
 
                     spinner.setVisibility(View.GONE);
+                    spinnerSection.setSelection(0);
                 }
 
                 @Override
@@ -110,6 +115,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
             spinnerMajors = (Spinner) findViewById(R.id.spinnerMajor);
             adapterMajors = new MajorsSpinAdapter(this, android.R.layout.simple_spinner_item, majorsArray);
             spinnerMajors.setAdapter(adapterMajors);
+            spinnerMajors.setSelection(0);
 
             spinnerMajors.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -118,6 +124,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                                            int position, long id) {
                     // Here you get the current item (a User object) that is selected by its position
                     Majors major = adapterMajors.getItem(position);
+
                     // Here you can do the action you want to...
                     spinnerCourses.setEnabled(true);
                     spinnerCourses.setClickable(true);
@@ -131,6 +138,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                     adapterCourses.notifyDataSetChanged();
 
                     spinner.setVisibility(View.GONE);
+                    spinnerCourses.setSelection(1);
                 }
 
                 @Override
