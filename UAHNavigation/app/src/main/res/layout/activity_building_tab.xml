@@ -30,12 +30,12 @@
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/findbtn2"
+        android:layout_alignTop="@+id/findbtn"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="48dp"
         android:layout_marginEnd="48dp"
-        android:id="@+id/returnbtn2" />
+        android:id="@+id/returnbtn" />
 
     <TextView
         android:text="BUILDING LOOK UP"
@@ -54,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="76dp"
-        android:id="@+id/findbtn2"
+        android:id="@+id/findbtn"
         android:layout_below="@+id/spinnerRoom"
         android:layout_alignLeft="@+id/textView9"
         android:layout_alignStart="@+id/textView9" />

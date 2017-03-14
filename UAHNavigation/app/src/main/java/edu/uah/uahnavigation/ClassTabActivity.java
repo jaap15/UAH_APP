@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
@@ -44,10 +45,19 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
         int remove_first_item = 0;
 
         private ProgressBar spinner;
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_class_tab);
+
+            // Linking buttons to layout
+            final Button returnBtn = (Button)findViewById(R.id.returnbtn);
+            final Button findBtn = (Button)findViewById(R.id.findbtn);
+
+            returnBtn.setOnClickListener(this);
+            findBtn.setOnClickListener(this);
+
             spinner = (ProgressBar)findViewById(R.id.progressBar1);
             spinner.setVisibility(View.GONE);
 
@@ -150,10 +160,10 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
 
         @Override
         public void onClick(View view) {
-            if(view.getId() == R.id.findbtn){
+            if(view.getId() == R.id.findbtn) {
                 startActivity(new Intent(this, CourseTabActivity.class));
             }
-            else if(view.getId() == R.id.returnbtn){
+            else if(view.getId() == R.id.returnbtn) {
                 startActivity(new Intent(this, MainActivity.class));
             }
         }

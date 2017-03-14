@@ -35,6 +35,7 @@ public class BuildingTabActivity extends AppCompatActivity implements View.OnCli
     private RoomsSpinAdapter adapterRooms;
 
     private ProgressBar spinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,15 +43,11 @@ public class BuildingTabActivity extends AppCompatActivity implements View.OnCli
 
         spinner = (ProgressBar)findViewById(R.id.progressBar1);
         spinner.setVisibility(View.GONE);
-        final Button find = (Button) findViewById(R.id.findbtn2);
-        final Button ret = (Button) findViewById(R.id.returnbtn2);
+        final Button findBtn = (Button) findViewById(R.id.findbtn);
+        final Button returnBtn = (Button) findViewById(R.id.returnbtn);
 
-        find.setEnabled(false); //Disable the find button
-        ret.setEnabled(false); //Disable the return button
-        // building.setEnabled(false);
-
-        find.setOnClickListener(this);
-        ret.setOnClickListener((View.OnClickListener) this);
+        findBtn.setOnClickListener(this);
+        returnBtn.setOnClickListener(this);
 
         dbSource = new DatabaseSource(this);
         if (dbSource.isOpen()) {
@@ -113,10 +110,10 @@ public class BuildingTabActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.findbtn2){
-            startActivity(new Intent(this, ClassTabActivity.class));  //Not a class activity but a new activity
+        if(view.getId() == R.id.findbtn){
+            startActivity(new Intent(this, CourseTabActivity.class));  //Not a class activity but a new activity
         }
-        else if(view.getId() == R.id.returnbtn2){
+        else if(view.getId() == R.id.returnbtn){
             startActivity(new Intent(this, MainActivity.class));
         }
     }

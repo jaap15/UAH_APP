@@ -48,12 +48,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Toast.makeText(this, "Config URL: "+ Util.getProperty("URL", this), Toast.LENGTH_LONG).show();
 
-        Button clbtn = (Button) findViewById(R.id.classbtn);
-        Button Bbtn = (Button) findViewById(R.id.buildingbtn);
+        final Button classBtn = (Button) findViewById(R.id.classbtn);
+        final Button BlgdBtn = (Button) findViewById(R.id.buildingbtn);
         // bClass = (Button) findViewById(R.id.bClass);
         // bBuilding = (Button) findViewById(R.id.bBuilding);
-        clbtn.setOnClickListener(this);
-        Bbtn.setOnClickListener(this);
+        classBtn.setOnClickListener(this);
+        BlgdBtn.setOnClickListener(this);
 
         dbSource = new DatabaseSource(this);
         if (dbSource.isOpen()) {
