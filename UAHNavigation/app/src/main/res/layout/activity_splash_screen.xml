@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_splash_screen"
     android:layout_width="match_parent"
@@ -8,6 +9,38 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="edu.uah.uahnavigation.SplashScreenActivity">
+    android:background="#0077C8"
+    tools:context="edu.uah.uahnavigation.SplashScreenActivity"
+    tools:ignore="UnusedAttribute">
 
+
+    <ProgressBar
+        android:id="@+id/progressBar4"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginBottom="151dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/progressBar4"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/progressBar4"
+        android:layout_marginBottom="55dp"
+        android:textColor="#FFFFFF"
+        android:text="loading..." />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/progressBar4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="110dp"
+        app:srcCompat="@mipmap/uah_nav_logo_white" />
 </RelativeLayout>

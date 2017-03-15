@@ -20,13 +20,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
+
         </activity>
-        <activity android:name=".SplashScreenActivity" />
+        <activity android:name=".SplashScreenActivity" >
+
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
+
         <activity android:name=".CourseTabActivity" />
         <activity android:name=".ClassTabActivity" />
         <activity android:name=".BuildingTabActivity" />
