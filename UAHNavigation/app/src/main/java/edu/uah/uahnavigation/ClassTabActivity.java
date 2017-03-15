@@ -140,7 +140,6 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                         spinnerSections.setEnabled(false);
                         spinnerSections.setClickable(false);
                         findButton.setEnabled(false);
-                        retButton.setEnabled(false);
                         spinner.setVisibility(View.GONE);
                     }
                     else {
@@ -191,12 +190,10 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                                             if(spinnerSections.getSelectedItemPosition() == 0){
 
                                                 findButton.setEnabled(false);
-                                                retButton.setEnabled(false);
                                             }else {
 
                                                 Toast.makeText(ClassTabActivity.this, adapterView.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
                                                 findButton.setEnabled(true);
-                                                retButton.setEnabled(true);
                                             }
                                         }
 

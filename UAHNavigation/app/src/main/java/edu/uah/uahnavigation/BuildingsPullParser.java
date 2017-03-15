@@ -1,7 +1,12 @@
 package edu.uah.uahnavigation;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +17,8 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import android.app.assist.AssistStructure;
 import android.content.Context;
 import android.content.res.Resources.NotFoundException;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import edu.uah.model.Buildings;
@@ -56,7 +63,7 @@ public class BuildingsPullParser {
 				} else if (eventType == XmlPullParser.END_TAG) {
 					currentTag = null;
 				} else if (eventType == XmlPullParser.TEXT) {
-					handleText(xpp.getText());
+					handleText(xpp.getText(), context);
 				}
 				eventType = xpp.next();
 			}
@@ -72,7 +79,7 @@ public class BuildingsPullParser {
 		return building;
 	}
 
-	private void handleText(String text) {
+	private void handleText(String text, Context context) throws IOException {
 		String xmlText = text;
 		if (currentBuilding != null && currentTag != null) {
 			if (currentTag.equals(BUILDING_ID)) {
@@ -86,7 +93,17 @@ public class BuildingsPullParser {
 				currentBuilding.setDescription(xmlText);
 			}
 			else if (currentTag.equals(BUILDING_IMAGE)) {
-				currentBuilding.setImage(xmlText);
+				if (!xmlText.equals("NULL")) {
+					Log.d(LOGTAG, "HAHAHAHAHEHEHEEEHOHOHOHOHOHO");
+					InputStream is = context.getAssets().open(xmlText);
+					Bitmap bmp = BitmapFactory.decodeStream(is);
+					ByteArrayOutputStream stream = new ByteArrayOutputStream();
+					bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+					currentBuilding.setImage(stream.toByteArray());
+				} else {
+					Log.d(LOGTAG, "xmlText = " + xmlText);
+					currentBuilding.setImage(new byte[0]);
+				}
 			}
 			else if (currentTag.equals(BUILDING_ADDRESS)) {
 				currentBuilding.setAddress(xmlText);

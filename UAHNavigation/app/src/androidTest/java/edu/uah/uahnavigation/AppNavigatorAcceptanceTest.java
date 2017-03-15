@@ -27,14 +27,14 @@ public class AppNavigatorAcceptanceTest {
             new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void testGreet() {
+    public void testAppNavigation() {
         onView(withId(R.id.greetEditText))
                 .perform(typeText("App Navigator Acceptance Test"), closeSoftKeyboard());
 
         onView(withText("Greet")).perform(click());
 
         onView(withId(R.id.classbtn)).perform(click());
-        onView(withId(R.id.returnbtn)).perform(click());;
+        onView(withId(R.id.returnbtn)).perform(click());
         onView(withId(R.id.buildingbtn)).perform(click());
         onView(withId(R.id.returnbtn)).perform(click());
     }

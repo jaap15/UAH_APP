@@ -12,90 +12,90 @@
     <buildingName>Engineering Building</buildingName>
     <description>ENG</description>
     <address>Engineering Bldg, Huntsville, AL 35805</address>
-    <image>bld_eng</image>
+    <image>NULL</image>
   </building>
   <building>
     <buildingId>2</buildingId>
     <buildingName>Nursing Building</buildingName>
     <description>NUR</description>
     <address>1619 Ben Graves Dr NW, Huntsville, AL 35816</address>
-    <image>bld_nur</image>
+    <image>bldgNursing.jpg</image>
   </building>
   <building>
     <buildingId>3</buildingId>
     <buildingName>Salmon Library</buildingName>
     <description>LIB</description>
     <address>301 Sparkman Dr NW, Huntsville, AL 35805</address>
-    <image>bld_lib</image>
+    <image>NULL</image>
   </building>
   <building>
     <buildingId>4</buildingId>
     <buildingName>Nursing Building</buildingName>
     <description>NUR</description>
     <address>1619 Ben Graves Dr NW, Huntsville, AL 35816</address>
-    <image>bld_nur</image>
+    <image>NULL</image>
   </building>
   <building>
     <buildingId>5</buildingId>
     <buildingName>Wilson Hall</buildingName>
     <description>WIL</description>
     <address>301 Sparkman Drive Huntsville, AL 35899</address>
-    <image>bld_wil</image>
+    <image>NULL</image>
   </building>
   <building>
     <buildingId>6</buildingId>
     <buildingName>Business Administration Building</buildingName>
     <description>BAB</description>
     <address>301 Sparkman Drive Huntsville, AL 35899</address>
-    <image>bld_bab</image>
+    <image>NULL</image>
   </building>
   <building>
     <buildingId>7</buildingId>
     <buildingName>University Fitness Center</buildingName>
     <description>UFC</description>
     <address>500 John Wright Dr NW, Huntsville, AL 35805</address>
-    <image>bld_ufc</image>
+    <image>NULL</image>
   </building>
   <building>
     <buildingId>8</buildingId>
     <buildingName>Charger Union</buildingName>
     <description>CGU</description>
     <address>Charger Union, 4705 Holmes Ave NW, Huntsville, AL 35899</address>
-    <image>bld_cgu</image>
+    <image>NULL</image>
   </building>
   <building>
     <buildingId>9</buildingId>
     <buildingName>Shelby Center</buildingName>
     <description>SST</description>
     <address>301 Sparkman Dr NW, Huntsville, AL 35899</address>
-    <image>bld_sst</image>
+    <image>NULL</image>
   </building>
   <building>
     <buildingId>10</buildingId>
     <buildingName>Optics Building</buildingName>
     <description>OPB</description>
     <address>Huntsville, AL 35805</address>
-    <image>bld_opb</image>
+    <image>NULL</image>
   </building>
   <building>
     <buildingId>11</buildingId>
     <buildingName>Material Science Building</buildingName>
     <description>MSB</description>
     <address>John Wright Dr NW, Huntsville, AL 35805</address>
-    <image>bld_msb</image>
+    <image>NULL</image>
   </building>
   <building>
     <buildingId>12</buildingId>
     <buildingName>Student Service Center</buildingName>
     <description>SSB</description>
     <address>301 Sparkman Drive Huntsville, AL 35899</address>
-    <image>bld_ssb</image>
+    <image>NULL</image>
   </building>
   <building>
     <buildingId>13</buildingId>
     <buildingName>Wernher von Braun Research Building</buildingName>
     <description>VBH</description>
     <address>301 Sparkman Drive Huntsville, AL 35899</address>
-    <image>bld_vbh</image>
+    <image>NULL</image>
   </building>
 </buildings>

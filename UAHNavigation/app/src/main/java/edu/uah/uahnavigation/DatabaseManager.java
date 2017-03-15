@@ -77,7 +77,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
                     TABLE_3_COL_2  + " VARCHAR, " +
                     TABLE_3_COL_3  + " VARCHAR, " +
                     TABLE_3_COL_4  + " VARCHAR, " +
-                    TABLE_3_COL_5  + " PIXMAP" +
+                    TABLE_3_COL_5  + " BLOB" +
                     ")";
 
     private static final String ROOMS_TABLE_CREATE =
