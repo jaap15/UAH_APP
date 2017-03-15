@@ -14,6 +14,20 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         NetworkManager networkManager = new NetworkManager();
 
+
+        Thread downloadThread = new Thread() {
+            public void run() {
+                String URL = "http://www.uah.edu/cgi-bin/schedule.pl?file=sprg2017.html&segment=NDX";
+                Webscraper.Semester s = new Webscraper.Semester(URL, "Spring");
+//                Toast.makeText(this, s.getURL() + "  " + s.getSemesterName(), Toast.LENGTH_LONG).show();
+                Webscraper scraper = new Webscraper(getApplicationContext(),"http://www.uah.edu", "/cgi-bin/schedule.pl?file=sprg2017.html&segment=NDX", "Webscrape_Resources");
+                scraper.setSemesterToScrape(s);
+                scraper.scrapeSemester();
+            }
+        };
+
+        downloadThread.start();
+
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
