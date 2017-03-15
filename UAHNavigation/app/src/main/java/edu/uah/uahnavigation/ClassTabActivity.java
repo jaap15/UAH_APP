@@ -31,15 +31,18 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
         private String LOGTAG = "QWER";
         List<Majors> majors;
         List<Courses> courses;
+        List<Courses> sections;
         List<Buildings> buildings;
         List<Rooms> rooms;
 
         private Courses[] coursesArray;
         private Courses[] sectionsArray;
         private Majors [] majorsArray;
+
         private Spinner spinnerMajors;
         private Spinner spinnerCourses;
         private Spinner spinnerSections;
+
         private MajorsSpinAdapter adapterMajors;
         private CoursesSpinAdapter adapterCourses;
         private SectionSpinAdapter adapterSection;
@@ -74,8 +77,9 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
             buildings = dbSource.GetFromBuildings(null, null, null);
             rooms = dbSource.GetFromRooms(null, null, null);
             courses = dbSource.GetFromCourses(null, null, null);
+            sections = dbSource.GetFromCourses(null, null, null);
 
-            sectionsArray = courses.toArray(new Courses[courses.size()]);
+            sectionsArray = sections.toArray(new Courses[sections.size()]);
             spinnerSections = (Spinner) findViewById(spinnerSection);
             adapterSection = new SectionSpinAdapter(this, android.R.layout.simple_spinner_item, sectionsArray);
             spinnerSections.setEnabled(false);
@@ -88,35 +92,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
             spinnerCourses.setEnabled(false);
             spinnerCourses.setClickable(false);
             spinnerCourses.setAdapter(adapterCourses);
-/*
-            spinnerCourses.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view,
-                                           int position, long id) {
-                    // Here you get the current item (a User object) that is selected by its position
-                    Courses course = adapterCourses.getItem(position);
-                    // Here you can do the action you want to...
-                    spinnerSections.setEnabled(true);
-                    spinnerSections.setClickable(true);
-                    spinner.setVisibility(View.VISIBLE);
 
-                    String selected_course = course.getCourse();
-                    Log.i(LOGTAG, "Selected Course is : " + course.getCourse());
-                    courses = dbSource.GetFromCourses("course==\""+selected_course+"\"", null, null);
-                    sectionsArray = courses.toArray(new Courses[courses.size()]);
-
-                    adapterSection.setCourses(sectionsArray);
-                    adapterSection.notifyDataSetChanged();
-
-                    spinner.setVisibility(View.GONE);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-*/
             majorsArray = majors.toArray(new Majors[majors.size()]);
             spinnerMajors = (Spinner) findViewById(R.id.spinnerMajor);
             adapterMajors = new MajorsSpinAdapter(this, android.R.layout.simple_spinner_item, majorsArray);
@@ -135,13 +111,16 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                         spinnerCourses.setClickable(false);
                         spinnerSections.setEnabled(false);
                         spinnerSections.setClickable(false);
+
                         spinner.setVisibility(View.GONE);
                     }
                     else {
                         long selected_major_id = majorpos.getId();
                         courses = dbSource.GetFromCourses("major_id==" + selected_major_id, null, null);
-                       // adapterCourses.setCourses(coursesArray);
-                        Toast.makeText(ClassTabActivity.this, adapterView.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
+                        coursesArray = courses.toArray(new Courses[courses.size()]);
+                        adapterCourses.setCourses(coursesArray);
+                        adapterCourses.notifyDataSetChanged();
+
                         spinnerCourses.setEnabled(true);
                         spinnerCourses.setClickable(true);
                         adapterCourses.notifyDataSetChanged();
@@ -161,19 +140,17 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                                     spinnerSections.setClickable(false);
                                     spinner.setVisibility(View.GONE);
                                 }else {
+
                                     String selected_course = coursepos.getCourse();
-                                    Log.i(LOGTAG, "Selected Course is : " + coursepos.getCourse());
-                                    courses = dbSource.GetFromCourses("course==\"" + selected_course + "\"", null, null);
+                                    sections = dbSource.GetFromCourses("course==\"" + selected_course + "\"", null, null);
                                     sectionsArray = courses.toArray(new Courses[courses.size()]);
-                                    adapterSection.setCourses(sectionsArray);
-                                    Toast.makeText(ClassTabActivity.this, adapterView.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
 
-                                        spinnerSections.setEnabled(true);
-                                        spinnerSections.setClickable(true);
-                                        adapterSection.notifyDataSetChanged();
-                                     // sectionsArray = courses.toArray(new Courses[courses.size()]);
-                                     // adapterSection.setCourses(sectionsArray);
+                                    adapterSection.setSections(sectionsArray);
+                                    adapterSection.notifyDataSetChanged();
 
+                                    spinnerSections.setEnabled(true);
+                                    spinnerSections.setClickable(true);
+                                    adapterSection.notifyDataSetChanged();
                                 }
                             }
 
@@ -196,7 +173,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
         @Override
         public void onClick(View view) {
             if(view.getId() == R.id.findbtn){
-                startActivity(new Intent(this, CourseTabActivity.class));
+                startActivity(new Intent(this, MapsActivity.class));
             }
             else if(view.getId() == R.id.returnbtn){
                 startActivity(new Intent(this, MainActivity.class));

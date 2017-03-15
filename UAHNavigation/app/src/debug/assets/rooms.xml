@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<rooms>
+  <building>
+    <buildingId>NULL</buildingId>
+    <roomNum>Select_Room</roomNum>
+    <buildingId>ENG</buildingId>
+    <roomNum>100</roomNum>
+    <roomNum>105</roomNum>
+    <roomNum>106</roomNum>
+    <roomNum>114</roomNum>
+    <roomNum>134</roomNum>
+    <roomNum>207</roomNum>
+    <roomNum>219</roomNum>
+    <roomNum>226</roomNum>
+    <roomNum>240</roomNum>
+    <roomNum>246</roomNum>
+  </building>
+  <building>
+    <buildingId>NUR</buildingId>
+    <roomNum>111</roomNum>
+    <roomNum>113</roomNum>
+    <roomNum>202</roomNum>
+    <roomNum>205</roomNum>
+  </building>
+  <building>
+    <buildingId>SST</buildingId>
+    <roomNum>103</roomNum>
+    <roomNum>121</roomNum>
+    <roomNum>158</roomNum>
+    <roomNum>216</roomNum>
+    <roomNum>219</roomNum>
+  </building>
+</rooms>

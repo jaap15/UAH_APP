@@ -23,7 +23,7 @@ public class SectionSpinAdapter extends ArrayAdapter<Courses>{
         this.values = values;
     }
 
-    public void setCourses(Courses[] values) {
+    public void setSections(Courses[] values) {
         this.values = values;
     }
 

@@ -111,7 +111,7 @@ public class BuildingTabActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.findbtn){
-            startActivity(new Intent(this, CourseTabActivity.class));  //Not a class activity but a new activity
+            startActivity(new Intent(this, MapsActivity.class));  //Not a class activity but a new activity
         }
         else if(view.getId() == R.id.returnbtn){
             startActivity(new Intent(this, MainActivity.class));

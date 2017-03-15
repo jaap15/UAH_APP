@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by Daniel on 1/21/2017.
  */
-@RunWith(MyRunner.class)
+@RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 18)
 public class DatabaseUnitTest  {
 
