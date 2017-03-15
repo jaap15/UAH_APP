@@ -63,7 +63,7 @@ public class CourseTabActivity extends AppCompatActivity implements View.OnClick
         spcourse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                int spcoursepos = spcourse.getSelectedItemPosition();
+                final int spcoursepos = spcourse.getSelectedItemPosition();
                 if(spcoursepos != 0){
                     Toast.makeText(CourseTabActivity.this, adapterView.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
                     spcoursenum.setEnabled(true);
@@ -88,6 +88,7 @@ public class CourseTabActivity extends AppCompatActivity implements View.OnClick
                                         else{
                                             find.setEnabled(false);
                                             ret.setEnabled(false);
+
                                         }
                                     }
 
@@ -98,6 +99,7 @@ public class CourseTabActivity extends AppCompatActivity implements View.OnClick
                                 });
                             }
                             else{
+                                spsection.setSelection(0);
                                 spsection.setEnabled(false);
                                 find.setEnabled(false);
                                 ret.setEnabled(false);
@@ -111,10 +113,13 @@ public class CourseTabActivity extends AppCompatActivity implements View.OnClick
                     });
                 }
                 else{
+                    spcoursenum.setSelection(0);
                     spcoursenum.setEnabled(false);
+                    spsection.setSelection(0);
                     spsection.setEnabled(false);
                     find.setEnabled(false);
                     ret.setEnabled(false);
+
                 }
             }
 

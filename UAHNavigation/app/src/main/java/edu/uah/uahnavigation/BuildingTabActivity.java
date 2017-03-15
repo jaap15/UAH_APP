@@ -46,6 +46,8 @@ public class BuildingTabActivity extends AppCompatActivity implements View.OnCli
         final Button findBtn = (Button) findViewById(R.id.findbtn);
         final Button returnBtn = (Button) findViewById(R.id.returnbtn);
 
+        findBtn.setEnabled(false);
+        returnBtn.setEnabled(false);
         findBtn.setOnClickListener(this);
         returnBtn.setOnClickListener(this);
 
@@ -85,19 +87,49 @@ public class BuildingTabActivity extends AppCompatActivity implements View.OnCli
                 // Here you get the current item (a User object) that is selected by its position
                 Buildings building = adapterBuildings.getItem(position);
                 // Here you can do the action you want to...
-                spinnerRooms.setEnabled(true);
-                spinnerRooms.setClickable(true);
-                spinner.setVisibility(View.VISIBLE);
+                if(building == buildings.get(0)){
+                    spinnerRooms.setSelection(0);
+                    spinnerRooms.setEnabled(false);
+                    spinnerRooms.setClickable(false);
+                    findBtn.setEnabled(false);
+                    returnBtn.setEnabled(false);
+                    spinner.setVisibility(View.GONE);
+                }else {
+                    Long selected_building = building.getId();
+                    rooms = dbSource.GetFromRooms("building_id==" + selected_building, null, null);
+                    spinnerRooms.setEnabled(true);
+                    spinnerRooms.setClickable(true);
 
-                Long selected_building = building.getId();
-                rooms = dbSource.GetFromRooms("building_id=="+selected_building, null, null);
-                roomsArray = rooms.toArray(new Rooms[rooms.size()]);
+                    spinnerRooms.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
-                adapterRooms.setCourses(roomsArray);
-                adapterRooms.notifyDataSetChanged();
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                            Rooms room = adapterRooms.getItem(position);
+                            if(room == rooms.get(0)){
 
-                spinner.setVisibility(View.GONE);
-                spinnerRooms.setSelection(0);
+                                //findBtn.setEnabled(false);
+                                //returnBtn.setEnabled(false);
+                            }else {
+                               // rooms = dbSource.GetFromRooms("building_id==" + selected_building, null, null);
+                               // spinnerRooms.setEnabled(true);
+                               // spinnerRooms.setClickable(true);
+                                spinnerRooms.setSelection(0);
+                                // spinner.setVisibility(View.VISIBLE);
+                                roomsArray = rooms.toArray(new Rooms[rooms.size()]);
+                                adapterRooms.setCourses(roomsArray);
+                                adapterRooms.notifyDataSetChanged();
+                                spinner.setVisibility(View.GONE);
+                                findBtn.setEnabled(true);
+                                returnBtn.setEnabled(true);
+                            }
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+                                                                   }
+                                                               });
+
+                }
             }
 
             @Override

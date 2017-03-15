@@ -65,4 +65,5 @@ public class SectionSpinAdapter extends ArrayAdapter<Courses>{
 
         return label;
     }
+
 }
