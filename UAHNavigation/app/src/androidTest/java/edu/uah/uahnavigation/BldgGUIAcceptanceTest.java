@@ -37,8 +37,6 @@ public class BldgGUIAcceptanceTest {
 
     @Test
     public void testSpinners() {
-        onView(withId(R.id.greetEditText))
-                .perform(typeText("Buildings GUI Test"), closeSoftKeyboard());
 
         onView(withId(R.id.buildingbtn)).perform(click());
         //onView(withId(R.id.spinnerBuilding)).check(matches("Engineering Building")));

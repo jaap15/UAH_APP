@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -12,29 +13,6 @@
 
 
     <!--Temporary code used for testing the first use of espresso for acceptance testing can be removed later-->
-    <EditText
-        android:id="@+id/greetEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:inputType="textCapSentences"/>
-
-    <Button
-        android:id="@+id/greetButton"
-        android:text="@string/greetButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/greetEditText"
-        android:layout_centerHorizontal="true"
-        android:onClick="didTapGreetButton" />
-
-    <TextView
-        android:id="@+id/messageTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/greetButton"
-        android:gravity="center"
-        android:textSize="30sp"/>
 
     <Button
         android:id="@+id/classbtn"
@@ -42,10 +20,9 @@
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="133dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/greetButton"
-        android:layout_alignStart="@+id/greetButton" />
+        android:layout_marginBottom="26dp"
+        android:layout_above="@+id/buildingbtn"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:text="BUILDING"
@@ -69,5 +46,13 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="19dp" />
 
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@mipmap/uah_nav_logo_blue" />
 
 </RelativeLayout>

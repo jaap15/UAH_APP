@@ -28,10 +28,6 @@ public class AppNavigatorAcceptanceTest {
 
     @Test
     public void testAppNavigation() {
-        onView(withId(R.id.greetEditText))
-                .perform(typeText("App Navigator Acceptance Test"), closeSoftKeyboard());
-
-        onView(withText("Greet")).perform(click());
 
         onView(withId(R.id.classbtn)).perform(click());
         onView(withId(R.id.returnbtn)).perform(click());

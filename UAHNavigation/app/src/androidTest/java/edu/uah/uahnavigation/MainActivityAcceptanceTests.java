@@ -27,12 +27,6 @@ public class MainActivityAcceptanceTests {
 
     @Test
     public void testGreet() {
-        onView(withId(R.id.greetEditText))
-                .perform(typeText("Jake"), closeSoftKeyboard());
 
-        onView(withText("Greet")).perform(click());
-
-        onView(withId(R.id.messageTextView))
-                .check(matches(withText("Hello, Jake!")));
     }
 }

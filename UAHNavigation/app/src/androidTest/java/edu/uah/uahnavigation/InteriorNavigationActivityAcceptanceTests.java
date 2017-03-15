@@ -28,13 +28,7 @@ public class InteriorNavigationActivityAcceptanceTests {
 
     @Test
     public void testGreet() {
-        onView(withId(R.id.greetEditText))
-                .perform(typeText("Jairo"), closeSoftKeyboard());
 
-        onView(withText("Greet")).perform(click());
-
-        onView(withId(R.id.messageTextView))
-                .check(matches(withText("Hello, Jairo!")));
     }
 
 }
