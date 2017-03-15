@@ -15,10 +15,9 @@
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/textView2"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="45dp"
-        android:id="@+id/textView2" />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:text="MAJOR"
@@ -27,13 +26,18 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView2"
         android:layout_marginTop="40dp"
-        android:id="@+id/textView3" />
+        android:id="@+id/textView3"
+        android:layout_alignRight="@+id/textView5"
+        android:layout_alignEnd="@+id/textView5"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:id="@+id/spinnerMajor"
+        android:padding="20dp"
         android:layout_below="@+id/textView3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -63,6 +67,7 @@
         android:layout_below="@+id/textView4"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
+        android:padding="20dp"
         android:id="@+id/spinnerCourse" />
 
     <TextView
@@ -82,6 +87,7 @@
         android:layout_below="@+id/textView5"
         android:layout_marginTop="31dp"
         android:id="@+id/spinnerSection"
+        android:padding="20dp"
         android:layout_toStartOf="@+id/progressBar1"
         android:layout_toLeftOf="@+id/progressBar1" />
 

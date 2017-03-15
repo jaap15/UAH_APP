@@ -14,10 +14,9 @@
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp"
-        android:id="@+id/textView6" />
+        android:id="@+id/textView6"
+        android:layout_alignParentTop="true" />
 
     <TextView
         android:text="COURSE"
@@ -29,7 +28,7 @@
         android:layout_toStartOf="@+id/textView6"
         android:layout_marginRight="13dp"
         android:layout_marginEnd="13dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="17dp"
         android:id="@+id/textView10" />
 
     <Spinner
@@ -38,8 +37,9 @@
         android:layout_below="@+id/textView10"
         android:layout_marginTop="15dp"
         android:id="@+id/spCourse"
-        android:layout_alignRight="@+id/textView11"
-        android:layout_alignEnd="@+id/textView11" />
+        android:padding="20dp"
+        android:layout_toLeftOf="@+id/returnbtn3"
+        android:layout_toStartOf="@+id/returnbtn3" />
 
     <TextView
         android:text="COURSE NUMBER"
@@ -49,7 +49,7 @@
         android:layout_below="@+id/spCourse"
         android:layout_alignLeft="@+id/textView10"
         android:layout_alignStart="@+id/textView10"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="17dp"
         android:id="@+id/textView11" />
 
     <Spinner
@@ -58,8 +58,9 @@
         android:layout_below="@+id/textView11"
         android:layout_marginTop="20dp"
         android:id="@+id/spCourseNumber"
-        android:layout_alignRight="@+id/textView11"
-        android:layout_alignEnd="@+id/textView11" />
+        android:padding="20dp"
+        android:layout_alignRight="@+id/spCourse"
+        android:layout_alignEnd="@+id/spCourse" />
 
     <TextView
         android:text="SECTION"
@@ -69,7 +70,7 @@
         android:layout_below="@+id/spCourseNumber"
         android:layout_alignLeft="@+id/textView11"
         android:layout_alignStart="@+id/textView11"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="17dp"
         android:id="@+id/textView13" />
 
     <Spinner
@@ -78,6 +79,7 @@
         android:layout_below="@+id/textView13"
         android:layout_marginTop="17dp"
         android:id="@+id/spSection"
+        android:padding="20dp"
         android:layout_alignRight="@+id/spCourseNumber"
         android:layout_alignEnd="@+id/spCourseNumber" />
 
@@ -86,23 +88,22 @@
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/spSection"
+        android:id="@+id/findbtn3"
+        android:layout_alignBaseline="@+id/returnbtn3"
+        android:layout_alignBottom="@+id/returnbtn3"
         android:layout_alignLeft="@+id/textView13"
-        android:layout_alignStart="@+id/textView13"
-        android:layout_marginLeft="12dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="40dp"
-        android:id="@+id/findbtn3" />
+        android:layout_alignStart="@+id/textView13" />
 
     <Button
         android:text="RETURN"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/findbtn3"
+        android:layout_marginRight="48dp"
+        android:layout_marginEnd="48dp"
+        android:id="@+id/returnbtn3"
+        android:layout_below="@+id/spSection"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="46dp"
-        android:layout_marginEnd="46dp"
-        android:id="@+id/returnbtn3" />
+        android:layout_marginTop="17dp" />
 </RelativeLayout>

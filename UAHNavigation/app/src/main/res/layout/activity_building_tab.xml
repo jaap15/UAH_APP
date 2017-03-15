@@ -15,6 +15,7 @@
         android:layout_below="@+id/textView8"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="29dp"
+        android:padding="20dp"
         android:id="@+id/spinnerBuilding" />
 
     <Spinner
@@ -23,6 +24,9 @@
         android:layout_below="@+id/textView9"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        android:padding="20dp"
         android:id="@+id/spinnerRoom" />
 
     <Button

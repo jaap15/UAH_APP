@@ -105,15 +105,15 @@ public class BuildingTabActivity extends AppCompatActivity implements View.OnCli
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                             Rooms room = adapterRooms.getItem(position);
-                            if(room == rooms.get(0)){
+                            if(spinnerRooms.getSelectedItemPosition() == 0){
 
-                                //findBtn.setEnabled(false);
-                                //returnBtn.setEnabled(false);
+                                findBtn.setEnabled(false);
+                                returnBtn.setEnabled(false);
                             }else {
                                // rooms = dbSource.GetFromRooms("building_id==" + selected_building, null, null);
                                // spinnerRooms.setEnabled(true);
                                // spinnerRooms.setClickable(true);
-                                spinnerRooms.setSelection(0);
+                                //spinnerRooms.setSelection(0);
                                 // spinner.setVisibility(View.VISIBLE);
                                 roomsArray = rooms.toArray(new Rooms[rooms.size()]);
                                 adapterRooms.setCourses(roomsArray);
@@ -126,8 +126,8 @@ public class BuildingTabActivity extends AppCompatActivity implements View.OnCli
 
                         @Override
                         public void onNothingSelected(AdapterView<?> adapterView) {
-                                                                   }
-                                                               });
+                        }
+                    });
 
                 }
             }
