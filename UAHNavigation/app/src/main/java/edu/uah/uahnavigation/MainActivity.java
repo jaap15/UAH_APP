@@ -1,7 +1,12 @@
 package edu.uah.uahnavigation;
 
 
+import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +21,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -86,6 +93,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (courses.size() == 0) {
             createCoursesData();
         }
+
+        InputStream is = null;
+        String image = "bldgNursing.jpg";
+        try {
+            is = getAssets().open(image);
+        } catch (IOException e) {
+            new DialogException(this, "IOException", "Error trying to open image " + image, new String[]{"Retry", "Exit"});
+        }
+
+        boolean internetAccess = false;
+        boolean skipInternet = false;
+        do {
+            if (isNetworkAvailable()) {
+                break;
+            } else {
+                new DialogException(this, "Internet Unavailable", "Unable to detect internet access. Would you like to try again or open the app without internet?", new String[]{"Yes", "No"});
+            }
+        } while(internetAccess = false && skipInternet == false);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     public void didTapGreetButton(View view) {
