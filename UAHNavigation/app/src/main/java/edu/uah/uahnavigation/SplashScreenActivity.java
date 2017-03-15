@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -11,6 +12,15 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
+        Thread checkInternet = new Thread(){
+            public void run() {
+//                Toast.makeText(getApplicationContext(), "Internet: "+ NetworkManager.hasInternetConnection(), Toast.LENGTH_LONG).show();
+                Log.d("myMessage", "Connection: " + NetworkManager.hasInternetConnection());
+            }
+        };
+
+        checkInternet.start();
 
         final Thread downloadThread = new Thread() {
             public void run() {
