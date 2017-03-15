@@ -153,38 +153,63 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Majors majors = new Majors();
 
         // Creating empty space in majors for spinner
-        if (!dbSource.InsertIntoMajors("Select_Major", "")) {
-            Log.i(LOGTAG, "Error inserting Data into majors");
+        try {
+            dbSource.InsertIntoMajors("Select_Major", "");
+        } catch (final IndexOutOfBoundsException e) {
+            new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
         }
+
         // Creating 3 entry into Majors table
-        if (!dbSource.InsertIntoMajors("CPE", "Computer Engineering")) {
-            Log.i(LOGTAG, "Error inserting Data into majors");
+        try {
+            dbSource.InsertIntoMajors("CPE", "Computer Engineering");
+        } catch (final IndexOutOfBoundsException e) {
+            new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
         }
-        if (!dbSource.InsertIntoMajors("EE", "Electrical Engineering")) {
-            Log.i(LOGTAG, "Error inserting Data into majors");
+
+        try {
+            dbSource.InsertIntoMajors("EE", "Electrical Engineering");
+        } catch (final IndexOutOfBoundsException e) {
+            new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
         }
-        if (!dbSource.InsertIntoMajors("ME", "Mechanical Engineering")) {
-            Log.i(LOGTAG, "Error inserting Data into majors");
+
+        try {
+            dbSource.InsertIntoMajors("ME", "Mechanical Engineering");
+        } catch (final IndexOutOfBoundsException e) {
+            new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
         }
     }
 
     private void createCoursesData() {
         Courses courses = new Courses();
 
-        if (!dbSource.InsertIntoCourses("Select_Major", "NULL", "Select_Room", 99999, "Select_Course Select_Section", "NULL", 9, "NULL", "NULL", "NULL", "NULL")) {
-            Log.i(LOGTAG, "Error inserting Data into courses");
+        try {
+            dbSource.InsertIntoCourses("Select_Major", "NULL", "Select_Room", 99999, "Select_Course Select_Section", "NULL", 9, "NULL", "NULL", "NULL", "NULL");
+        } catch (final IndexOutOfBoundsException e) {
+            new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
         }
 
-        if (!dbSource.InsertIntoCourses("CPE", "ENG", "134", 10165, "211 01", "INTRO COMPUTER PROG FOR ENGR", 3, "TR", "12:45", "02:05", "Bowman Ronald")) {
-            Log.i(LOGTAG, "Error inserting Data into courses");
+        try {
+            dbSource.InsertIntoCourses("CPE", "ENG", "134", 10165, "211 01", "INTRO COMPUTER PROG FOR ENGR", 3, "TR", "12:45", "02:05", "Bowman Ronald");
+        } catch (final IndexOutOfBoundsException e) {
+            new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
         }
 
-        if (!dbSource.InsertIntoCourses("CPE", "ENG", "207", 10166, "211 02", "INTRO COMPUTER PROG FOR ENGR", 3, "MW", "12:45", "02:05", "Bowman Ronald")) {
-            Log.i(LOGTAG, "Error inserting Data into courses");
+        try {
+            dbSource.InsertIntoCourses("CPE", "ENG", "207", 10166, "211 02", "INTRO COMPUTER PROG FOR ENGR", 3, "MW", "12:45", "02:05", "Bowman Ronald");
+        } catch (final IndexOutOfBoundsException e) {
+            new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
         }
 
-        if (!dbSource.InsertIntoCourses("ME", "NUR", "111", 10173, "323 01", "INTRO TO EMBEDDED COMPUTER SYS", 3, "MW", "12:45", "02:05", "Milenkovic Aleksander")) {
-            Log.i(LOGTAG, "Error inserting Data into courses");
+        try {
+            dbSource.InsertIntoCourses("ME", "OKT", "111", 10173, "323 01", "INTRO TO EMBEDDED COMPUTER SYS", 3, "MW", "12:45", "02:05", "Milenkovic Aleksander");
+        } catch (final IndexOutOfBoundsException e) {
+            new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
+        }
+
+        try {
+            dbSource.InsertIntoCourses("ME", "MSB", "111", 10173, "323 01", "INTRO TO EMBEDDED COMPUTER SYS", 3, "MW", "12:45", "02:05", "Milenkovic Aleksander");
+        } catch (final IndexOutOfBoundsException e) {
+            new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
         }
     }
 
@@ -193,7 +218,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         List<Buildings> buildings = parser.parseXML(this);
 
         for (Buildings building : buildings) {
-            dbSource.InsertIntoBuildings(building);
+            try {
+                dbSource.InsertIntoBuildings(building);
+            } catch (final IndexOutOfBoundsException e) {
+                new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
+            }
         }
     }
 
@@ -202,10 +231,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         List<Rooms> rooms = parser.parseXML(this);
 
         for (Rooms room : rooms) {
-            dbSource.InsertIntoRooms(room);
+            try {
+                dbSource.InsertIntoRooms(room);
+            } catch (final IndexOutOfBoundsException e) {
+                new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
+            }
         }
-
     }
+
 
     @Override
     public void onClick(View v) {
