@@ -100,7 +100,6 @@ public class BuildingsPullParser {
 					ByteArrayOutputStream stream = new ByteArrayOutputStream();
 					bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
 					currentBuilding.setImage(stream.toByteArray());
-					//currentBuilding.setImage(new byte[0]);
 				} else {
 					Log.d(LOGTAG, "xmlText = " + xmlText);
 					currentBuilding.setImage(new byte[0]);

@@ -47,7 +47,6 @@ public class BuildingTabActivity extends AppCompatActivity implements View.OnCli
         final Button returnBtn = (Button) findViewById(R.id.returnbtn);
 
         findBtn.setEnabled(false);
-        returnBtn.setEnabled(false);
         findBtn.setOnClickListener(this);
         returnBtn.setOnClickListener(this);
 
@@ -92,7 +91,6 @@ public class BuildingTabActivity extends AppCompatActivity implements View.OnCli
                     spinnerRooms.setEnabled(false);
                     spinnerRooms.setClickable(false);
                     findBtn.setEnabled(false);
-                    returnBtn.setEnabled(false);
                     spinner.setVisibility(View.GONE);
                 }else {
                     Long selected_building = building.getId();
@@ -108,7 +106,6 @@ public class BuildingTabActivity extends AppCompatActivity implements View.OnCli
                             if(spinnerRooms.getSelectedItemPosition() == 0){
 
                                 findBtn.setEnabled(false);
-                                returnBtn.setEnabled(false);
                             }else {
                                // rooms = dbSource.GetFromRooms("building_id==" + selected_building, null, null);
                                // spinnerRooms.setEnabled(true);
@@ -120,7 +117,6 @@ public class BuildingTabActivity extends AppCompatActivity implements View.OnCli
                                 adapterRooms.notifyDataSetChanged();
                                 spinner.setVisibility(View.GONE);
                                 findBtn.setEnabled(true);
-                                returnBtn.setEnabled(true);
                             }
                         }
 
