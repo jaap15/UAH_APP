@@ -1,5 +1,7 @@
 package edu.uah.model;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Daniel on 1/16/2017.
  */
@@ -9,7 +11,7 @@ public class Buildings {
     private String name;
     private String description;
     private String address;
-    private String image;
+    private byte[] image;
 
     public long getId() {
         return id;
@@ -39,10 +41,10 @@ public class Buildings {
         this.address = address;
     }
 
-    public String getImage() {
+    public byte[] getImage() {
         return image;
     }
-    public void setImage(String image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 }

@@ -141,7 +141,7 @@ public class DatabaseSource {
                 bldg.setName(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_3_COL_2)));
                 bldg.setDescription(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_3_COL_3)));
                 bldg.setAddress(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_3_COL_4)));
-                bldg.setImage(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_3_COL_5)));
+                bldg.setImage(cursor.getBlob(cursor.getColumnIndex(DatabaseManager.TABLE_3_COL_5)));
                 buildings.add(bldg);
             }
         }
