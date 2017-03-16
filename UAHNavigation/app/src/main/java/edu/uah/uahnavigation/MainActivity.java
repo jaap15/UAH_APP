@@ -19,19 +19,6 @@ import edu.uah.model.Majors;
 import edu.uah.model.MajorsSpinAdapter;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    DatabaseSource dbSource;
-    private String LOGTAG = "QWER";
-    List<Majors> majors;
-    List<Courses> courses;
-
-    private Courses[] coursesArray;
-    private Spinner spinnerMajors;
-    private Spinner spinnerCourses;
-    private MajorsSpinAdapter adapterMajors;
-    private CoursesSpinAdapter adapterCourses;
-
-    private ProgressBar spinner;
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
