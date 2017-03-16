@@ -46,8 +46,12 @@ public class CoursesListParser {
     public void parseCourseFile(String absoluteFilePath)
     {
 
+        DatabaseSource db = new DatabaseSource(this.context);
+        db.open();
+
         BufferedReader reader = null;
         String description = null;
+        String major = null;
         Log.d("myMessage", "Debug 1 ");
         try {
             System.out.println("Opening file");
@@ -63,9 +67,14 @@ public class CoursesListParser {
 
         Log.d("myMessage", "Debug 2");
         try {
-            description = reader.readLine();
-//            description.substring(description.lastIndexOf("/") + 1)
-            Log.d("myMessage", "Description: " + description.substring(description.lastIndexOf("/") + 1));
+            String tmp = reader.readLine();
+            Log.d("myMessage", "Major/Description: " + tmp);
+            major = tmp.substring(0, 3);
+            Log.d("myMessage", "Major: " + major);
+            description = tmp.substring(tmp.lastIndexOf("/") + 1);
+            Log.d("myMessage", "Description: " + description);
+
+            db.InsertIntoMajors(major, description);
             System.out.println("Skipping lines");
             Log.d("myMessage", "Skipping lines");
             for(int i = 0; i < START_LINE; i++)
@@ -217,6 +226,11 @@ public class CoursesListParser {
                 String instructor = line.substring(min, max);
                 System.out.println(instructor);
                 Log.d("myMessage", "Instructor: " + instructor);
+
+                db.InsertIntoCourses(major,bldg,room,crn,course,title,credit,days,startTime,endTime,instructor);
+
+                reader.close();
+                db.close();
             }
         } catch (IOException ex) {
             System.out.println("Unable to read file");
