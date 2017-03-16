@@ -42,5 +42,7 @@
         android:layout_above="@+id/progressBar4"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="110dp"
-        app:srcCompat="@mipmap/uah_nav_logo_white" />
+        app:srcCompat="@mipmap/uah_nav_logo_white"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"/>
 </RelativeLayout>
