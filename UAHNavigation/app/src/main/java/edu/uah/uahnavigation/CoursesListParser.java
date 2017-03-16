@@ -43,16 +43,16 @@ public class CoursesListParser {
     }
 
 
-    public void parseCourseFile(String fileName)
+    public void parseCourseFile(String absoluteFilePath)
     {
 
         BufferedReader reader = null;
+        String description = null;
         Log.d("myMessage", "Debug 1 ");
         try {
             System.out.println("Opening file");
             Log.d("myMessage", "Opening file");
-            reader = new BufferedReader(new FileReader(fileName));
-
+            reader = new BufferedReader(new FileReader(absoluteFilePath));
         } catch (FileNotFoundException ex) {
 
             System.out.println("Unable to open file");
@@ -60,8 +60,12 @@ public class CoursesListParser {
 //            Logger.getLogger(JsoupLearningNetbeans.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+
         Log.d("myMessage", "Debug 2");
         try {
+            description = reader.readLine();
+//            description.substring(description.lastIndexOf("/") + 1)
+            Log.d("myMessage", "Description: " + description.substring(description.lastIndexOf("/") + 1));
             System.out.println("Skipping lines");
             Log.d("myMessage", "Skipping lines");
             for(int i = 0; i < START_LINE; i++)
