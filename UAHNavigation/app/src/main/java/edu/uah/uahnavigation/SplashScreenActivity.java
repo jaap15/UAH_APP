@@ -17,6 +17,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     private SharedPreferences settings;
     private AlertDialog.Builder builder;
     private AlertDialog alert;
+    private boolean hasInternet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,11 +70,18 @@ public class SplashScreenActivity extends AppCompatActivity {
         });
         alert = builder.create();
 
+        if (Util.getProperty("CHECK_INTERNET", this).equals("true")) {
+            hasInternet = NetworkManager.hasInternetConnection();
+        } else {
+            hasInternet = true;
+        }
+
+
         StartApplication();
     }
 
     public void StartApplication() {
-        if (NetworkManager.hasInternetConnection()) {
+        if (hasInternet) {
             if (settings.getBoolean("my_first_time", true)) {
                 Log.d("myMessage", "First time");
 
