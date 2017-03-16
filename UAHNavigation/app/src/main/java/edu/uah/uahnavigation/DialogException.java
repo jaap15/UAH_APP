@@ -6,9 +6,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+
+import edu.uah.uahnavigation.SplashScreenActivity;
 
 import java.util.Arrays;
 
@@ -45,6 +48,9 @@ public class DialogException  {
             builder.setNegativeButton("Retry", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     // User cancelled the dialog
+                    if (context.toString().equals("edu.uah.uahnavigation.SplashScreenActivity@c83c008")) {
+                        new SplashScreenActivity().StartApplication();
+                    }
                 }
             });
         }

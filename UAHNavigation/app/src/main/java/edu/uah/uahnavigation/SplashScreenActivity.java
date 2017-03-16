@@ -1,20 +1,29 @@
 package edu.uah.uahnavigation;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 public class SplashScreenActivity extends AppCompatActivity {
+
+    private boolean fakeInternetConnection;
+    private Thread downloadThread;
+    private SharedPreferences settings;
+    private AlertDialog.Builder builder;
+    private AlertDialog alert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        final Thread downloadThread = new Thread() {
+        downloadThread = new Thread() {
             public void run() {
                 Log.d("myMessage", "Scraping");
                 String URL = "http://www.uah.edu/cgi-bin/schedule.pl?file=sprg2017.html&segment=NDX";
@@ -27,36 +36,66 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         final String PREFS_NAME = "MyPrefsFile";
 
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        settings = getSharedPreferences(PREFS_NAME, 0);
 
-        if (settings.getBoolean("my_first_time", true)) {
-            Log.d("myMessage", "First time");
 
-            downloadThread.start();
-
-            settings.edit().putBoolean("my_first_time", false).commit();
-        }
-
-        Thread checkInternet = new Thread(){
-            public void run() {
-                Log.d("myMessage", "Connection: " + NetworkManager.hasInternetConnection());
+        // Alert Dialog code (mostly copied from the Android docs
+        builder = new AlertDialog.Builder(this);
+        builder.setMessage("Click retry to connect to the internet or exit to close the application").setTitle("No Internet Connection");
+        builder.setNegativeButton("Retry", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                StartApplication();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        StartApplication();
+                    }
+                }, 500);
             }
-        };
+        });
 
-        checkInternet.start();
+        builder.setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                StartApplication();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        System.exit(0);
+                    }
+                }, 500);
+            }
+        });
+        alert = builder.create();
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    downloadThread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        StartApplication();
+    }
+
+    public void StartApplication() {
+        if (NetworkManager.hasInternetConnection()) {
+            if (settings.getBoolean("my_first_time", true)) {
+                Log.d("myMessage", "First time");
+
+                downloadThread.start();
+
+                settings.edit().putBoolean("my_first_time", false).commit();
+            }
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        downloadThread.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                    finish();
                 }
-                startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
-                finish();
-            }
-        }, 4000);
+            }, 4000);
+        } else {
+            alert.show();
+        }
     }
 }
