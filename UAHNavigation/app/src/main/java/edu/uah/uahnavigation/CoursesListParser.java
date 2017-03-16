@@ -228,6 +228,9 @@ public class CoursesListParser {
                 Log.d("myMessage", "Instructor: " + instructor);
 
                 db.InsertIntoCourses(major,bldg,room,crn,course,title,credit,days,startTime,endTime,instructor);
+
+                reader.close();
+                db.close();
             }
         } catch (IOException ex) {
             System.out.println("Unable to read file");
