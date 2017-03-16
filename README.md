@@ -19,17 +19,22 @@ traced path to lead the users to their destination. This Application will focus 
 
 Imagine that you are in Scenario 1 or 2. You have a general idea of where the building is from the online campus map, and your favorite
 navigation app. But you have no idea what the interior layout of the rooms are once you get inside. So, you decide to wing it and assume
-that there will be some map inside of the building that will guide you to your destination
+that there will be some map inside of the building that will help guide you to your destination. So, the time comes for you to show up.
+It's your first time in the building, so you are feeling anxious about the new experience. You walk up to a direction sign.
 
-### Some examples of current problems in the campus buildings that this Android application would address:
+### You see this:
 <p align="center">
-<b> HUH? So is EB242 to the right or left???  </b><br>
+<b> HUH? So is EB242 to the right or left???   </b><br>
 <img src="https://cloud.githubusercontent.com/assets/20345088/23885819/01e74af6-0844-11e7-8713-a23cf4ce47b8.png" width="400" height="300">
 </p>
+<b> HUH? So is EB242 to the right or left???   </b><br>
+
 
 <p align="center">
 <b> Wait? What happened to rooms 131-138?  </b><br>
 <img src="https://cloud.githubusercontent.com/assets/20345088/23885870/58d6a3ca-0844-11e7-9147-36deb75950ab.jpg" width="400" height="300">
+
 </p>
+
 
 ## Test
