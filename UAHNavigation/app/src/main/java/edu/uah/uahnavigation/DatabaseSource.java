@@ -118,11 +118,11 @@ public class DatabaseSource {
                 course.setId(cursor.getLong(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_1)));
                 course.setMajor(cursor.getInt(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_2)));
                 course.setRoom(cursor.getInt(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_3)));
-                course.setCRN(cursor.getInt(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_4)));
+                course.setCRN(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_4)));
                 course.setCourse(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_5)));
                 course.setSection(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_6)));
                 course.setTitle(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_7)));
-                course.setCredits(cursor.getInt(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_8)));
+                course.setCredits(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_8)));
                 course.setDays(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_9)));
                 course.setStart(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_10)));
                 course.setEnd(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_2_COL_11)));
@@ -206,8 +206,8 @@ public class DatabaseSource {
      * @param instructor
      * @return
      */
-    public boolean InsertIntoCourses(String major_str, String bldg_str, String room_str, int crn, String course, String title,
-                                     int credits, String days, String start, String end, String instructor) {
+    public boolean InsertIntoCourses(String major_str, String bldg_str, String room_str, String crn, String course, String title,
+                                     String credits, String days, String start, String end, String instructor) {
         Courses courses = new Courses();
 
         String[] selectArgs = new String[] {major_str};

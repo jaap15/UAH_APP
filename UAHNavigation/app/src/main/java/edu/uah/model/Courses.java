@@ -8,11 +8,11 @@ public class Courses {
     private long id;
     private long major_id;
     private long rooms_id;
-    private int crn;
+    private String crn;
     private String course;
     private String section;
     private String title;
-    private int credits;
+    private String credits;
     private String days;
     private String start;
     private String end;
@@ -31,8 +31,8 @@ public class Courses {
      * @param end
      * @param instructor
      */
-    public void setAll(long major_id, long room_id, int crn, String course, String section, String title,
-                       int credits, String days, String start, String end, String instructor) {
+    public void setAll(long major_id, long room_id, String crn, String course, String section, String title,
+                       String credits, String days, String start, String end, String instructor) {
         this.major_id = major_id;
         this.rooms_id = room_id;
         this.crn = crn;
@@ -98,15 +98,15 @@ public class Courses {
      *
      * @return
      */
-    public int getCRN() {
+    public String getCRN() {
         return crn;
     }
 
     /**
      *
-     * @param title
+     * @param crn
      */
-    public void setCRN(int title) {
+    public void setCRN(String crn) {
         this.crn = crn;
     }
 
@@ -163,7 +163,7 @@ public class Courses {
      *
      * @return
      */
-    public int getCredits() {
+    public String getCredits() {
         return credits;
     }
 
@@ -171,7 +171,7 @@ public class Courses {
      *
      * @param credits
      */
-    public void setCredits(int credits) {
+    public void setCredits(String credits) {
         this.credits = credits;
     }
 
