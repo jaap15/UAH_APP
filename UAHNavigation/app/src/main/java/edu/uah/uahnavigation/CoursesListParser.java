@@ -84,131 +84,140 @@ public class CoursesListParser {
 
             System.out.println("Reading file");
             Log.d("myMessage", "Reading file");
-            String line = reader.readLine();
-            System.out.println(line);
-            Log.d("myMessage", "Line: " + line);
+            String line;
+            while ((line = reader.readLine()) != null) {
 
-            int min = 0;
-            int max = tokens[0].length();
-
-            System.out.println("Sec Type");
-            String secType = line.substring(min, max);
-            System.out.println(secType);
-            Log.d("myMessage", "Sec Type: " + secType);
-
-            min = min + tokens[0].length() + 1;
-            max = min + tokens[1].length();
-
-            System.out.println("CRN");
-            String crn = line.substring(min, max);
-            System.out.println(crn);
-            Log.d("myMessage", "CRN: " + crn);
-
-            min = max + 1;
-            max = min + tokens[2].length();
-
-            System.out.println("Course");
-            String course = line.substring(min, max);
-            System.out.println(course);
-            Log.d("myMessage", "Course: " + course);
-
-            min = max + 1;
-            max = min + tokens[3].length();
-
-            System.out.println("Title");
-            String title = line.substring(min, max);
-            System.out.println(title);
-            Log.d("myMessage", "Title: " + title);
+                System.out.println(line);
+                Log.d("myMessage", "Line: " + line);
 
 
-            min = max + 1;
-            max = min + tokens[4].length();
+                if(line.trim().isEmpty() || line.contains("Sec Typ:"))
+                {
+                    Log.d("myMessage", "No more courses in file: " + line);
+                    break;
+                }
 
-            System.out.println("Credit");
-            String credit = line.substring(min, max);
-            System.out.println(credit);
-            Log.d("myMessage", "Credit: " + credit);
+                int min = 0;
+                int max = tokens[0].length();
 
-            min = max + 1;
-            max = min + tokens[5].length();
+                System.out.println("Sec Type");
+                String secType = line.substring(min, max);
+                System.out.println(secType);
+                Log.d("myMessage", "Sec Type: " + secType);
 
-            System.out.println("Max Enrl");
-            String maxEnrl = line.substring(min, max);
-            System.out.println(maxEnrl);
-            Log.d("myMessage", "Max Enrl: " + maxEnrl);
+                min = min + tokens[0].length() + 1;
+                max = min + tokens[1].length();
 
-            min = max + 1;
-            max = min + tokens[6].length();
+                System.out.println("CRN");
+                String crn = line.substring(min, max);
+                System.out.println(crn);
+                Log.d("myMessage", "CRN: " + crn);
 
-            System.out.println("Enrl");
-            String enrl = line.substring(min, max);
-            System.out.println(enrl);
-            Log.d("myMessage", "Enrl: " + enrl);
+                min = max + 1;
+                max = min + tokens[2].length();
 
-            min = max + 1;
-            max = min + tokens[7].length();
+                System.out.println("Course");
+                String course = line.substring(min, max);
+                System.out.println(course);
+                Log.d("myMessage", "Course: " + course);
 
-            System.out.println("Avail");
-            String avail = line.substring(min, max);
-            System.out.println(avail);
-            Log.d("myMessage", "Avail: " + avail);
+                min = max + 1;
+                max = min + tokens[3].length();
 
-            min = max + 1;
-            max = min + tokens[8].length();
+                System.out.println("Title");
+                String title = line.substring(min, max);
+                System.out.println(title);
+                Log.d("myMessage", "Title: " + title);
 
-            System.out.println("Wait List");
-            String waitList = line.substring(min, max);
-            System.out.println(waitList);
-            Log.d("myMessage", "Wait List: " + waitList);
 
-            min = max + 1;
-            max = min + tokens[9].length();
+                min = max + 1;
+                max = min + tokens[4].length();
 
-            System.out.println("Days");
-            String days = line.substring(min, max);
-            System.out.println(days);
-            Log.d("myMessage", "Days: " + days);
+                System.out.println("Credit");
+                String credit = line.substring(min, max);
+                System.out.println(credit);
+                Log.d("myMessage", "Credit: " + credit);
 
-            min = max + 1;
-            max = min + tokens[10].length();
+                min = max + 1;
+                max = min + tokens[5].length();
 
-            System.out.println("Start");
-            String startTime = line.substring(min, max);
-            System.out.println(startTime);
-            Log.d("myMessage", "Start: " + startTime);
+                System.out.println("Max Enrl");
+                String maxEnrl = line.substring(min, max);
+                System.out.println(maxEnrl);
+                Log.d("myMessage", "Max Enrl: " + maxEnrl);
 
-            min = max + 1;
-            max = min + tokens[11].length();
+                min = max + 1;
+                max = min + tokens[6].length();
 
-            System.out.println("End");
-            String endTime = line.substring(min, max);
-            System.out.println(endTime);
-            Log.d("myMessage", "End: " + endTime);
+                System.out.println("Enrl");
+                String enrl = line.substring(min, max);
+                System.out.println(enrl);
+                Log.d("myMessage", "Enrl: " + enrl);
 
-            min = max + 1;
-            max = min + tokens[12].length();
+                min = max + 1;
+                max = min + tokens[7].length();
 
-            System.out.println("Bldg");
-            String bldg = line.substring(min, max);
-            System.out.println(bldg);
-            Log.d("myMessage", "Bldg: " + bldg);
+                System.out.println("Avail");
+                String avail = line.substring(min, max);
+                System.out.println(avail);
+                Log.d("myMessage", "Avail: " + avail);
 
-            min = max + 1;
-            max = min + tokens[13].length();
+                min = max + 1;
+                max = min + tokens[8].length();
 
-            System.out.println("Room");
-            String room = line.substring(min, max);
-            System.out.println(room);
-            Log.d("myMessage", "Room: " + room);
+                System.out.println("Wait List");
+                String waitList = line.substring(min, max);
+                System.out.println(waitList);
+                Log.d("myMessage", "Wait List: " + waitList);
 
-            min = max + 1;
-            max = min + tokens[3].length();
+                min = max + 1;
+                max = min + tokens[9].length();
 
-            System.out.println("Instructor");
-            String instructor = line.substring(min, max);
-            System.out.println(instructor);
-            Log.d("myMessage", "Instructor: " + instructor);
+                System.out.println("Days");
+                String days = line.substring(min, max);
+                System.out.println(days);
+                Log.d("myMessage", "Days: " + days);
 
+                min = max + 1;
+                max = min + tokens[10].length();
+
+                System.out.println("Start");
+                String startTime = line.substring(min, max);
+                System.out.println(startTime);
+                Log.d("myMessage", "Start: " + startTime);
+
+                min = max + 1;
+                max = min + tokens[11].length();
+
+                System.out.println("End");
+                String endTime = line.substring(min, max);
+                System.out.println(endTime);
+                Log.d("myMessage", "End: " + endTime);
+
+                min = max + 1;
+                max = min + tokens[12].length();
+
+                System.out.println("Bldg");
+                String bldg = line.substring(min, max);
+                System.out.println(bldg);
+                Log.d("myMessage", "Bldg: " + bldg);
+
+                min = max + 1;
+                max = min + tokens[13].length();
+
+                System.out.println("Room");
+                String room = line.substring(min, max);
+                System.out.println(room);
+                Log.d("myMessage", "Room: " + room);
+
+                min = max + 1;
+                max = min + tokens[3].length();
+
+                System.out.println("Instructor");
+                String instructor = line.substring(min, max);
+                System.out.println(instructor);
+                Log.d("myMessage", "Instructor: " + instructor);
+            }
         } catch (IOException ex) {
             System.out.println("Unable to read file");
             Log.d("myMessage", "Debug 4 Unable to read file");
