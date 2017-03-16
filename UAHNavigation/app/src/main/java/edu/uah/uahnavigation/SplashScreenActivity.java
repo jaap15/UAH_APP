@@ -10,8 +10,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.List;
+
+import edu.uah.model.Buildings;
+import edu.uah.model.Rooms;
+
 public class SplashScreenActivity extends AppCompatActivity {
 
+    DatabaseSource dbSource;
+    List<Buildings> buildings;
+    List<Rooms> rooms;
     private boolean fakeInternetConnection;
     private Thread downloadThread;
     private SharedPreferences settings;
@@ -85,6 +93,21 @@ public class SplashScreenActivity extends AppCompatActivity {
             if (settings.getBoolean("my_first_time", true)) {
                 Log.d("myMessage", "First time");
 
+                dbSource = new DatabaseSource(this);
+                dbSource.open();
+
+                buildings = dbSource.GetFromBuildings(null, null, null);
+                if (buildings.size() == 0) {
+                    createBuildingsData();
+                }
+
+                rooms = dbSource.GetFromRooms(null, null, null);
+                if (rooms.size() == 0) {
+                    createRoomsData();
+                }
+
+                dbSource.close();
+
                 downloadThread.start();
 
                 settings.edit().putBoolean("my_first_time", false).commit();
@@ -106,4 +129,31 @@ public class SplashScreenActivity extends AppCompatActivity {
             alert.show();
         }
     }
+
+    private void createBuildingsData() {
+        BuildingsPullParser parser = new BuildingsPullParser();
+        List<Buildings> buildings = parser.parseXML(this);
+
+        for (Buildings building : buildings) {
+            try {
+                dbSource.InsertIntoBuildings(building);
+            } catch (final IndexOutOfBoundsException e) {
+                new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Buildings : " + e.getMessage(), new String[]{"Exit"});
+            }
+        }
+    }
+
+    private void createRoomsData() {
+        RoomsPullParser parser = new RoomsPullParser();
+        List<Rooms> rooms = parser.parseXML(this);
+
+        for (Rooms room : rooms) {
+            try {
+                dbSource.InsertIntoRooms(room);
+            } catch (final IndexOutOfBoundsException e) {
+                new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Rooms : " + e.getMessage(), new String[]{"Exit"});
+            }
+        }
+    }
+
 }
