@@ -238,4 +238,10 @@ public class Courses {
     public void setInstructor(String instructor) {
         this.instructor = instructor;
     }
+
+    public String print() {
+        return " ID:" + this.id + " MAJOR_ID:" + this.major_id + " ROOM_ID:" + this.rooms_id + " CRN:" + this.crn +
+                " COURSE:" + this.course + " SECTION:" + this.section + " TITLE:" + this.title + " CREDITS:" + this.credits +
+                " DAYS:" + this.days + " START:" + this.start + " END:" + this.end + " INSTRUCTOR:" + this.instructor;
+    }
 }

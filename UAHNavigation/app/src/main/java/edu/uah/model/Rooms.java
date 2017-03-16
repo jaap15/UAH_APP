@@ -30,4 +30,8 @@ public class Rooms {
     public void setRoom(String room_number) {
         this.room_number = room_number;
     }
+
+    public String print() {
+        return " ID:" + this.id + " Building_ID:" + this.building_id + " Room_Num:" + this.room_number;
+    }
 }

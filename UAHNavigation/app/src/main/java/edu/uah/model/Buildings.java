@@ -47,4 +47,8 @@ public class Buildings {
     public void setImage(byte[] image) {
         this.image = image;
     }
+
+    public String print() {
+        return " ID:" + this.id + " Name:" + this.name + " Description:" + this.description + " Address:" + this.address;
+    }
 }

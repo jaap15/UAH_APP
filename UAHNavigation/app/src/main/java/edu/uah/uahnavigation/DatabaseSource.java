@@ -7,7 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +27,7 @@ public class DatabaseSource {
     SQLiteOpenHelper dbhelper;
     SQLiteDatabase database;
     private static final String LOGTAG = "QWER";
+    private boolean first_open = false;
 
     private static final String[] majorsColumns = {
             DatabaseManager.TABLE_1_COL_1,
@@ -207,14 +211,32 @@ public class DatabaseSource {
         Courses courses = new Courses();
 
         String[] selectArgs = new String[] {major_str};
-        long major_id = GetFromMajors("name=?", selectArgs, null).get(0).getId();
+        long major_id;
+        try {
+            major_id = GetFromMajors("name=?", selectArgs, null).get(0).getId();
+        } catch (final IndexOutOfBoundsException e) {
+            appendLog("Trouble linking major_id: " + courses.getMajor());
+            major_id = 999;
+        }
 
         selectArgs = new String[] {bldg_str};
-        long bldg_id = GetFromBuildings("description=?", selectArgs, null).get(0).getId();
+        long bldg_id;
+        try {
+            bldg_id = GetFromBuildings("description=?", selectArgs, null).get(0).getId();
+        } catch (final IndexOutOfBoundsException e) {
+            appendLog("Trouble linking building_id for room_id: " + courses.getRoom());
+            bldg_id = 999;
+        }
         String bldg_id_str = String.valueOf(bldg_id);
 
         selectArgs = new String[] {room_str, bldg_id_str};
-        long room_id = GetFromRooms("room_number=? AND building_id=?", selectArgs, null).get(0).getId();
+        long room_id;
+        try {
+            room_id = GetFromRooms("room_number=? AND building_id=?", selectArgs, null).get(0).getId();
+        } catch (final IndexOutOfBoundsException e) {
+            appendLog("Trouble linking room_id: " + courses.getRoom());
+            room_id = 999;
+        }
 
         String[] tokensVal = course.split("\\s+");
 
@@ -262,12 +284,48 @@ public class DatabaseSource {
         ContentValues values = new ContentValues();
         values.put(DatabaseManager.TABLE_4_COL_2, rooms.getBuilding());
         values.put(DatabaseManager.TABLE_4_COL_3, rooms.getRoom());
-        long insertid = database.insert(DatabaseManager.TABLE_4, null, values);
+        long insertid;
+        try {
+            insertid = database.insert(DatabaseManager.TABLE_4, null, values);
+        } catch (final IndexOutOfBoundsException e) {
+            appendLog("Trouble inserting into rooms : " + rooms.print());
+            insertid = 999;
+        }
         if (insertid == -1) {
             return false;
         } else {
             rooms.setId(insertid);
             return true;
+        }
+    }
+
+    public void appendLog(String text)
+    {
+        File logFile = new File("sdcard/log.file");
+        if (!logFile.exists())
+        {
+            try
+            {
+                logFile.createNewFile();
+            }
+            catch (IOException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        try
+        {
+            //BufferedWriter for performance, true to set append to file flag
+            BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
+            buf.append(text);
+            buf.newLine();
+            buf.close();
+        }
+        catch (IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 }

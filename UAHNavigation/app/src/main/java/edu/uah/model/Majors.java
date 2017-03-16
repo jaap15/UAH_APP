@@ -34,4 +34,8 @@ public class Majors {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public String print() {
+        return " ID:" + this.id + " Name:" + this.name + " Description:" + this.description;
+    }
 }

@@ -63,20 +63,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         BlgdBtn.setOnClickListener(this);
 
         dbSource = new DatabaseSource(this);
-        if (dbSource.isOpen()) {
-            Log.i(LOGTAG, "DATABASE IS OPEN");
-        } else {
-            Log.i(LOGTAG, "DATABASE IS CLOSED");
-        }
         dbSource.open();
-        if (dbSource.isOpen()) {
-            Log.i(LOGTAG, "DATABASE IS OPEN");
-        } else {
-            Log.i(LOGTAG, "DATABASE IS CLOSED");
-        }
-        majors = dbSource.GetFromMajors(null, null, null); // Checking if table is empty
+
+        majors = dbSource.GetFromMajors(null, null, null);
         if (majors.size() == 0) {
-            createMajorsData();
+            dbSource.InsertIntoMajors("Select_Major", "");
+        }
+        courses = dbSource.GetFromCourses(null, null, null);
+        if (courses.size() == 0) {
+            dbSource.InsertIntoCourses("Select_Major", "NULL", "Select_Room", 99999, "Select_Course Select_Section", "NULL", 9, "NULL", "NULL", "NULL", "NULL");
         }
 
         buildings = dbSource.GetFromBuildings(null, null, null);
@@ -89,11 +84,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             createRoomsData();
         }
 
-        courses = dbSource.GetFromCourses(null, null,  null);
-        if (courses.size() == 0) {
-            createCoursesData();
-        }
-
         InputStream is = null;
         String image = "bldgNursing.jpg";
         try {
@@ -102,15 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             new DialogException(this, "IOException", "Error trying to open image " + image, new String[]{"Retry", "Exit"});
         }
 
-        boolean internetAccess = false;
-        boolean skipInternet = false;
-        do {
-            if (isNetworkAvailable()) {
-                break;
-            } else {
-                new DialogException(this, "Internet Unavailable", "Unable to detect internet access. Would you like to try again or open the app without internet?", new String[]{"Yes", "No"});
-            }
-        } while(internetAccess = false && skipInternet == false);
+        NetworkManager.hasInternetConnection();
     }
 
     private boolean isNetworkAvailable() {
@@ -153,64 +135,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Majors majors = new Majors();
 
         // Creating empty space in majors for spinner
-        try {
-            dbSource.InsertIntoMajors("Select_Major", "");
-        } catch (final IndexOutOfBoundsException e) {
-            new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
-        }
+
 
         // Creating 3 entry into Majors table
-        try {
             dbSource.InsertIntoMajors("CPE", "Computer Engineering");
-        } catch (final IndexOutOfBoundsException e) {
-            new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
-        }
 
-        try {
+
             dbSource.InsertIntoMajors("EE", "Electrical Engineering");
-        } catch (final IndexOutOfBoundsException e) {
-            new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
-        }
 
-        try {
+
             dbSource.InsertIntoMajors("ME", "Mechanical Engineering");
-        } catch (final IndexOutOfBoundsException e) {
-            new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
-        }
+
     }
 
     private void createCoursesData() {
         Courses courses = new Courses();
 
-        try {
-            dbSource.InsertIntoCourses("Select_Major", "NULL", "Select_Room", 99999, "Select_Course Select_Section", "NULL", 9, "NULL", "NULL", "NULL", "NULL");
-        } catch (final IndexOutOfBoundsException e) {
-            new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
-        }
-
-        try {
             dbSource.InsertIntoCourses("CPE", "ENG", "134", 10165, "211 01", "INTRO COMPUTER PROG FOR ENGR", 3, "TR", "12:45", "02:05", "Bowman Ronald");
-        } catch (final IndexOutOfBoundsException e) {
-            new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
-        }
 
-        try {
             dbSource.InsertIntoCourses("CPE", "ENG", "207", 10166, "211 02", "INTRO COMPUTER PROG FOR ENGR", 3, "MW", "12:45", "02:05", "Bowman Ronald");
-        } catch (final IndexOutOfBoundsException e) {
-            new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
-        }
 
-        try {
+
             dbSource.InsertIntoCourses("ME", "OKT", "111", 10173, "323 01", "INTRO TO EMBEDDED COMPUTER SYS", 3, "MW", "12:45", "02:05", "Milenkovic Aleksander");
-        } catch (final IndexOutOfBoundsException e) {
-            new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
-        }
 
-        try {
+
             dbSource.InsertIntoCourses("ME", "MSB", "111", 10173, "323 01", "INTRO TO EMBEDDED COMPUTER SYS", 3, "MW", "12:45", "02:05", "Milenkovic Aleksander");
-        } catch (final IndexOutOfBoundsException e) {
-            new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
-        }
+            dbSource.InsertIntoCourses("EE", "MSB", "199", 12312, "231 05", "TEST CLASSROOM", 3, "MW", "12:45", "02:05", "Milenkovic Aleksander");
+        dbSource.InsertIntoCourses("RE", "MSB", "199", 12312, "231 05", "TEST CLASSROOM", 3, "MW", "12:45", "02:05", "me");
+
     }
 
     private void createBuildingsData() {
@@ -221,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             try {
                 dbSource.InsertIntoBuildings(building);
             } catch (final IndexOutOfBoundsException e) {
-                new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
+                new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Buildings : " + e.getMessage(), new String[]{"Exit"});
             }
         }
     }
@@ -234,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             try {
                 dbSource.InsertIntoRooms(room);
             } catch (final IndexOutOfBoundsException e) {
-                new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Courses : " + e.getMessage(), new String[]{"Exit"});
+                new DialogException(this, "IndexOutOfBoundsException", "Error inserting into Rooms : " + e.getMessage(), new String[]{"Exit"});
             }
         }
     }

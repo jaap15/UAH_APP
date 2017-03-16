@@ -50,6 +50,7 @@ public class BuildingsSpinAdapter extends ArrayAdapter<Buildings>{
         // I created a dynamic TextView here, but you can reference your own  custom layout for each spinner item
         TextView label = new TextView(context);
         label.setTextColor(Color.BLACK);
+        label.setHeight(30);
         // Then you can get the current item using the values array (Users array) and the current position
         // You can NOW reference each method you has created in your bean object (Majors class)
         label.setText(values[position].getName());

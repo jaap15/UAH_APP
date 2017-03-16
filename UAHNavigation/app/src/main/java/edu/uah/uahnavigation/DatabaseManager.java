@@ -106,7 +106,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_2);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_3);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_4);
-        File dbFile = new File("data/data/edu.uah.uahnavigation/database/database.db");
+        File dbFile = new File("data/data/edu.uah.uahnavigation/database/database_debug");
         db.deleteDatabase(dbFile);
         onCreate(db);
         Log.i(LOGTAG, "Table has been updated");
