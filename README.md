@@ -1,5 +1,9 @@
 # UAH_APP
 
+<p align="center">
+<img src="https://cloud.githubusercontent.com/assets/23105332/24006902/fd5994b4-0a3a-11e7-84c5-8cf8138d4f81.png" width="600" height="400">
+</p>
+
 The UAH Navigation Application will give users the luxury of having a refinement of the Google Maps API that will lead them to their
 desired location within the UAH Campus. The Application will allow users to search for their destination by selecting the Class ID, Room
 Number, or Building ID, and will lead the user to the room. When the user enters a building, the app will open up a floor plan with a
@@ -27,8 +31,6 @@ It's your first time in the building, so you are feeling anxious about the new e
 <b> HUH? So is EB242 to the right or left???   </b><br>
 <img src="https://cloud.githubusercontent.com/assets/20345088/23885819/01e74af6-0844-11e7-8713-a23cf4ce47b8.png" width="400" height="300">
 </p>
-<b> HUH? So is EB242 to the right or left???   </b><br>
-
 
 <p align="center">
 <b> Wait? What happened to rooms 131-138?  </b><br>
@@ -37,4 +39,24 @@ It's your first time in the building, so you are feeling anxious about the new e
 </p>
 
 
-## Test
+## The Project
+<p align="center">
+<b> Main Menu </b><br>
+<img src="https://cloud.githubusercontent.com/assets/23105332/24006135/e3075dfa-0a38-11e7-8988-ad675b876f09.png" width="150" height="300">
+</p>
+
+<p align="center">
+<b> Building Selected </b><br>
+<img src="https://cloud.githubusercontent.com/assets/23105332/24006492/f6a2f1ca-0a39-11e7-9a99-8967fd64143a.png" width="150" height="300">
+</p>
+
+<p align="center">
+<b> Exterior Navigation Interface </b><br>
+<img src="https://cloud.githubusercontent.com/assets/23105332/24006529/16e65b0c-0a3a-11e7-9533-28434afef92e.png" width="150" height="300">
+</p>
+
+<p align="center">
+<b> Zoomed Interior Navigation Interface </b><br>
+<img src="https://cloud.githubusercontent.com/assets/23105332/24006565/37fd426a-0a3a-11e7-999e-b179f4ba197f.png" width="300" height="300">
+</p>
+
