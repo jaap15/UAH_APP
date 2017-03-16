@@ -102,8 +102,11 @@ public class Webscraper {
                     String majorUrl = domainName+ link.attr("href");
                     Document docMajor = Jsoup.connect(majorUrl).get();
                     Elements info = docMajor.select("pre");
+                    Elements t = docMajor.getElementsContainingOwnText(link.ownText()+"/");
+                    Log.d("myMessage", "WebScraping "+ t.text());
                     BufferedWriter writer = new BufferedWriter(new FileWriter(FOLDER_NAME + "/" + link.ownText() + ".txt"));
                     courseList.add(FOLDER_NAME + "/" + link.ownText() + ".txt");
+                    writer.write(t.text()+"\n");
                     writer.write(info.text());
                     writer.close();
                 }
