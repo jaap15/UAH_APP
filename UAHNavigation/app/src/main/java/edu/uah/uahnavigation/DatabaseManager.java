@@ -40,7 +40,6 @@ public class DatabaseManager extends SQLiteOpenHelper {
         public static final String TABLE_3_COL_2 = "name";
         public static final String TABLE_3_COL_3 = "description";
         public static final String TABLE_3_COL_4 = "address";
-        public static final String TABLE_3_COL_5 = "picture";
     public static final String TABLE_4 = "rooms";
         public static final String TABLE_4_COL_1 = "id";
         public static final String TABLE_4_COL_2 = "building_id";
@@ -76,9 +75,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
                     TABLE_3_COL_1  + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     TABLE_3_COL_2  + " VARCHAR, " +
                     TABLE_3_COL_3  + " VARCHAR, " +
-                    TABLE_3_COL_4  + " VARCHAR, " +
-                    TABLE_3_COL_5  + " BLOB" +
-                    ")";
+                    TABLE_3_COL_4  + " VARCHAR " + ")";
 
     private static final String ROOMS_TABLE_CREATE =
             "CREATE TABLE " + TABLE_4 + " (" +

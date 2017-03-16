@@ -11,7 +11,6 @@ public class Buildings {
     private String name;
     private String description;
     private String address;
-    private byte[] image;
 
     public long getId() {
         return id;
@@ -39,13 +38,6 @@ public class Buildings {
     }
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-    public void setImage(byte[] image) {
-        this.image = image;
     }
 
     public String print() {

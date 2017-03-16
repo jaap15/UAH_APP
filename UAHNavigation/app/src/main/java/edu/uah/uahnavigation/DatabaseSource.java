@@ -54,8 +54,7 @@ public class DatabaseSource {
             DatabaseManager.TABLE_3_COL_1,
             DatabaseManager.TABLE_3_COL_2,
             DatabaseManager.TABLE_3_COL_3,
-            DatabaseManager.TABLE_3_COL_4,
-            DatabaseManager.TABLE_3_COL_5
+            DatabaseManager.TABLE_3_COL_4
     };
 
     private static final String[] roomsColumns = {
@@ -92,8 +91,8 @@ public class DatabaseSource {
 
     public List<Majors> GetFromMajors(String selection, String[] selectionArgs, String orderBy) {
         Cursor cursor = database.query(DatabaseManager.TABLE_1, majorsColumns, selection, selectionArgs, null, null, orderBy);
-       // Log.i(LOGTAG , "Returned " + cursor.getCount() + " rows");
-       // Log.i(LOGTAG , dumpCursorToString(cursor));
+        Log.i(LOGTAG , "Returned " + cursor.getCount() + " rows");
+        Log.i(LOGTAG , dumpCursorToString(cursor));
         List<Majors> majors = new ArrayList<Majors>();
         if (cursor.getCount() > 0){
             while (cursor.moveToNext()) {
@@ -109,8 +108,8 @@ public class DatabaseSource {
 
     public List<Courses> GetFromCourses(String selection, String[] selectionArgs, String orderBy) {
         Cursor cursor = database.query(DatabaseManager.TABLE_2, coursesColumns, selection, selectionArgs, null, null, orderBy);
-        //Log.i(LOGTAG , "Returned " + cursor.getCount() + " rows");
-        //Log.i(LOGTAG , dumpCursorToString(cursor));
+        Log.i(LOGTAG , "Returned " + cursor.getCount() + " rows");
+        Log.i(LOGTAG , dumpCursorToString(cursor));
         List<Courses> courses = new ArrayList<Courses>();
         if (cursor.getCount() > 0){
             while (cursor.moveToNext()) {
@@ -135,8 +134,8 @@ public class DatabaseSource {
 
     public List<Buildings> GetFromBuildings(String selection, String[] selectionArgs, String orderBy) {
         Cursor cursor = database.query(DatabaseManager.TABLE_3, buildingsColumns, selection, selectionArgs, null, null, orderBy);
-        //Log.i(LOGTAG , "Returned " + cursor.getCount() + " rows");
-        //Log.i(LOGTAG , dumpCursorToString(cursor));
+        Log.i(LOGTAG , "Returned " + cursor.getCount() + " rows");
+        Log.i(LOGTAG , dumpCursorToString(cursor));
         List<Buildings> buildings = new ArrayList<Buildings>();
         if (cursor.getCount() > 0){
             while (cursor.moveToNext()) {
@@ -145,7 +144,6 @@ public class DatabaseSource {
                 bldg.setName(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_3_COL_2)));
                 bldg.setDescription(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_3_COL_3)));
                 bldg.setAddress(cursor.getString(cursor.getColumnIndex(DatabaseManager.TABLE_3_COL_4)));
-                bldg.setImage(cursor.getBlob(cursor.getColumnIndex(DatabaseManager.TABLE_3_COL_5)));
                 buildings.add(bldg);
             }
         }
@@ -154,8 +152,8 @@ public class DatabaseSource {
 
     public List<Rooms> GetFromRooms(String selection, String[] selectionArgs, String orderBy) {
         Cursor cursor = database.query(DatabaseManager.TABLE_4, roomsColumns, selection, selectionArgs, null, null, orderBy);
-        //Log.i(LOGTAG , "Returned " + cursor.getCount() + " rows");
-       // Log.i(LOGTAG , dumpCursorToString(cursor));
+        Log.i(LOGTAG , "Returned " + cursor.getCount() + " rows");
+        Log.i(LOGTAG , dumpCursorToString(cursor));
         List<Rooms> rooms = new ArrayList<Rooms>();
         if (cursor.getCount() > 0){
             while (cursor.moveToNext()) {
@@ -220,21 +218,24 @@ public class DatabaseSource {
         }
 
         selectArgs = new String[] {bldg_str};
+        Log.d(LOGTAG, "bldg_str: " + selectArgs[0]);
+
         long bldg_id;
         try {
             bldg_id = GetFromBuildings("description=?", selectArgs, null).get(0).getId();
         } catch (final IndexOutOfBoundsException e) {
-            appendLog("Trouble linking building_id for room_id: " + courses.getRoom());
+            Log.d(LOGTAG, "Trouble linking building_id for room_id: " + courses.getRoom());
             bldg_id = 999;
         }
         String bldg_id_str = String.valueOf(bldg_id);
 
         selectArgs = new String[] {room_str, bldg_id_str};
+        Log.d(LOGTAG, "room_str: " + selectArgs[0]);
         long room_id;
         try {
             room_id = GetFromRooms("room_number=? AND building_id=?", selectArgs, null).get(0).getId();
         } catch (final IndexOutOfBoundsException e) {
-            appendLog("Trouble linking room_id: " + courses.getRoom());
+            Log.d(LOGTAG, "Trouble linking room_id: " + courses.getRoom());
             room_id = 999;
         }
 
@@ -270,7 +271,6 @@ public class DatabaseSource {
         values.put(DatabaseManager.TABLE_3_COL_2, buildings.getName());
         values.put(DatabaseManager.TABLE_3_COL_3, buildings.getDescription());
         values.put(DatabaseManager.TABLE_3_COL_4, buildings.getAddress());
-        values.put(DatabaseManager.TABLE_3_COL_5, buildings.getImage());
         long insertid = database.insert(DatabaseManager.TABLE_3, null, values);
         if (insertid == -1) {
             return false;

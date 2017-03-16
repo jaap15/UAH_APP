@@ -92,19 +92,6 @@ public class BuildingsPullParser {
 			else if (currentTag.equals(BUILDING_DESC)) {
 				currentBuilding.setDescription(xmlText);
 			}
-			else if (currentTag.equals(BUILDING_IMAGE)) {
-				if (!xmlText.equals("NULL")) {
-					Log.d(LOGTAG, "HAHAHAHAHEHEHEEEHOHOHOHOHOHO");
-					InputStream is = context.getAssets().open(xmlText);
-					Bitmap bmp = BitmapFactory.decodeStream(is);
-					ByteArrayOutputStream stream = new ByteArrayOutputStream();
-					bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-					currentBuilding.setImage(stream.toByteArray());
-				} else {
-					Log.d(LOGTAG, "xmlText = " + xmlText);
-					currentBuilding.setImage(new byte[0]);
-				}
-			}
 			else if (currentTag.equals(BUILDING_ADDRESS)) {
 				currentBuilding.setAddress(xmlText);
 			}
