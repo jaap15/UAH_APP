@@ -182,6 +182,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                                     spinnerSections.setEnabled(true);
                                     spinnerSections.setClickable(true);
                                     spinnerSections.setSelection(0);
+                                    findButton.setEnabled(true);
 
                                     // Filtering our data for sections related to selected course
                                     String selected_course = coursepos.getCourse();
