@@ -34,38 +34,39 @@ public class BuildingTabActivity extends AppCompatActivity implements View.OnCli
     private BuildingsSpinAdapter adapterBuildings;
     private RoomsSpinAdapter adapterRooms;
 
-    private ProgressBar spinner;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_building_tab);
 
-        spinner = (ProgressBar)findViewById(R.id.progressBar1);
-        spinner.setVisibility(View.GONE);
+        // Defining our progress bar
+        progressBar = (ProgressBar)findViewById(R.id.progressBar1);
+        progressBar.setVisibility(View.GONE);
+
+        // Defining our push buttons
         final Button findBtn = (Button) findViewById(R.id.findbtn);
         final Button returnBtn = (Button) findViewById(R.id.returnbtn);
-
         findBtn.setEnabled(false);
+
+        // Associating our push buttons with click events
         findBtn.setOnClickListener(this);
         returnBtn.setOnClickListener(this);
 
+        // Opening the database
         dbSource = new DatabaseSource(this);
-        if (dbSource.isOpen()) {
-            Log.i(LOGTAG, "DATABASE IS OPEN");
-        } else {
-            Log.i(LOGTAG, "DATABASE IS CLOSED");
-        }
         dbSource.open();
-        if (dbSource.isOpen()) {
-            Log.i(LOGTAG, "DATABASE IS OPEN");
-        } else {
-            Log.i(LOGTAG, "DATABASE IS CLOSED");
-        }
+
+        // Grabbing all of our data from the database
         buildings = dbSource.GetFromBuildings(null, null, null);
         rooms = dbSource.GetFromRooms(null, null, null);
 
-        roomsArray= rooms.toArray(new Rooms[rooms.size()]);
+        // Converting list data to array data
+        roomsArray = rooms.toArray(new Rooms[rooms.size()]);
+        buildingsArray = buildings.toArray(new Buildings[buildings.size()]);
+
+        // Creating our Rooms spinner
         spinnerRooms = (Spinner) findViewById(R.id.spinnerRoom);
         adapterRooms = new RoomsSpinAdapter(this, android.R.layout.simple_spinner_item, roomsArray);
         spinnerRooms.setEnabled(false);
@@ -73,58 +74,57 @@ public class BuildingTabActivity extends AppCompatActivity implements View.OnCli
         spinnerRooms.setAdapter(adapterRooms);
         spinnerRooms.setSelection(0);
 
-        buildingsArray = buildings.toArray(new Buildings[buildings.size()]);
+        // Creating our Buildings spinner
         spinnerBuildings = (Spinner) findViewById(R.id.spinnerBuilding);
         adapterBuildings = new BuildingsSpinAdapter(this, android.R.layout.simple_spinner_item, buildingsArray);
         spinnerBuildings.setAdapter(adapterBuildings);
         spinnerBuildings.setSelection(0);
 
+        // Setting up an action for Item Selected Event on our Buildings spinner
         spinnerBuildings.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view,
                                        int position, long id) {
-                // Here you get the current item (a User object) that is selected by its position
+                // Grabbing our active item in majors spinner
                 Buildings building = adapterBuildings.getItem(position);
-                // Here you can do the action you want to...
-                if(building == buildings.get(0)){
+
+
+                // Disabling GUI elements when majors spinner is set to index 0
+                if(building == buildings.get(0)) {
+
+                    rooms = dbSource.GetFromRooms(null, null, null);
+                    roomsArray = rooms.toArray(new Rooms[rooms.size()]);
+
+                    // Updating the spinner for reflect the filtered data
+                    adapterRooms.setCourses(roomsArray);
+                    adapterRooms.notifyDataSetChanged();
+
+                    // Disabling some of the GUI
                     spinnerRooms.setSelection(0);
                     spinnerRooms.setEnabled(false);
                     spinnerRooms.setClickable(false);
                     findBtn.setEnabled(false);
-                    spinner.setVisibility(View.GONE);
-                }else {
-                    Long selected_building = building.getId();
-                    rooms = dbSource.GetFromRooms("building_id==" + selected_building, null, null);
+                } else {
+                    // ProgressBar is visible
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    // Enabling the rooms spinner now that a building has been selected
                     spinnerRooms.setEnabled(true);
                     spinnerRooms.setClickable(true);
+                    spinnerRooms.setSelection(0);
+                    findBtn.setEnabled(true);
 
-                    spinnerRooms.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+                    // Filtering our database for rooms related to selected building
+                    Long selected_building = building.getId();
+                    rooms = dbSource.GetFromRooms("building_id==" + selected_building, null, null);
+                    roomsArray = rooms.toArray(new Rooms[rooms.size()]);
 
-                        @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                            Rooms room = adapterRooms.getItem(position);
-                            if(spinnerRooms.getSelectedItemPosition() == 0){
+                    // Updating the spinner for reflect the filtered data
+                    adapterRooms.setCourses(roomsArray);
+                    adapterRooms.notifyDataSetChanged();
 
-                                findBtn.setEnabled(false);
-                            }else {
-                               // rooms = dbSource.GetFromRooms("building_id==" + selected_building, null, null);
-                               // spinnerRooms.setEnabled(true);
-                               // spinnerRooms.setClickable(true);
-                                //spinnerRooms.setSelection(0);
-                                // spinner.setVisibility(View.VISIBLE);
-                                roomsArray = rooms.toArray(new Rooms[rooms.size()]);
-                                adapterRooms.setCourses(roomsArray);
-                                adapterRooms.notifyDataSetChanged();
-                                spinner.setVisibility(View.GONE);
-                                findBtn.setEnabled(true);
-                            }
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> adapterView) {
-                        }
-                    });
-
+                    // ProgressBar is invisible
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
             }
 

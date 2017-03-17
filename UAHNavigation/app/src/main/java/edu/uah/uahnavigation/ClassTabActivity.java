@@ -97,6 +97,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
             spinnerMajors = (Spinner) findViewById(R.id.spinnerMajor);
             adapterMajors = new MajorsSpinAdapter(this, android.R.layout.simple_spinner_item, majorsArray);
             spinnerMajors.setAdapter(adapterMajors);
+            spinnerMajors.setSelection(0);
 
             // Setting up an action for Item Selected Event on our Majors spinner
             spinnerMajors.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -110,7 +111,6 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
 
                     // Disabling GUI elements when majors spinner is set to index 0
                     if(majorpos == majors.get(0)){
-
 
                         courses = dbSource.GetFromCourses(null, null, null);
                         coursesArray = courses.toArray(new Courses[courses.size()]);
@@ -141,6 +141,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                         // Enabling the courses spinner now that a major has been selected
                         spinnerCourses.setEnabled(true);
                         spinnerCourses.setClickable(true);
+                        spinnerCourses.setSelection(0);
 
                         // Filtering our database for courses related to selected major
                         long selected_major_id = majorpos.getId();
@@ -176,6 +177,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                                     // Enabling the sections spinner now that a course has been selected
                                     spinnerSections.setEnabled(true);
                                     spinnerSections.setClickable(true);
+                                    spinnerSections.setSelection(0);
 
                                     // Filtering our data for sections related to selected course
                                     String selected_course = coursepos.getCourse();
@@ -199,7 +201,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                                             // Grabbing our active item in sections spinner
                                             Courses sectionpos = adapterSection.getItem(position);
 
-                                            // Disabling some GUI elements when courses spinner is set to index 0
+                                            // Disabling some GUI elements when rooms spinner is set to index 0
                                             if(spinnerSections.getSelectedItemPosition() == 0) {
                                                 findButton.setEnabled(false);
                                             } else {
