@@ -20,7 +20,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     DatabaseSource dbSource;
     List<Buildings> buildings;
     List<Rooms> rooms;
-    private boolean fakeInternetConnection;
     private Thread downloadThread;
     private SharedPreferences settings;
     private AlertDialog.Builder builder;

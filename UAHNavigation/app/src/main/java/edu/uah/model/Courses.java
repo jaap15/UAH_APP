@@ -244,4 +244,32 @@ public class Courses {
                 " COURSE:" + this.course + " SECTION:" + this.section + " TITLE:" + this.title + " CREDITS:" + this.credits +
                 " DAYS:" + this.days + " START:" + this.start + " END:" + this.end + " INSTRUCTOR:" + this.instructor;
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int)id;
+        result = prime * result + ((crn == null) ? 0 : crn.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final Courses other = (Courses) obj;
+        if (id != other.id)
+            return false;
+        if (course == null) {
+            if (other.course != null)
+                return false;
+        } else if (!course.equals(other.course))
+            return false;
+        return true;
+    }
 }

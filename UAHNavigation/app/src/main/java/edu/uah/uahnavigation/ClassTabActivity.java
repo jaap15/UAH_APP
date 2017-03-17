@@ -11,7 +11,10 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -147,9 +150,10 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                         long selected_major_id = majorpos.getId();
                         courses = dbSource.GetFromCourses("major_id==" + selected_major_id, null, null);
                         coursesArray = courses.toArray(new Courses[courses.size()]);
+                        Courses[] adapterArray = removeDuplicates(coursesArray);
 
                         // Updating the spinner to reflect the filtered data
-                        adapterCourses.setCourses(coursesArray);
+                        adapterCourses.setCourses(adapterArray);
                         adapterCourses.notifyDataSetChanged();
 
                         // ProgressBar is invisible
@@ -200,13 +204,6 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
 
                                             // Grabbing our active item in sections spinner
                                             Courses sectionpos = adapterSection.getItem(position);
-
-                                            // Disabling some GUI elements when rooms spinner is set to index 0
-                                            if(spinnerSections.getSelectedItemPosition() == 0) {
-                                                findButton.setEnabled(false);
-                                            } else {
-                                                findButton.setEnabled(true);
-                                            }
                                         }
 
                                         @Override
@@ -242,5 +239,24 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(new Intent(this, MainActivity.class));
             }
         }
+
+    public static Courses[] removeDuplicates(Courses[] arr) {
+        Courses[] whitelist = Arrays.copyOfRange(arr, 0,0);
+        String oldCourse = arr[0].getCourse();
+
+
+        for (Courses nextElem : arr) {
+            String newCourse = nextElem.getCourse();
+            if (oldCourse.equals(newCourse)) {
+
+            } else {
+                whitelist = Arrays.copyOf(whitelist, whitelist.length + 1);
+                whitelist[whitelist.length - 1] = nextElem;
+                oldCourse = newCourse;
+            }
+        }
+
+        return whitelist;
+    }
 }
 
