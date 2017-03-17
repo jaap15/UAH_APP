@@ -40,6 +40,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                 Webscraper scraper = new Webscraper(getApplicationContext(),"http://www.uah.edu", "/cgi-bin/schedule.pl?file=sprg2017.html&segment=NDX", "Webscrape_Resources");
                 scraper.setSemesterToScrape(s);
                 scraper.scrapeSemester();
+                CoursesListParser cp = new CoursesListParser(getApplicationContext(), "Spring");
+                cp.parseSemester();
             }
         };
 
@@ -119,8 +121,10 @@ public class SplashScreenActivity extends AppCompatActivity {
                     try {
                         downloadThread.join();
                     } catch (InterruptedException e) {
+                        Log.d("myMessage", "DownloadThread Exception");
                         e.printStackTrace();
                     }
+                    Log.d("myMessage", "Switch to Main Activity");
                     startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
                     finish();
                 }

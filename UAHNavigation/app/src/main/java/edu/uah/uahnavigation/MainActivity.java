@@ -22,12 +22,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        String path = this.getFilesDir() + "/" + "Webscrape_Resources" + "/" + "Spring" + "/" + "ACC.txt";
-        File f = new File(this.getFilesDir() + "/" + "Webscrape_Resources" + "/" + "Spring" );
-        File fs[] = f.listFiles();
-        Log.d("myMessage", "Files: " + fs[0].getName());
-        CoursesListParser cp = new CoursesListParser(this);
-        cp.parseCourseFile(path);
         Log.d("myMessage", "Debug 1 " + BuildConfig.CONFIG);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

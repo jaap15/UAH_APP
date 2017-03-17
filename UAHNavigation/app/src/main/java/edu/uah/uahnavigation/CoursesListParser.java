@@ -22,19 +22,37 @@ public class CoursesListParser {
     private Context context;
     private String dirName;
     private File directory;
+    private String webscraperFolder = null;
     private ArrayList courseList;
 
-    public CoursesListParser(Context context)
+    public CoursesListParser(Context context, String dirName)
     {
         this.context = context;
+        this.dirName = dirName;
+        this.webscraperFolder = Util.getProperty("WEBSCRAPER_FOLDER", this.context);
+
+        this.directory = new File(this.context.getFilesDir()+ "/" + this.webscraperFolder + "/"+this.dirName);
+
+        if(!directory.exists()) {
+            throw new RuntimeException(directory.getAbsolutePath() + " Doesn't exist!!");
+        }
+        this.courseList = new ArrayList();
+
+        File files[] = this.directory.listFiles();
+        for(File file: files)
+        {
+            this.courseList.add(file.getName());
+            Log.d("myMessage", "Files: " + file.getName());
+        }
     }
 
     public CoursesListParser(Context context, String dirName, ArrayList courseList) throws Exception {
         this.context = context;
         this.dirName = dirName;
+        this.webscraperFolder = Util.getProperty("WEBSCRAPER_FOLDER", this.context);
         this.courseList = courseList;
 
-        directory = new File(this.context.getFilesDir()+"/"+this.dirName);
+        this.directory = new File(this.context.getFilesDir()+ "/" + this.webscraperFolder + "/"+this.dirName);
 
         if(!directory.exists()) {
             throw new RuntimeException(directory.getAbsolutePath() + " Doesn't exist!!");
@@ -42,6 +60,17 @@ public class CoursesListParser {
         }
     }
 
+
+    public void parseSemester()
+    {
+        int i = 0;
+        while(i < courseList.size())
+        {
+            parseCourseFile(this.directory.getAbsolutePath() + "/" + courseList.get(i));
+            i++;
+        }
+
+    }
 
     public void parseCourseFile(String absoluteFilePath)
     {
@@ -229,9 +258,10 @@ public class CoursesListParser {
 
                 db.InsertIntoCourses(major,bldg,room,crn,course,title,credit,days,startTime,endTime,instructor);
 
-                reader.close();
-                db.close();
             }
+
+            reader.close();
+            db.close();
         } catch (IOException ex) {
             System.out.println("Unable to read file");
             Log.d("myMessage", "Debug 4 Unable to read file");
