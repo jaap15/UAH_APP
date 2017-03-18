@@ -160,7 +160,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                         progressBar.setVisibility(View.INVISIBLE);
 
                         // Setting up an action for Item Selected Event on our Courses spinner
-                        spinnerCourses.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+                        spinnerCourses.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
@@ -233,18 +233,23 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
 
         @Override
         public void onClick(View view) {
-            if(view.getId() == R.id.findbtn){
+            if(view.getId() == R.id.findbtn) {
                 startActivity(new Intent(this, MapsActivity.class));
             }
-            else if(view.getId() == R.id.returnbtn){
+            else if(view.getId() == R.id.returnbtn) {
                 startActivity(new Intent(this, MainActivity.class));
             }
         }
 
     public static Courses[] removeDuplicates(Courses[] arr) {
         Courses[] whitelist = Arrays.copyOfRange(arr, 0,0);
-        String oldCourse = arr[0].getCourse();
+        String oldCourse = " ";
 
+        try {
+            oldCourse = arr[0].getCourse();
+        } catch (final ArrayIndexOutOfBoundsException e) {
+            Log.d("QWER", e.getMessage());
+        }
 
         for (Courses nextElem : arr) {
             String newCourse = nextElem.getCourse();
