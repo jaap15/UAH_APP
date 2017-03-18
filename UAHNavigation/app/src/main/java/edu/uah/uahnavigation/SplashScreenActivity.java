@@ -3,6 +3,7 @@ package edu.uah.uahnavigation;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +14,9 @@ import android.widget.Toast;
 import java.util.List;
 
 import edu.uah.model.Buildings;
+import edu.uah.model.Courses;
 import edu.uah.model.Rooms;
+import edu.uah.model.Majors;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -25,6 +28,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     private AlertDialog.Builder builder;
     private AlertDialog alert;
     private boolean hasInternet;
+    List<Majors> majors;
+    List<Courses> courses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +102,15 @@ public class SplashScreenActivity extends AppCompatActivity {
                 dbSource = new DatabaseSource(this);
                 dbSource.open();
 
+                majors = dbSource.GetFromMajors(null,null,null);
+                if (majors.size() == 0) {
+                    dbSource.InsertIntoMajors("Select_Major", "");
+                }
+                courses = dbSource.GetFromCourses(null, null, null);
+                if (courses.size() == 0) {
+                    dbSource.InsertIntoCourses("Select_Major", "NULL", "Select_Room", "99999", "Select_Course Select_Section", "NULL", "9", "NULL", "NULL", "NULL", "NULL");
+                }
+
                 buildings = dbSource.GetFromBuildings(null, null, null);
                 if (buildings.size() == 0) {
                     createBuildingsData();
@@ -109,27 +123,62 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                 dbSource.close();
 
-                downloadThread.start();
+//                downloadThread.start();
+
+                AsyncTaskRunner runner = new AsyncTaskRunner();
+                runner.execute("Tmp");
 
                 settings.edit().putBoolean("my_first_time", false).commit();
             }
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        downloadThread.join();
-                    } catch (InterruptedException e) {
-                        Log.d("myMessage", "DownloadThread Exception");
-                        e.printStackTrace();
+            else
+            {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("myMessage", "Switch to Main Activity");
+                        startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+                        finish();
                     }
-                    Log.d("myMessage", "Switch to Main Activity");
-                    startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
-                    finish();
-                }
-            }, 4000);
+                }, 1000);
+            }
         } else {
             alert.show();
+        }
+    }
+
+    private class AsyncTaskRunner extends AsyncTask<String, String, String>{
+
+        @Override
+        protected String doInBackground(String... params) {
+            Log.d("myMessage", "Scraping");
+            String URL = "http://www.uah.edu/cgi-bin/schedule.pl?file=sprg2017.html&segment=NDX";
+            Webscraper.Semester s = new Webscraper.Semester(URL, "Spring");
+            Webscraper scraper = new Webscraper(getApplicationContext(),"http://www.uah.edu", "/cgi-bin/schedule.pl?file=sprg2017.html&segment=NDX", "Webscrape_Resources");
+            scraper.setSemesterToScrape(s);
+            scraper.scrapeSemester();
+            CoursesListParser cp = new CoursesListParser(getApplicationContext(), "Spring");
+            cp.parseSemester();
+            return "test";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(getApplicationContext(), "Finished",Toast.LENGTH_LONG).show();
+            startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
+            finish();
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+
+        @Override
+        protected void onProgressUpdate(String... text) {
+
         }
     }
 

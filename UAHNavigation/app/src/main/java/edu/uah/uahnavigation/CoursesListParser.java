@@ -24,12 +24,15 @@ public class CoursesListParser {
     private File directory;
     private String webscraperFolder = null;
     private ArrayList courseList;
+    private DatabaseSource db;
 
     public CoursesListParser(Context context, String dirName)
     {
         this.context = context;
         this.dirName = dirName;
         this.webscraperFolder = Util.getProperty("WEBSCRAPER_FOLDER", this.context);
+        this.db = new DatabaseSource(this.context);
+        this.db.open();
 
         this.directory = new File(this.context.getFilesDir()+ "/" + this.webscraperFolder + "/"+this.dirName);
 
@@ -63,7 +66,9 @@ public class CoursesListParser {
 
     public void parseSemester()
     {
+
         int i = 0;
+
         while(i < courseList.size())
         {
             parseCourseFile(this.directory.getAbsolutePath() + "/" + courseList.get(i));
@@ -75,13 +80,13 @@ public class CoursesListParser {
     public void parseCourseFile(String absoluteFilePath)
     {
 
-        DatabaseSource db = new DatabaseSource(this.context);
-        db.open();
+//        this.db.open();
 
         BufferedReader reader = null;
         String description = null;
         String major = null;
         Log.d("myMessage", "Debug 1 ");
+        Log.d("mmyMessage", "File: " + absoluteFilePath);
         try {
             System.out.println("Opening file");
             Log.d("myMessage", "Opening file");
@@ -103,7 +108,7 @@ public class CoursesListParser {
             description = tmp.substring(tmp.lastIndexOf("/") + 1);
             Log.d("myMessage", "Description: " + description);
 
-            db.InsertIntoMajors(major, description);
+            this.db.InsertIntoMajors(major, description);
             System.out.println("Skipping lines");
             Log.d("myMessage", "Skipping lines");
             for(int i = 0; i < START_LINE; i++)
@@ -125,6 +130,7 @@ public class CoursesListParser {
             String line;
             while ((line = reader.readLine()) != null) {
 
+                boolean validClass = true;
                 System.out.println(line);
                 Log.d("myMessage", "Line: " + line);
 
@@ -256,20 +262,46 @@ public class CoursesListParser {
                 System.out.println(instructor);
                 Log.d("myMessage", "Instructor: " + instructor);
 
-                db.InsertIntoCourses(major,bldg,room,crn,course,title,credit,days,startTime,endTime,instructor);
+                validClass = classIsTBA(major);
+                validClass = classIsTBA(bldg);
+                validClass = classIsTBA(room);
+                validClass = classIsTBA(crn);
+                validClass = classIsTBA(course);
+                validClass = classIsTBA(title);
+                validClass = classIsTBA(credit);
+                validClass = classIsTBA(days);
+                validClass = classIsTBA(startTime);
+                validClass = classIsTBA(endTime);
+
+
+                if(validClass) {
+                    Log.d("myMessage", "Trying to insert to db: " + major +" , "+bldg+" , "+room+" , "+crn+" , "+course+" , "+title+" , "+credit+" , "+days+" , "+startTime+" , "+endTime+" , "+instructor);
+                    this.db.InsertIntoCourses(major, bldg, room, crn, course, title, credit, days, startTime, endTime, instructor);
+                    Log.d("myMessage", "Inserted to db: " + major +" , "+bldg+" , "+room+" , "+crn+" , "+course+" , "+title+" , "+credit+" , "+days+" , "+startTime+" , "+endTime+" , "+instructor);
+                }
 
             }
-
+            Log.d("myMessage", "Closing file");
             reader.close();
-            db.close();
+//            Log.d("myMessage", "Closing db");
+//            this.db.close();
         } catch (IOException ex) {
             System.out.println("Unable to read file");
             Log.d("myMessage", "Debug 4 Unable to read file");
-//            Logger.getLogger(JsoupLearningNetbeans.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
 
+    private boolean classIsTBA(String parsed)
+    {
+        boolean containsTBA = false;
 
+        if(parsed.contains("TBA") || parsed.contains("Canceled") || parsed.contains("ONLINE"))
+        {
+            containsTBA = true;
+        }
+
+        return containsTBA;
+    }
 
 }
