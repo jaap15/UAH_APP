@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -23,7 +24,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     DatabaseSource dbSource;
     List<Buildings> buildings;
     List<Rooms> rooms;
-    private Thread downloadThread;
     private SharedPreferences settings;
     private AlertDialog.Builder builder;
     private AlertDialog alert;
@@ -31,23 +31,14 @@ public class SplashScreenActivity extends AppCompatActivity {
     List<Majors> majors;
     List<Courses> courses;
 
+    private TextView loadingView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        downloadThread = new Thread() {
-            public void run() {
-                Log.d("myMessage", "Scraping");
-                String URL = "http://www.uah.edu/cgi-bin/schedule.pl?file=sprg2017.html&segment=NDX";
-                Webscraper.Semester s = new Webscraper.Semester(URL, "Spring");
-                Webscraper scraper = new Webscraper(getApplicationContext(),"http://www.uah.edu", "/cgi-bin/schedule.pl?file=sprg2017.html&segment=NDX", "Webscrape_Resources");
-                scraper.setSemesterToScrape(s);
-                scraper.scrapeSemester();
-                CoursesListParser cp = new CoursesListParser(getApplicationContext(), "Spring");
-                cp.parseSemester();
-            }
-        };
+        loadingView = (TextView) findViewById(R.id.loadingSplashTextView);
 
         final String PREFS_NAME = "MyPrefsFile";
 
@@ -123,8 +114,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                 dbSource.close();
 
-//                downloadThread.start();
-
                 AsyncTaskRunner runner = new AsyncTaskRunner();
                 runner.execute("Tmp");
 
@@ -152,19 +141,21 @@ public class SplashScreenActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             Log.d("myMessage", "Scraping");
+            publishProgress("Downloading Class Information");
             String URL = "http://www.uah.edu/cgi-bin/schedule.pl?file=sprg2017.html&segment=NDX";
             Webscraper.Semester s = new Webscraper.Semester(URL, "Spring");
             Webscraper scraper = new Webscraper(getApplicationContext(),"http://www.uah.edu", "/cgi-bin/schedule.pl?file=sprg2017.html&segment=NDX", "Webscrape_Resources");
             scraper.setSemesterToScrape(s);
             scraper.scrapeSemester();
             CoursesListParser cp = new CoursesListParser(getApplicationContext(), "Spring");
+            publishProgress("Populating Database");
             cp.parseSemester();
             return "test";
         }
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getApplicationContext(), "Finished",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "App ready for use!",Toast.LENGTH_LONG).show();
             startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
             finish();
         }
@@ -172,12 +163,13 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-
+            loadingView.setText("Initializing First-time Use");
         }
 
 
         @Override
         protected void onProgressUpdate(String... text) {
+            loadingView.setText(text[0]);
 
         }
     }
