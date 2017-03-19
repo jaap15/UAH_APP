@@ -128,9 +128,10 @@ public class CoursesListParser {
             System.out.println("Reading file");
             Log.d("myMessage", "Reading file");
             String line;
+            Log.d("notInserted", "InFile: " + absoluteFilePath);
             while ((line = reader.readLine()) != null) {
 
-                boolean validClass = true;
+//                boolean validClass = true;
                 System.out.println(line);
                 Log.d("myMessage", "Line: " + line);
 
@@ -262,22 +263,27 @@ public class CoursesListParser {
                 System.out.println(instructor);
                 Log.d("myMessage", "Instructor: " + instructor);
 
-                validClass = classIsTBA(major);
-                validClass = classIsTBA(bldg);
-                validClass = classIsTBA(room);
-                validClass = classIsTBA(crn);
-                validClass = classIsTBA(course);
-                validClass = classIsTBA(title);
-                validClass = classIsTBA(credit);
-                validClass = classIsTBA(days);
-                validClass = classIsTBA(startTime);
-                validClass = classIsTBA(endTime);
+
+                boolean invalidClass = classIsTBA(major);
+                boolean invalidClass1 = classIsTBA(bldg);
+                boolean invalidClass2 = classIsTBA(room);
+                boolean invalidClass3 = classIsTBA(crn);
+                boolean invalidClass4 = classIsTBA(course);
+                boolean invalidClass5 = classIsTBA(title);
+                boolean invalidClass6 = classIsTBA(credit);
+                boolean invalidClass7 = classIsTBA(days);
+                boolean invalidClass8 = classIsTBA(startTime);
+                boolean invalidClass9 = classIsTBA(endTime);
 
 
-                if(validClass) {
+                if(!invalidClass && !invalidClass1&& !invalidClass2 && !invalidClass3 && !invalidClass4 && !invalidClass5 && !invalidClass6 && !invalidClass7 && !invalidClass8 && !invalidClass9) {
                     Log.d("myMessage", "Trying to insert to db: " + major +" , "+bldg+" , "+room+" , "+crn+" , "+course+" , "+title+" , "+credit+" , "+days+" , "+startTime+" , "+endTime+" , "+instructor);
                     this.db.InsertIntoCourses(major, bldg, room, crn, course, title, credit, days, startTime, endTime, instructor);
                     Log.d("myMessage", "Inserted to db: " + major +" , "+bldg+" , "+room+" , "+crn+" , "+course+" , "+title+" , "+credit+" , "+days+" , "+startTime+" , "+endTime+" , "+instructor);
+                }
+                else
+                {
+                    Log.d("notInserted", "Not inserted to db: " + major +" , "+bldg+" , "+room+" , "+crn+" , "+course+" , "+title+" , "+credit+" , "+days+" , "+startTime+" , "+endTime+" , "+instructor);
                 }
 
             }
