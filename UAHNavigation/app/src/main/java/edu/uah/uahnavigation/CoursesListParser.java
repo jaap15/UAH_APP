@@ -278,7 +278,7 @@ public class CoursesListParser {
 
                 if(!invalidClass && !invalidClass1&& !invalidClass2 && !invalidClass3 && !invalidClass4 && !invalidClass5 && !invalidClass6 && !invalidClass7 && !invalidClass8 && !invalidClass9) {
                     Log.d("myMessage", "Trying to insert to db: " + major +" , "+bldg+" , "+room+" , "+crn+" , "+course+" , "+title+" , "+credit+" , "+days+" , "+startTime+" , "+endTime+" , "+instructor);
-                    this.db.InsertIntoCourses(major, bldg, room, crn, course, title, credit, days, startTime, endTime, instructor);
+                    this.db.InsertIntoCourses(major, bldg.trim(), room.trim(), crn, course, title, credit, days, startTime, endTime, instructor);
                     Log.d("myMessage", "Inserted to db: " + major +" , "+bldg+" , "+room+" , "+crn+" , "+course+" , "+title+" , "+credit+" , "+days+" , "+startTime+" , "+endTime+" , "+instructor);
                 }
                 else

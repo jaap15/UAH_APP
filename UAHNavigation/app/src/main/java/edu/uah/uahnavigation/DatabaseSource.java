@@ -26,7 +26,7 @@ public class DatabaseSource {
 
     SQLiteOpenHelper dbhelper;
     SQLiteDatabase database;
-    private static final String LOGTAG = "QWER";
+    private static final String LOGTAG = "DBCREATE";
     private boolean first_open = false;
 
     private static final String[] majorsColumns = {
@@ -132,7 +132,7 @@ public class DatabaseSource {
         return courses;
     }
 
-    public List<Buildings> GetFromBuildings(String selection, String[] selectionArgs, String orderBy) {
+    public List<Buildings> GetFromBuildings(String selection, String[] selectionArgs, String orderBy) throws IndexOutOfBoundsException {
         Cursor cursor = database.query(DatabaseManager.TABLE_3, buildingsColumns, selection, selectionArgs, null, null, orderBy);
         Log.i(LOGTAG , "Returned " + cursor.getCount() + " rows");
         Log.i(LOGTAG , dumpCursorToString(cursor));
@@ -211,7 +211,7 @@ public class DatabaseSource {
         String[] selectArgs = new String[] {major_str};
         long major_id;
         try {
-            major_id = GetFromMajors("name=?", selectArgs, null).get(0).getId();
+            major_id = GetFromMajors("name==?", selectArgs, null).get(0).getId();
         } catch (final IndexOutOfBoundsException e) {
             appendLog("Trouble linking major_id: " + courses.getMajor());
             major_id = 999;
@@ -222,7 +222,7 @@ public class DatabaseSource {
 
         long bldg_id;
         try {
-            bldg_id = GetFromBuildings("description=?", selectArgs, null).get(0).getId();
+            bldg_id = GetFromBuildings("description==?", selectArgs, null).get(0).getId();
         } catch (final IndexOutOfBoundsException e) {
             Log.d(LOGTAG, "Trouble linking building_id for room_id: " + courses.getRoom());
             bldg_id = 999;
@@ -233,7 +233,7 @@ public class DatabaseSource {
         Log.d(LOGTAG, "room_str: " + selectArgs[0]);
         long room_id;
         try {
-            room_id = GetFromRooms("room_number=? AND building_id=?", selectArgs, null).get(0).getId();
+            room_id = GetFromRooms("room_number==? AND building_id==?", selectArgs, null).get(0).getId();
         } catch (final IndexOutOfBoundsException e) {
             Log.d(LOGTAG, "Trouble linking room_id: " + courses.getRoom());
             room_id = 999;
