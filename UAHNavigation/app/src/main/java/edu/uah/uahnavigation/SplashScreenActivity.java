@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import edu.uah.model.Buildings;
@@ -115,8 +116,12 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                 dbSource.close();
 
-                AsyncTaskRunner runner = new AsyncTaskRunner();
-                runner.execute("Tmp");
+                Webscraper scraper = new Webscraper(getApplicationContext(),"http://www.uah.edu", "/cgi-bin/schedule.pl?", "Webscrape_Resources");
+                AsyncTaskRunnerSemesters AllSemestersRunner = new AsyncTaskRunnerSemesters(scraper);
+                AllSemestersRunner.execute("Tmp");
+
+                AsyncTaskRunner semesterRunner = new AsyncTaskRunner();
+                semesterRunner.execute("Tmp");
 
                 settings.edit().putBoolean("my_first_time", false).commit();
             }
@@ -134,6 +139,89 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         } else {
             alert.show();
+        }
+    }
+
+    private class AsyncTaskRunnerSemesters extends AsyncTask<String, String, String> {
+
+        private String[] semesters;
+        private Webscraper scraper;
+        private android.app.AlertDialog myDialog;
+        private String selectedItem;
+        private String[] currentSemesters;
+        private Thread downloadThread;
+        private ArrayList<Webscraper.Semester> cSemesters;
+
+        public AsyncTaskRunnerSemesters(Webscraper scraper)
+        {
+            this.scraper = scraper;
+        }
+        @Override
+        protected String doInBackground(String... params) {
+
+            downloadThread = new Thread() {
+                public void run() {
+                    Log.d("myMessage", "Scraping All semesters");
+                    scraper.scrapePossibleSemesters();
+                    cSemesters = scraper.getPossibleSemesters();
+                    currentSemesters = new String[cSemesters.size()];
+                    for(int i = 0; i < cSemesters.size();i++)
+                    {
+                        currentSemesters[i] = cSemesters.get(i).getSemesterName();
+                    }
+                }
+            };
+
+            downloadThread.start();
+
+            return "test";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            try {
+                downloadThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(SplashScreenActivity.this);
+
+            builder.setTitle("Choose a Semester");
+
+            builder.setSingleChoiceItems(
+                    currentSemesters,
+                    -1,
+                    new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            selectedItem = Arrays.asList(currentSemesters).get(i);
+
+                        }
+                    });
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Toast.makeText(getApplicationContext(),selectedItem,Toast.LENGTH_LONG).show();
+                }
+            });
+
+            android.app.AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+
+        @Override
+        protected void onProgressUpdate(String... text) {
+
         }
     }
 
