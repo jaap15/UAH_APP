@@ -49,8 +49,8 @@
             android:value="AIzaSyCsgCn5kNQnz6lJ1ukgeRWkMVTGMOzjC2Y" />
 
         <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps">
+            android:name=".ExternalNavigationActivity"
+            android:label="@string/title_activity_external_navigation">
         </activity>
         <activity android:name=".ImageViewer">
         </activity>

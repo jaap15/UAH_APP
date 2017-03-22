@@ -234,7 +234,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
         @Override
         public void onClick(View view) {
             if(view.getId() == R.id.findbtn) {
-                startActivity(new Intent(this, MapsActivity.class));
+                startActivity(new Intent(this, ExternalNavigationActivity.class));
             }
             else if(view.getId() == R.id.returnbtn) {
                 startActivity(new Intent(this, MainActivity.class));

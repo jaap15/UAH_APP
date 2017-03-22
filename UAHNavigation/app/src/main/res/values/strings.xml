@@ -53,4 +53,5 @@
         <item>CS</item>
     </string-array>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_external_navigation">Map</string>
 </resources>
