@@ -11,6 +11,7 @@ import org.jsoup.select.Elements;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -26,6 +27,7 @@ public class Webscraper {
     private Semester semesterToScrape;
     private ArrayList<Semester> currentSemesters;
     private String webscrapeResourcesFolderPath;
+    private String message = "myMessage";
 
     public Webscraper()
     {
@@ -36,7 +38,7 @@ public class Webscraper {
     {
         this.context = context;
         this.domainName = domainName;
-        this.courseListingURL = courseListingURL;
+        this.courseListingURL = domainName + courseListingURL;
         this.semesterToScrape = new Semester();
         this.webscrapeResourcesFolderPath = context.getFilesDir() + "/" + webscrapeResourcesFolder;
         File direct = new File(this.webscrapeResourcesFolderPath);
@@ -50,9 +52,38 @@ public class Webscraper {
 
     public void scrapePossibleSemesters()
     {
-        this.currentSemesters.add(new Semester("URL1", "Spring"));
-        this.currentSemesters.add(new Semester("URL2", "Summer"));
-        this.currentSemesters.add(new Semester("URL3", "Fall"));
+
+        try
+        {
+            Log.d(message, "Trying to connect to url");
+            Document doc = Jsoup.connect(this.courseListingURL).get();
+            Log.d(message, "After connected to url");
+            Log.d(message, "Content: \n"+ doc.text());
+
+            Elements semesters = doc.select("ul");
+            Elements linkSemesters = semesters.select("a[href]");
+//            Log.d(message, "links: \n"+ linkSemesters.html());
+//            Log.d(message, "links: \n"+ linkSemesters);
+
+            for(Element semester : linkSemesters){
+
+                if(semester.text().toLowerCase().contains("spring") || semester.text().toLowerCase().contains("summer") || semester.text().toLowerCase().contains("fall"))
+                {
+                    this.currentSemesters.add(new Semester(semester.attr("href"), semester.text()));
+//                    Log.d(message, "text: "+ semester.text());
+//                    Log.d(message, "link: "+ semester.attr("href"));
+                }
+
+
+            }
+
+        }
+        catch (IOException e)
+        {
+            Log.d(message, "Unable to connect to url");
+            e.printStackTrace();
+        }
+
     }
 
     public ArrayList<Semester> getPossibleSemesters()
@@ -69,7 +100,7 @@ public class Webscraper {
         }
         else
         {
-            Log.d("myMessage", "Invalid URL to Scrape!!\n " + semesterToScrape.getURL());
+            Log.d(message, "Invalid URL to Scrape!!\n " + semesterToScrape.getURL());
             throw new RuntimeException("Invalid URL to Scrape!!\n " + semesterToScrape.getURL());
         }
 
@@ -103,7 +134,7 @@ public class Webscraper {
                     Document docMajor = Jsoup.connect(majorUrl).get();
                     Elements info = docMajor.select("pre");
                     Elements t = docMajor.getElementsContainingOwnText(link.ownText()+"/");
-                    Log.d("myMessage", "WebScraping "+ t.text());
+                    Log.d(message, "WebScraping "+ t.text());
                     BufferedWriter writer = new BufferedWriter(new FileWriter(FOLDER_NAME + "/" + link.ownText() + ".txt"));
                     courseList.add(FOLDER_NAME + "/" + link.ownText() + ".txt");
                     writer.write(t.text()+"\n");

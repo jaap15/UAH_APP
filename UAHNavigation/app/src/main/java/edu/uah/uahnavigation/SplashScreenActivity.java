@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.uah.model.Buildings;
@@ -141,6 +142,19 @@ public class SplashScreenActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             Log.d("myMessage", "Scraping");
+
+            Log.d("mmyMessage", "Scraping All semesters");
+            Webscraper semesterScraper = new Webscraper(getApplicationContext(),"http://www.uah.edu", "/cgi-bin/schedule.pl?", "Webscrape_Resources");
+            semesterScraper.scrapePossibleSemesters();
+            ArrayList<Webscraper.Semester> cSemesters = semesterScraper.getPossibleSemesters();
+            Log.d("mmyMessage", "In SplashScreen Activity");
+            int i = 0;
+            while(i < cSemesters.size())
+            {
+                Log.d("mmyMessage", "semester: " + cSemesters.get(i).getSemesterName() + " link: " + cSemesters.get(i).getURL());
+                i++;
+            }
+
             publishProgress("Downloading Class Information");
             String URL = "http://www.uah.edu/cgi-bin/schedule.pl?file=sprg2017.html&segment=NDX";
             Webscraper.Semester s = new Webscraper.Semester(URL, "Spring");
