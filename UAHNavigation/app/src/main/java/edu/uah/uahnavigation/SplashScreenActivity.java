@@ -120,22 +120,14 @@ public class SplashScreenActivity extends AppCompatActivity {
                 AsyncTaskRunnerSemesters AllSemestersRunner = new AsyncTaskRunnerSemesters(scraper);
                 AllSemestersRunner.execute("Tmp");
 
-                AsyncTaskRunner semesterRunner = new AsyncTaskRunner();
-                semesterRunner.execute("Tmp");
 
                 settings.edit().putBoolean("my_first_time", false).commit();
             }
             else
             {
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d("myMessage", "Switch to Main Activity");
-                        startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
-                        finish();
-                    }
-                }, 1000);
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+
             }
         } else {
             alert.show();
@@ -151,6 +143,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         private String[] currentSemesters;
         private Thread downloadThread;
         private ArrayList<Webscraper.Semester> cSemesters;
+        private int choice;
 
         public AsyncTaskRunnerSemesters(Webscraper scraper)
         {
@@ -190,15 +183,13 @@ public class SplashScreenActivity extends AppCompatActivity {
 
             builder.setTitle("Choose a Semester");
 
-            builder.setSingleChoiceItems(
-                    currentSemesters,
-                    -1,
-                    new DialogInterface.OnClickListener()
+            builder.setSingleChoiceItems(currentSemesters, -1, new DialogInterface.OnClickListener()
                     {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
 
                             selectedItem = Arrays.asList(currentSemesters).get(i);
+                            choice = i;
 
                         }
                     });
@@ -206,6 +197,9 @@ public class SplashScreenActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     Toast.makeText(getApplicationContext(),selectedItem,Toast.LENGTH_LONG).show();
+                    scraper.setSemesterToScrape(cSemesters.get(choice));
+                    AsyncTaskRunner semesterRunner = new AsyncTaskRunner(scraper);
+                    semesterRunner.execute("Tmp");
                 }
             });
 
@@ -227,29 +221,20 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private class AsyncTaskRunner extends AsyncTask<String, String, String>{
 
+        private Webscraper scraper;
+
+        public AsyncTaskRunner(Webscraper scraper)
+        {
+            Log.d("myMessage", "Constructor of semester runner");
+            this.scraper = scraper;
+            Log.d("myMessage", "Scraper");
+        }
+
         @Override
         protected String doInBackground(String... params) {
             Log.d("myMessage", "Scraping");
-
-            Log.d("mmyMessage", "Scraping All semesters");
-            Webscraper semesterScraper = new Webscraper(getApplicationContext(),"http://www.uah.edu", "/cgi-bin/schedule.pl?", "Webscrape_Resources");
-            semesterScraper.scrapePossibleSemesters();
-            ArrayList<Webscraper.Semester> cSemesters = semesterScraper.getPossibleSemesters();
-            Log.d("mmyMessage", "In SplashScreen Activity");
-            int i = 0;
-            while(i < cSemesters.size())
-            {
-                Log.d("mmyMessage", "semester: " + cSemesters.get(i).getSemesterName() + " link: " + cSemesters.get(i).getURL());
-                i++;
-            }
-
-            publishProgress("Downloading Class Information");
-            String URL = "http://www.uah.edu/cgi-bin/schedule.pl?file=sprg2017.html&segment=NDX";
-            Webscraper.Semester s = new Webscraper.Semester(URL, "Spring");
-            Webscraper scraper = new Webscraper(getApplicationContext(),"http://www.uah.edu", "/cgi-bin/schedule.pl?file=sprg2017.html&segment=NDX", "Webscrape_Resources");
-            scraper.setSemesterToScrape(s);
             scraper.scrapeSemester();
-            CoursesListParser cp = new CoursesListParser(getApplicationContext(), "Spring");
+            CoursesListParser cp = new CoursesListParser(getApplicationContext(), scraper.getSemesterToScrape().getSemesterName());
             publishProgress("Populating Database");
             cp.parseSemester();
             return "test";

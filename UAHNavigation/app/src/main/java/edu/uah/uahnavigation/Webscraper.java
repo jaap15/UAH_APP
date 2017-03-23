@@ -106,6 +106,11 @@ public class Webscraper {
 
     }
 
+    public Semester getSemesterToScrape()
+    {
+        return this.semesterToScrape;
+    }
+
     public void scrapeSemester()
     {
         Document doc;
