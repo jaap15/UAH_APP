@@ -28,4 +28,25 @@
     <address>John Wright Dr NW, Huntsville, AL 35805</address>
     <image>NULL</image>
   </building>
+  <building>
+    <buildingId>4</buildingId>
+    <buildingName>Central Campus Residence Hall</buildingName>
+    <description>CTC</description>
+    <address>The University of Alabama In Huntsville, 1000 N Loop Rd, Huntsville, AL 35816</address>
+    <image>NULL</image>
+  </building>
+  <building>
+    <buildingId>5</buildingId>
+    <buildingName>Univiserity Fitness Center</buildingName>
+    <description>UFC</description>
+    <address>500 John Wright Dr NW, Huntsville, AL 35805</address>
+    <image>NULL</image>
+  </building>
+  <building>
+    <buildingId>6</buildingId>
+    <buildingName>Nursing Building</buildingName>
+    <description>NUR</description>
+    <address>1619 Ben Graves Dr NW, Huntsville, AL 35816</address>
+    <image>NULL</image>
+  </building>
 </buildings>

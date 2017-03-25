@@ -105,14 +105,21 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
 
         // UAH Markers
         LatLng uah = new LatLng(lat, lng);
-        LatLng shelbyCenter = new LatLng(34.725971, -86.641359);
-        LatLng ChargerUnion = new LatLng(34.727294, -86.640201);
+        LatLng ENG = new LatLng(34.722338, -86.640705);
+        LatLng OKT = new LatLng(34.719095, -86.646477);
+        LatLng MSB = new LatLng(34.722394, -86.638184);
+        LatLng CTC = new LatLng(34.722394, -86.638184);
+        LatLng UFC = new LatLng(34.726534, -86.636901);
+        LatLng NUR = new LatLng(34.729870, -86.638607);
+
 
         // Adding markers to map
-        mMap.addMarker(new MarkerOptions().position(uah).title("University of Alabama in Huntsville"));
-        mMap.addMarker(new MarkerOptions().position(shelbyCenter).title("Shelby Center").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                .title("Shelby Center for Science and Mathematics").snippet("1668 enrolled Science students"));
-        mMap.addMarker(new MarkerOptions().position(ChargerUnion).title("Charger Union").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        mMap.addMarker(new MarkerOptions().position(OKT).title("Olin B. King Technology Hall").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+        mMap.addMarker(new MarkerOptions().position(ENG).title("Engineering Building").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        mMap.addMarker(new MarkerOptions().position(MSB).title("Material Science Building").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+        mMap.addMarker(new MarkerOptions().position(CTC).title("Central Campus Residence Hall").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+        mMap.addMarker(new MarkerOptions().position(UFC).title("University Fitness Center").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+        mMap.addMarker(new MarkerOptions().position(NUR).title("Nursing Building").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
 
         // Defining Zoom parameters
         mMap.setMinZoomPreference(10);
