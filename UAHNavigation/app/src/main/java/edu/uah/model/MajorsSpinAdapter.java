@@ -45,9 +45,10 @@ public class MajorsSpinAdapter extends ArrayAdapter<Majors>{
         // I created a dynamic TextView here, but you can reference your own  custom layout for each spinner item
         TextView label = new TextView(context);
         label.setTextColor(Color.BLACK);
+        label.setTextSize(20);
         // Then you can get the current item using the values array (Users array) and the current position
         // You can NOW reference each method you has created in your bean object (Majors class)
-        label.setText(values[position].getTitle());
+        label.setText(values[position].getTitle() + " - " + values[position].getDescription());
 
         // And finally return your dynamic (or custom) view for each spinner item
         return label;
@@ -60,7 +61,8 @@ public class MajorsSpinAdapter extends ArrayAdapter<Majors>{
                                 ViewGroup parent) {
         TextView label = new TextView(context);
         label.setTextColor(Color.BLACK);
-        label.setText(values[position].getTitle());
+        label.setTextSize(20);
+        label.setText(values[position].getTitle() + " - " + values[position].getDescription());
 
         return label;
     }

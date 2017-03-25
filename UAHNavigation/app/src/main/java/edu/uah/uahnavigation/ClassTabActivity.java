@@ -122,7 +122,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                     Majors majorpos = adapterMajors.getItem(position);
 
                     // Disabling GUI elements when majors spinner is set to index 0
-                    if(majorpos == majors.get(0)){
+                    if(majorpos == majors.get(0)) {
 
                         courses = dbSource.GetFromCourses(null, null, null);
                         coursesArray = courses.toArray(new Courses[courses.size()]);
@@ -153,7 +153,6 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                         // Enabling the courses spinner now that a major has been selected
                         spinnerCourses.setEnabled(true);
                         spinnerCourses.setClickable(true);
-                        spinnerCourses.setSelection(0, true);
 
                         // Filtering our database for courses related to selected major
                         long selected_major_id = majorpos.getId();
@@ -164,79 +163,83 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                         // Updating the spinner to reflect the filtered data
                         adapterCourses.setCourses(adapterArray);
                         adapterCourses.notifyDataSetChanged();
+                        spinnerCourses.setAdapter(adapterCourses);
+                        spinnerCourses.setSelection(0, false);
 
                         // ProgressBar is invisible
                         progressBar.setVisibility(View.INVISIBLE);
-
-                        // Setting up an action for Item Selected Event on our Courses spinner
-                        spinnerCourses.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-                            @Override
-                            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-
-                                // Grabbing our active item in courses spinner
-                                final Courses coursepos = adapterCourses.getItem(position);
-
-                                // Disabling some GUI elements when courses spinner is set to index 0
-                                if(spinnerCourses.getSelectedItemPosition() == 0){
-                                    spinnerSections.setSelection(0, true);
-                                    spinnerSections.setEnabled(false);
-                                    spinnerSections.setClickable(false);
-                                    progressBar.setVisibility(View.GONE);
-                                } else {
-                                    // ProgressBar is visible
-                                    progressBar.setVisibility(View.VISIBLE);
-
-                                    // Enabling the sections spinner now that a course has been selected
-                                    spinnerSections.setEnabled(true);
-                                    spinnerSections.setClickable(true);
-                                    spinnerSections.setSelection(0, true);
-                                    findButton.setEnabled(true);
-
-                                    // Filtering our data for sections related to selected course
-                                    String selected_course = coursepos.getCourse();
-                                    long selected_major = coursepos.getMajor();
-                                    sections = dbSource.GetFromCourses("course==\"" + selected_course + "\" AND major_id==" + selected_major, null, null);
-                                    sectionsArray = sections.toArray(new Courses[sections.size()]);
-
-                                    // Updating the spinner to reflect the filtered data
-                                    adapterSection.setSections(sectionsArray);
-                                    adapterSection.notifyDataSetChanged();
-
-                                    // ProgressBar is invisible
-                                    progressBar.setVisibility(View.INVISIBLE);
-
-                                    // Setting up an action for Item Selected Event on our Sections spinner
-                                    spinnerSections.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-                                        @Override
-                                        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-
-                                            // Grabbing our active item in sections spinner
-                                            Courses sectionpos = adapterSection.getItem(position);
-                                            classInfoAdapter.setCourses(new Courses[]{sectionpos});
-                                            classInfoAdapter.notifyDataSetChanged();
-                                        }
-
-                                        @Override
-                                        public void onNothingSelected(AdapterView<?> adapterView) {
-
-                                        }
-                                    });
-                                }
-                            }
-
-                            @Override
-                            public void onNothingSelected(AdapterView<?> adapterView) {
-
-                            }
-                        });
                     }
-
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+            // Setting up an action for Item Selected Event on our Courses spinner
+            spinnerCourses.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+
+                    // Grabbing our active item in courses spinner
+                    final Courses coursepos = adapterCourses.getItem(position);
+
+                    // Disabling some GUI elements when courses spinner is set to index 0
+                    if(spinnerCourses.getSelectedItemPosition() == 0){
+                        spinnerSections.setSelection(0, false);
+                        spinnerSections.setEnabled(false);
+                        spinnerSections.setClickable(false);
+                        progressBar.setVisibility(View.GONE);
+                    } else {
+                        // ProgressBar is visible
+                        progressBar.setVisibility(View.VISIBLE);
+
+                        // Enabling the sections spinner now that a course has been selected
+                        spinnerSections.setEnabled(true);
+                        spinnerSections.setClickable(true);
+                        findButton.setEnabled(true);
+
+                        // Filtering our data for sections related to selected course
+                        String selected_course = coursepos.getCourse();
+                        long selected_major = coursepos.getMajor();
+                        sections = dbSource.GetFromCourses("course==\"" + selected_course + "\" AND major_id==" + selected_major, null, null);
+                        sectionsArray = sections.toArray(new Courses[sections.size()]);
+
+                        // Updating the spinner to reflect the filtered data
+                        adapterSection.setSections(sectionsArray);
+                        adapterSection.notifyDataSetChanged();
+                        spinnerSections.setAdapter(adapterSection);
+                        spinnerSections.setSelection(0, false);
+
+                        // ProgressBar is invisible
+                        progressBar.setVisibility(View.INVISIBLE);
+
+
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+
+            // Setting up an action for Item Selected Event on our Sections spinner
+            spinnerSections.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+
+                    // Grabbing our active item in sections spinner
+                    Courses sectionpos = adapterSection.getItem(position);
+                    classInfoAdapter.setCourses(new Courses[]{sectionpos});
+                    classInfoAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
 
                 }
             });

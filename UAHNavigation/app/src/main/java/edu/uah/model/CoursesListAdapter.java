@@ -7,6 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.List;
+
+import edu.uah.uahnavigation.DatabaseSource;
+import edu.uah.uahnavigation.DialogException;
 import edu.uah.uahnavigation.R;
 
 /**
@@ -47,14 +51,38 @@ public class CoursesListAdapter extends ArrayAdapter<Courses> {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
         View customView = layoutInflater.inflate(R.layout.courses_row, parent, false);
 
-        Courses time = getItem(position);
-        TextView timeText = (TextView) customView.findViewById(R.id.tvTime);
-        TextView profText = (TextView) customView.findViewById(R.id.tvProf);
-        TextView crnText = (TextView) customView.findViewById(R.id.tvCRN);
+        DatabaseSource dbSource = new DatabaseSource(context);
+        dbSource.open();
 
-        timeText.setText(time.getStart() + " - " + time.getEnd());
-        profText.setText(time.getInstructor());
-        crnText.setText(time.getCRN());
+        Courses course = getItem(position);
+        TextView topText = (TextView) customView.findViewById(R.id.tvTop);
+        TextView middleText = (TextView) customView.findViewById(R.id.tvMiddle);
+        TextView bottomText = (TextView) customView.findViewById(R.id.tvBottom);
+
+        List<Rooms> room = null;
+        List<Buildings> bldg = null;
+
+        try {
+            room = dbSource.GetFromRooms("id=?", new String[]{String.valueOf(course.getRoom())}, null);
+        } catch (IndexOutOfBoundsException e) {
+
+        }
+
+        try {
+            bldg = dbSource.GetFromBuildings("id=?", new String[]{String.valueOf(room.get(0).getBuilding())}, null);
+        } catch (IndexOutOfBoundsException e) {
+
+        }
+
+        if (room != null && bldg != null) {
+            topText.setText(bldg.get(0).getDescription() + ": " + room.get(0).getRoom());
+            middleText.setText(course.getDays() + ": " + course.getStart() + " - " + course.getEnd());
+            bottomText.setText(course.getInstructor());
+        } else {
+            topText.setText("No room entry found!");
+            middleText.setText("");
+            bottomText.setText("");
+        }
         return customView;
     }
 }

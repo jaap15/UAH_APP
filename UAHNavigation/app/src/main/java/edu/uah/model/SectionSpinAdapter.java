@@ -47,9 +47,10 @@ public class SectionSpinAdapter extends ArrayAdapter<Courses>{
         // I created a dynamic TextView here, but you can reference your own  custom layout for each spinner item
         TextView label = new TextView(context);
         label.setTextColor(Color.BLACK);
+        label.setTextSize(20);
         // Then you can get the current item using the values array (Users array) and the current position
         // You can NOW reference each method you has created in your bean object (Majors class)
-        label.setText(values[position].getSection());
+        label.setText(values[position].getSection() + " - " + values[position].getDays() + ": " + values[position].getStart() + " - " + values[position].getEnd());
 
         // And finally return your dynamic (or custom) view for each spinner item
         return label;
@@ -61,7 +62,8 @@ public class SectionSpinAdapter extends ArrayAdapter<Courses>{
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         TextView label = new TextView(context);
         label.setTextColor(Color.BLACK);
-        label.setText(values[position].getSection());
+        label.setTextSize(20);
+        label.setText(values[position].getSection() + " - " + values[position].getDays() + ": " + values[position].getStart() + " - " + values[position].getEnd());
 
         return label;
     }
