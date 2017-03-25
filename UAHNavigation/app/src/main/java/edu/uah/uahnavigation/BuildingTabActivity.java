@@ -33,6 +33,7 @@ public class BuildingTabActivity extends AppCompatActivity implements View.OnCli
     private Rooms[] roomsArray;
     private BuildingsSpinAdapter adapterBuildings;
     private RoomsSpinAdapter adapterRooms;
+   // private Intent i = new Intent(this, BuildingTabActivity.class);
 
     private ProgressBar progressBar;
 
@@ -40,6 +41,8 @@ public class BuildingTabActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_building_tab);
+
+        Log.d(LOGTAG, "test is " + getIntent().getStringExtra("test"));
 
         // Defining our progress bar
         progressBar = (ProgressBar)findViewById(R.id.progressBar1);
@@ -139,7 +142,11 @@ public class BuildingTabActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.findbtn){
-            startActivity(new Intent(this, ExternalNavigationActivity.class));  //Not a class activity but a new activity
+
+            Buildings test = (Buildings)spinnerBuildings.getSelectedItem();
+            Intent i = new Intent(getBaseContext(), ExternalNavigationActivity.class);
+            i.putExtra("Address", test.getAddress());
+            startActivity(i);  //Not a class activity but a new activity
         }
         else if(view.getId() == R.id.returnbtn){
             startActivity(new Intent(this, MainActivity.class));

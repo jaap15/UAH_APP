@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -20,6 +23,7 @@ import java.util.Set;
 
 import edu.uah.model.Buildings;
 import edu.uah.model.Courses;
+import edu.uah.model.CoursesListAdapter;
 import edu.uah.model.CoursesSpinAdapter;
 import edu.uah.model.Majors;
 import edu.uah.model.MajorsSpinAdapter;
@@ -47,6 +51,8 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
         private MajorsSpinAdapter adapterMajors;
         private CoursesSpinAdapter adapterCourses;
         private SectionSpinAdapter adapterSection;
+        private CoursesListAdapter classInfoAdapter;
+        private ListView classInformation;
 
         private ProgressBar progressBar;
         @Override
@@ -57,6 +63,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
             // Defining our progress bar
             progressBar = (ProgressBar)findViewById(R.id.progressBar1);
             progressBar.setVisibility(View.INVISIBLE);
+            classInformation = (ListView)findViewById(R.id.classInfo);
 
             // Defining our push buttons
             final Button findButton = (Button)findViewById(R.id.findbtn);
@@ -95,6 +102,8 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
             spinnerCourses.setEnabled(false);
             spinnerCourses.setClickable(false);
             spinnerCourses.setAdapter(adapterCourses);
+            classInfoAdapter = new CoursesListAdapter(this, coursesArray);
+            classInformation.setAdapter(classInfoAdapter);
 
             // Creating our Major spinner
             spinnerMajors = (Spinner) findViewById(R.id.spinnerMajor);
@@ -121,7 +130,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                         // Updating the spinner to reflect the filtered data
                         adapterCourses.setCourses(coursesArray);
                         adapterCourses.notifyDataSetChanged();
-                        spinnerCourses.setSelection(0);
+                        spinnerCourses.setSelection(0, true);
                         spinnerCourses.setEnabled(false);
                         spinnerCourses.setClickable(false);
 
@@ -131,7 +140,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                         // Updating the spinner to reflect the filtered data
                         adapterSection.setSections(sectionsArray);
                         adapterSection.notifyDataSetChanged();
-                        spinnerSections.setSelection(0);
+                        spinnerSections.setSelection(0, true);
                         spinnerSections.setEnabled(false);
                         spinnerSections.setClickable(false);
 
@@ -144,7 +153,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                         // Enabling the courses spinner now that a major has been selected
                         spinnerCourses.setEnabled(true);
                         spinnerCourses.setClickable(true);
-                        spinnerCourses.setSelection(0);
+                        spinnerCourses.setSelection(0, true);
 
                         // Filtering our database for courses related to selected major
                         long selected_major_id = majorpos.getId();
@@ -166,11 +175,11 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
                                 // Grabbing our active item in courses spinner
-                                Courses coursepos = adapterCourses.getItem(position);
+                                final Courses coursepos = adapterCourses.getItem(position);
 
                                 // Disabling some GUI elements when courses spinner is set to index 0
                                 if(spinnerCourses.getSelectedItemPosition() == 0){
-                                    spinnerSections.setSelection(0);
+                                    spinnerSections.setSelection(0, true);
                                     spinnerSections.setEnabled(false);
                                     spinnerSections.setClickable(false);
                                     progressBar.setVisibility(View.GONE);
@@ -181,7 +190,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                                     // Enabling the sections spinner now that a course has been selected
                                     spinnerSections.setEnabled(true);
                                     spinnerSections.setClickable(true);
-                                    spinnerSections.setSelection(0);
+                                    spinnerSections.setSelection(0, true);
                                     findButton.setEnabled(true);
 
                                     // Filtering our data for sections related to selected course
@@ -205,6 +214,8 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
 
                                             // Grabbing our active item in sections spinner
                                             Courses sectionpos = adapterSection.getItem(position);
+                                            classInfoAdapter.setCourses(new Courses[]{sectionpos});
+                                            classInfoAdapter.notifyDataSetChanged();
                                         }
 
                                         @Override
@@ -234,15 +245,54 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
         @Override
         public void onClick(View view) {
             if(view.getId() == R.id.findbtn) {
-                startActivity(new Intent(this, ExternalNavigationActivity.class));
-            }
-            else if(view.getId() == R.id.returnbtn) {
-                startActivity(new Intent(this, MainActivity.class));
-            }
+
+                Courses crse = null;
+                try {
+                    crse = (Courses) spinnerCourses.getSelectedItem();
+                } catch (IndexOutOfBoundsException e) {
+
+                }
+                if (crse != null) {
+                    String[] longToString = new String[]{String.valueOf(crse.getRoom())};
+
+                    List<Rooms> room = null;
+                    try {
+                        room = dbSource.GetFromRooms("id=?", longToString, null);
+                    } catch (IndexOutOfBoundsException e) {
+
+                    }
+
+                    if (room != null) {
+                        String[] selectArgs = new String[]{String.valueOf(room.get(0).getBuilding())};
+
+                        List<Buildings> bldg = null;
+                        try {
+                            bldg = dbSource.GetFromBuildings("id=?", selectArgs, null);
+                        } catch (IndexOutOfBoundsException e) {
+                            new DialogException(this, "IndexOutofBoundsException", "bldg is equal to null", new String[]{"Cancel"});
+                        }
+
+                        Intent i = new Intent(getBaseContext(), ExternalNavigationActivity.class);
+                        try {
+                            i.putExtra("Address", bldg.get(0).getAddress());
+                            Log.d(LOGTAG, "Address " + bldg.get(0).getAddress());
+                        } catch (IndexOutOfBoundsException e) {
+                            new DialogException(this, "IndexOutofBoundsException", "bldg.get(0).getAddress is empty", new String[]{"Cancel"});
+                        }
+                        startActivity(i);
+                    } else {
+                        new DialogException(this, "IndexOutofBoundsException", "Rooms is equal to null", new String[]{"Cancel"});
+                    }
+                } else {
+                    new DialogException(this, "IndexOutofBoundsException", "Crse is equal to null", new String[]{"Cancel"});
+                }
+                } else if (view.getId() == R.id.returnbtn) {
+                    startActivity(new Intent(this, MainActivity.class));
+                }
         }
 
     public static Courses[] removeDuplicates(Courses[] arr) {
-        Courses[] whitelist = Arrays.copyOfRange(arr, 0,0);
+        Courses[] whitelist = Arrays.copyOfRange(arr, 0,1);
         String oldCourse = " ";
 
         try {

@@ -19,6 +19,8 @@ import edu.uah.model.Majors;
 import edu.uah.model.MajorsSpinAdapter;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+   // private Intent i = new Intent(getBaseContext(), BuildingTabActivity.class);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -31,16 +33,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         classBtn.setOnClickListener(this);
         BlgdBtn.setOnClickListener(this);
 
+        int sessionID = 98765;
+        //i.putExtra("EXTRA_SESSION_ID", sessionID);
     }
 
     @Override
     public void onClick(View v) {
 
         if(v.getId() == R.id.classbtn){
-            startActivity(new Intent(this, ClassTabActivity.class));
+            Intent i = new Intent(getBaseContext(), ClassTabActivity.class);
+            i.putExtra("test", "test");
+            startActivity(i);
         }
         else if(v.getId() == R.id.buildingbtn){
-            startActivity(new Intent(this, BuildingTabActivity.class));
+            Intent i = new Intent(getBaseContext(), BuildingTabActivity.class);
+            i.putExtra("test", "test");
+            startActivity(i);
         }
     }
 }
