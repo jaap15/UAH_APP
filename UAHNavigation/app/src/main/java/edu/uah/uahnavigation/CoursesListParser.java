@@ -98,14 +98,12 @@ public class CoursesListParser {
 //            Logger.getLogger(JsoupLearningNetbeans.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-
-        Log.d("myMessage", "Debug 2");
         try {
-            String tmp = reader.readLine();
-            Log.d("myMessage", "Major/Description: " + tmp);
-            major = tmp.substring(0, 3);
-            Log.d("myMessage", "Major: " + major);
-            description = tmp.substring(tmp.lastIndexOf("/") + 1);
+            String[] mAndD = reader.readLine().split("/");
+            Log.d("gmyMessage", "Major/Description: " + mAndD.length);
+            major = mAndD[0];
+            Log.d("gmyMessage", "Major: " + major);
+            description = mAndD[1];
             Log.d("myMessage", "Description: " + description);
 
             this.db.InsertIntoMajors(major, description);
