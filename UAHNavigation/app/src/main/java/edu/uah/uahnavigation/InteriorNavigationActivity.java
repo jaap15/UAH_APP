@@ -28,6 +28,31 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_interior_navigation);
         readInputFile();
 
+        Graph graph = new Graph();
+        Vertex[] vertices = new Vertex[5];
+
+        for(int i = 0; i < vertices.length; i++){
+            vertices[i] = new Vertex(i + "");
+            graph.addVertex(vertices[i], true);
+        }
+
+        Edge[] edges = new Edge[7];
+        edges[0] = new Edge(vertices[0], vertices[1], 6);
+        edges[1] = new Edge(vertices[0], vertices[3], 1);
+        edges[2] = new Edge(vertices[1], vertices[3], 2);
+        edges[3] = new Edge(vertices[1], vertices[2], 5);
+        edges[4] = new Edge(vertices[1], vertices[4], 2);
+        edges[5] = new Edge(vertices[2], vertices[4], 5);
+        edges[6] = new Edge(vertices[3], vertices[4], 1);
+
+        for(Edge e: edges){
+            graph.addEdge(e.getOne(), e.getTwo(), e.getWeight());
+        }
+
+        Dijkstra dijkstra = new Dijkstra(graph, vertices[0].getLabel());
+        Log.d("graphMessage", "Distance to 2: " + dijkstra.getDistanceTo("2"));
+        Log.d("graphMessage", "Path to 2: " + dijkstra.getPathTo("2"));
+
     }
 
     public void didTapGreetButton(View view) {
