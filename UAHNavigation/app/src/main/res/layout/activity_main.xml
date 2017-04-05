@@ -49,10 +49,11 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
+        android:layout_width="268dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginBottom="50dp"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@mipmap/uah_nav_logo_blue" />
+        android:adjustViewBounds="true"
+        app:srcCompat="@mipmap/uah_nav_logo_blue"/>
 
 </RelativeLayout>

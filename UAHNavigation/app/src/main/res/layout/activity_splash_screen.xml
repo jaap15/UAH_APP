@@ -25,15 +25,13 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="wrap_content"
+            android:layout_width="268dp"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/progressBar4"
-            android:layout_centerHorizontal="true"
             android:layout_marginBottom="50dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             app:srcCompat="@mipmap/uah_nav_logo_white"
-            android:layout_weight="10" />
+            android:layout_weight="4.17" />
 
     </LinearLayout>
 

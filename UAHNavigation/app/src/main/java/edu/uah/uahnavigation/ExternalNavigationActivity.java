@@ -1,14 +1,18 @@
 package edu.uah.uahnavigation;
 
 import android.Manifest;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
+import android.provider.SyncStateContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -47,10 +51,14 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
     private ProgressDialog progressDialog;
     private Button btnFindPath;
     private Intent i = getIntent();
-    private LocationManager locationManager;
+    private LocationManager locationManager = null;
+    private ProximityReceiver proxReceiver = null;
     private LocationListener locationListener;
     private String origin;
     private static final String LOGTAG = "WERT";
+    PendingIntent pIntent1 = null;
+    PendingIntent pIntent2 = null;
+    private final String PROX_ALERT = "app.test.PROXIMITY_ALERT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +164,32 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
         } else {
             // Show rationale and request permission.
         }
+
+        proximityAlerts();
+    }
+
+    public void proximityAlerts() {
+
+        LatLng OKT = new LatLng(34.719095, -86.646477);
+        float radius = 5.0f * 1609.0f;
+        String geo = "geo:"+OKT.latitude+","+OKT.longitude;
+        Intent intent = new Intent(PROX_ALERT, Uri.parse(geo));
+        intent.putExtra("message", "Jacksonville, FL");
+        pIntent2 = PendingIntent.getBroadcast(getApplicationContext(), 0, intent,
+                PendingIntent.FLAG_CANCEL_CURRENT);
+        // Register the listener with the Location Manager to receive location updates
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            locationManager.addProximityAlert(OKT.latitude, OKT.longitude, radius, -1, pIntent2);
+        } else {
+            // Show rationale and request permission.
+        }
+        proxReceiver = new ProximityReceiver();
+
+        IntentFilter iFilter = new IntentFilter(PROX_ALERT);
+        iFilter.addDataScheme("geo");
+
+        registerReceiver(proxReceiver, iFilter);
     }
 
     public void makeUseOfNewLocation(GoogleMap mMap, Location location) {
