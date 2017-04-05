@@ -22,11 +22,17 @@ import java.util.Scanner;
 
 public class InteriorNavigationActivity extends AppCompatActivity {
 
+    private Graph graph;
+    private Dijkstra dijkstra;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interior_navigation);
+        graph = new Graph();
         readInputFile();
+
 
     }
 
@@ -95,6 +101,12 @@ public class InteriorNavigationActivity extends AppCompatActivity {
                     WeightStr = token[2];
                     Weight = Integer.parseInt(WeightStr);
                     Log.d("aMessage", "Case3 " + "Line " + i + ":" + "Weight: " + Weight);
+
+                    graph.addVertex(new Vertex(SourceNode), false);
+                    graph.addVertex(new Vertex(DestinationNode), false);
+
+                    Edge e = new Edge(graph.getVertex(SourceNode), graph.getVertex(DestinationNode), Weight);
+                    graph.addEdge(e.getOne(), e.getTwo(), e.getWeight());
                 }
                 i++;
 
@@ -107,5 +119,10 @@ public class InteriorNavigationActivity extends AppCompatActivity {
             Log.d("aMessage", "Exception");
             e.printStackTrace();
         }
+
+        Dijkstra dijkstra = new Dijkstra(graph, graph.getVertex("ENG102").getLabel());
+        Log.d("graphMessage", "Distance to 2: " + dijkstra.getDistanceTo(graph.getVertex("ENG107").getLabel()));
+        Log.d("graphMessage", "Path to 2: " + dijkstra.getPathTo(graph.getVertex("ENG107").getLabel()));
+
     }
 }
