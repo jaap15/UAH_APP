@@ -100,8 +100,6 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
         // Grabbing LatLng positions from config.properties
         double lat = Double.parseDouble(Util.getProperty("UAH_LAT", this));
         double lng = Double.parseDouble(Util.getProperty("UAH_LONG", this));
-        double user_lat = Double.parseDouble(Util.getProperty("USER_LAT", this));
-        double user_lng = Double.parseDouble(Util.getProperty("USER_LONG", this));
 
         // UAH Markers
         LatLng uah = new LatLng(lat, lng);
@@ -111,6 +109,7 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
         LatLng CTC = new LatLng(34.722394, -86.638184);
         LatLng UFC = new LatLng(34.726534, -86.636901);
         LatLng NUR = new LatLng(34.729870, -86.638607);
+        LatLng SST = new LatLng(34.725971, -86.641359);
 
 
         // Adding markers to map
@@ -120,6 +119,7 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
         mMap.addMarker(new MarkerOptions().position(CTC).title("Central Campus Residence Hall").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
         mMap.addMarker(new MarkerOptions().position(UFC).title("University Fitness Center").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
         mMap.addMarker(new MarkerOptions().position(NUR).title("Nursing Building").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+        mMap.addMarker(new MarkerOptions().position(SST).title("Shelby Center").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
         // Defining Zoom parameters
         mMap.setMinZoomPreference(10);

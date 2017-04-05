@@ -262,7 +262,7 @@ public class ClassTabActivity extends AppCompatActivity implements View.OnClickL
                     try {
                         room = dbSource.GetFromRooms("id=?", longToString, null);
                     } catch (IndexOutOfBoundsException e) {
-
+                        new DialogException(this, "IndexOutofBoundsException", "room is equal to null", new String[]{"Cancel"});
                     }
 
                     if (room != null) {
