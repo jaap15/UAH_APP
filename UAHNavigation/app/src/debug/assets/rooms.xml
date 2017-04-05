@@ -633,5 +633,21 @@
     <roomNum>S347</roomNum>
     <roomNum>S348</roomNum>
   </building>
+  <building>
+  <buildingId>SST</buildingId>
+    <roomNum>050</roomNum>
+    <roomNum>103</roomNum>
+    <roomNum>105</roomNum>
+    <roomNum>121</roomNum>
+    <roomNum>158</roomNum>
+    <roomNum>203</roomNum>
+    <roomNum>205</roomNum>
+    <roomNum>207</roomNum>
+    <roomNum>216</roomNum>
+    <roomNum>218</roomNum>
+    <roomNum>219</roomNum>
+    <roomNum>229</roomNum>
+    <roomNum>329</roomNum>
+  </building>
 </rooms>
 
