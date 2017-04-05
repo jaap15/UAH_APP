@@ -80,8 +80,8 @@ public class CoursesListAdapter extends ArrayAdapter<Courses> {
             bottomText.setText(course.getInstructor());
         } else {
             topText.setText("No room entry found!");
-            middleText.setText("");
-            bottomText.setText("");
+            middleText.setText(course.getDays() + ": " + course.getStart() + " - " + course.getEnd());
+            bottomText.setText(course.getInstructor());
         }
         return customView;
     }
