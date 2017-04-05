@@ -54,7 +54,11 @@ public class CoursesSpinAdapter extends ArrayAdapter<Courses>{
         label.setTextSize(20);
         // Then you can get the current item using the values array (Users array) and the current position
         // You can NOW reference each method you has created in your bean object (Majors class)
-        label.setText(values[position].getCourse() + " - " + values[position].getTitle());
+        try {
+            label.setText(values[position].getCourse() + " - " + values[position].getTitle());
+        } catch (final NullPointerException e) {
+            e.printStackTrace();
+        }
 
         // And finally return your dynamic (or custom) view for each spinner item
         return label;
@@ -67,7 +71,11 @@ public class CoursesSpinAdapter extends ArrayAdapter<Courses>{
         TextView label = new TextView(context);
         label.setTextColor(Color.BLACK);
         label.setTextSize(20);
-        label.setText(values[position].getCourse() + " - " + values[position].getTitle());
+        try {
+            label.setText(values[position].getCourse() + " - " + values[position].getTitle());
+        } catch (final NullPointerException e) {
+            e.printStackTrace();
+        }
 
         return label;
     }
