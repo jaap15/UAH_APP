@@ -1,34 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="edu.uah.uahnavigation.InteriorNavigationActivity">
 
     <!--Temporary code used for testing the first use of espresso for acceptance testing can be removed later-->
-    <EditText
-        android:id="@+id/greetEditText"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:inputType="textCapSentences"/>
+        android:layout_height="409dp"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/greetButton"
-        android:text="@string/greetButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/greetEditText"
-        android:layout_centerHorizontal="true"
-        android:onClick="didTapGreetButton" />
+        <ImageView
+            android:id="@+id/imageViewFloorPlan"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@mipmap/uah_nav_logo_white" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/messageTextView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/greetButton"
-        android:gravity="center"
-        android:textSize="30sp"/>
+        android:layout_height="match_parent"
+        android:baselineAligned="true"
+        android:orientation="horizontal"
+        android:gravity="bottom|center">
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/buttonBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Back" />
+
+        <Button
+            android:id="@+id/buttonNewSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="New Search" />
+
+        <Button
+            android:id="@+id/buttonClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Close" />
+    </LinearLayout>
+
+</LinearLayout>

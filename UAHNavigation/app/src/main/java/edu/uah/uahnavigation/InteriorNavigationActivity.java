@@ -1,11 +1,14 @@
 package edu.uah.uahnavigation;
 
 import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -30,23 +33,23 @@ public class InteriorNavigationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interior_navigation);
+
+        AssetManager assetManager = getAssets();
+        InputStream inStream = null;
+        try{
+            inStream = assetManager.open("InteriorNavigationResources/ENG/Floor1.PNG");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        Bitmap bitmap = BitmapFactory.decodeStream(inStream);
+
+        ImageView imageView = (ImageView)findViewById(R.id.imageViewFloorPlan);
+        imageView.setImageBitmap(bitmap);
+
         graph = new Graph();
         readInputFile();
 
-
-    }
-
-    public void didTapGreetButton(View view) {
-        EditText greetEditText =
-                (EditText) findViewById(R.id.greetEditText);
-
-        String name = greetEditText.getText().toString();
-        String greeting = String.format("Hello, %s!", name);
-
-        TextView messageTextView =
-                (TextView) findViewById(R.id.messageTextView);
-
-        messageTextView.setText(greeting);
 
     }
 
