@@ -20,6 +20,8 @@ public class Vertex {
 
     private ArrayList<Edge> neighborhood;
     private String label;
+    private int x;
+    private int y;
 
     /**
      *
@@ -138,6 +140,26 @@ public class Vertex {
      */
     public ArrayList<Edge> getNeighbors(){
         return new ArrayList<Edge>(this.neighborhood);
+    }
+
+    public void setCordinateX(int x)
+    {
+        this.x = x;
+    }
+
+    public void setCordinateY(int y)
+    {
+        this.y = y;
+    }
+
+    public int getCordinateX()
+    {
+        return this.x;
+    }
+
+    public int getCordinateY()
+    {
+        return this.y;
     }
 
 }

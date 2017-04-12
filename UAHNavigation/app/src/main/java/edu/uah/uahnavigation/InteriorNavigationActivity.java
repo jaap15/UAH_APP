@@ -142,13 +142,23 @@ public class InteriorNavigationActivity extends AppCompatActivity {
                 {
                     while ((line = reader.readLine()) != null) {
                         Log.d("xyMessage",i + ". Line read for node xy: " + line);
+                        token = line.split(" ");
+                        try{
+                            graph.getVertex(token[0]).setCordinateX(Integer.valueOf(token[1]));
+                            graph.getVertex(token[0]).setCordinateY(Integer.valueOf(token[2]));
+                        }catch (Exception e)
+                        {
+                            Log.d("xyMessage",i + "Issue Converting to integar");
+                            e.printStackTrace();
+                        }
+
+
                         count++;
                         i++;
                     }
                     break;
                 }
                 i++;
-//                count++;
 
             } //End while
 
@@ -163,6 +173,8 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         Dijkstra dijkstra = new Dijkstra(graph, graph.getVertex("ENG102").getLabel());
         Log.d("graphMessage", "Distance to 2: " + dijkstra.getDistanceTo(graph.getVertex("ENG107").getLabel()));
         Log.d("graphMessage", "Path to 2: " + dijkstra.getPathTo(graph.getVertex("ENG107").getLabel()));
+        Log.d("graphMessage", "X: " + graph.getVertex("ENG256").getCordinateX() + " Y: " + graph.getVertex("ENG256").getCordinateY());
+
 
     }
 }
