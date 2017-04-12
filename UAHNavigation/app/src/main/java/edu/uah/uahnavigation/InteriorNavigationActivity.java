@@ -3,6 +3,9 @@ package edu.uah.uahnavigation;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,23 +37,37 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interior_navigation);
 
+        graph = new Graph();
+        readInputFile();
+//        drawPath();
+
+
+    }
+
+    private void drawPath(){
         AssetManager assetManager = getAssets();
         InputStream inStream = null;
         try{
-            inStream = assetManager.open("InteriorNavigationResources/ENG/Floor1.PNG");
+            inStream = assetManager.open("InteriorNavigationResources/ENG/ENG1.PNG");
         }catch (IOException e){
             e.printStackTrace();
         }
 
         Bitmap bitmap = BitmapFactory.decodeStream(inStream);
 
+        Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+
         ImageView imageView = (ImageView)findViewById(R.id.imageViewFloorPlan);
-        imageView.setImageBitmap(bitmap);
+        Canvas canvas = new Canvas(mutableBitmap);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(Color.RED);
+        paint.setStrokeWidth(15);
+        canvas.drawCircle(0, 0, 20, paint);
 
-        graph = new Graph();
-        readInputFile();
+        canvas.drawLine(257,795,312,893,paint);
+        canvas.drawLine(257,795,450,795,paint);
 
-
+        imageView.setImageBitmap(mutableBitmap);
     }
 
     private void readInputFile() {
@@ -79,15 +96,17 @@ public class InteriorNavigationActivity extends AppCompatActivity {
             int i = 3;
             int k = 0;
             //Log.d("aMessage", "Test");
-
+            int count = 3;
             while ((line = reader.readLine()) != null) {
                     token = line.split(" ");
                 //Log.d("aMessage", "Test: " + line.substring(0,1).compareTo("@"));
                 //Log.d("aMessage", "First: " + line.substring(0,1));
+                Log.d("sMessage", count + ". Value: " + line.substring(0,1));
                 if(line.substring(0,1).compareTo("#") == 0){
                     token[0] = line.substring(1) + ".PNG";          //Append .PNG to grab Floor Plan
                     FloorPlan = token[0];
                     Log.d("aMessage", "Case1 " + "Line " + i +":"+ "FloorPlan: " + FloorPlan);          //Case 1: Floor. Need to open floorplan
+                    count++;
                 }
                 else if(line.substring(0,1).compareTo("@") == 0){
                     token[0] = line.substring(1);
@@ -95,23 +114,41 @@ public class InteriorNavigationActivity extends AppCompatActivity {
                     TotalEdges = TotalEdges + NumEdges;
                     TotalSources = TotalSources + 1;
                     Log.d("aMessage","Case2 " + "Line " + i +":"+ "NumEdges: " + NumEdges);          //Case 2: Edge. Defines EdgeNum for next vertex
+
+                    for(int j = 0; j < NumEdges; j++)
+                    {
+                        line = reader.readLine();
+
+                        token = line.split(" ");
+                        Log.d("aMessage","Line read in for @: " + line);
+                        SourceNode = token[0];
+                        Log.d("aMessage","Case3 " + "Line " + i + ":" + "SourceNode: " + SourceNode);
+                        DestinationNode = token[1];
+                        Log.d("aMessage", "Case3 " + "Line " + i + ":" + "DestinationNode: " + DestinationNode);
+                        WeightStr = token[2];
+                        Weight = Integer.parseInt(WeightStr);
+                        Log.d("aMessage", "Case3 " + "Line " + i + ":" + "Weight: " + Weight);
+
+                        graph.addVertex(new Vertex(SourceNode), false);
+                        graph.addVertex(new Vertex(DestinationNode), false);
+
+                        Edge e = new Edge(graph.getVertex(SourceNode), graph.getVertex(DestinationNode), Weight);
+                        graph.addEdge(e.getOne(), e.getTwo(), e.getWeight());
+                        count++;
+                        i++;
+                    }
                 }
-                else {
-                    SourceNode = token[0];
-                    Log.d("aMessage","Case3 " + "Line " + i + ":" + "SourceNode: " + SourceNode);
-                    DestinationNode = token[1];
-                    Log.d("aMessage", "Case3 " + "Line " + i + ":" + "DestinationNode: " + DestinationNode);
-                    WeightStr = token[2];
-                    Weight = Integer.parseInt(WeightStr);
-                    Log.d("aMessage", "Case3 " + "Line " + i + ":" + "Weight: " + Weight);
-
-                    graph.addVertex(new Vertex(SourceNode), false);
-                    graph.addVertex(new Vertex(DestinationNode), false);
-
-                    Edge e = new Edge(graph.getVertex(SourceNode), graph.getVertex(DestinationNode), Weight);
-                    graph.addEdge(e.getOne(), e.getTwo(), e.getWeight());
+                else if(line.substring(0,1).compareTo("!") == 0)
+                {
+                    while ((line = reader.readLine()) != null) {
+                        Log.d("xyMessage",i + ". Line read for node xy: " + line);
+                        count++;
+                        i++;
+                    }
+                    break;
                 }
                 i++;
+//                count++;
 
             } //End while
 

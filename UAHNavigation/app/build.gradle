@@ -83,4 +83,6 @@ dependencies {
     // Google Maps Services
     compile 'com.google.android.gms:play-services-maps:10.2.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    compile 'it.sephiroth.android.library.imagezoom:imagezoom:+'
 }
