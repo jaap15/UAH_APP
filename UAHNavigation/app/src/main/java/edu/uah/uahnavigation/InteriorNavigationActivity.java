@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.io.FileOutputStream;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 
@@ -39,8 +40,7 @@ public class InteriorNavigationActivity extends AppCompatActivity {
 
         graph = new Graph();
         readInputFile();
-//        drawPath();
-
+        drawPath();
 
     }
 
@@ -48,7 +48,7 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         AssetManager assetManager = getAssets();
         InputStream inStream = null;
         try{
-            inStream = assetManager.open("InteriorNavigationResources/ENG/ENG1.PNG");
+            inStream = assetManager.open("InteriorNavigationResources/ENG/Floor1.png");
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -62,11 +62,21 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(Color.RED);
         paint.setStrokeWidth(15);
-        canvas.drawCircle(0, 0, 20, paint);
 
-        canvas.drawLine(257,795,312,893,paint);
-        canvas.drawLine(257,795,450,795,paint);
+        Dijkstra dijkstra = new Dijkstra(graph, graph.getVertex("E102").getLabel());
+        Log.d("graphMessage", "Distance to 2: " + dijkstra.getDistanceTo(graph.getVertex("ENG107").getLabel()));
+        Log.d("graphMessage", "Path to 2: " + dijkstra.getPathTo(graph.getVertex("ENG107").getLabel()));
+        Log.d("graphMessage", "X: " + graph.getVertex("ENG256").getCordinateX() + " Y: " + graph.getVertex("ENG256").getCordinateY());
+        LinkedList<Vertex> path = (LinkedList<Vertex>) dijkstra.getPathTo("ENG135");
 
+        for(int i = 0; i < path.size()-1;i++)
+        {
+            Log.d("graphMessage", "Vertex " + i + ": " + path.get(i));
+            canvas.drawLine(path.get(i).getCordinateX(),path.get(i).getCordinateY(),path.get(i+1).getCordinateX(),path.get(i+1).getCordinateY(),paint);
+
+        }
+        paint.setARGB(200,70,185,99);
+        canvas.drawCircle(path.get(path.size()-1).getCordinateX(),path.get(path.size()-1).getCordinateY(), 20, paint);
         imageView.setImageBitmap(mutableBitmap);
     }
 
@@ -169,12 +179,5 @@ public class InteriorNavigationActivity extends AppCompatActivity {
             Log.d("aMessage", "Exception");
             e.printStackTrace();
         }
-
-        Dijkstra dijkstra = new Dijkstra(graph, graph.getVertex("ENG102").getLabel());
-        Log.d("graphMessage", "Distance to 2: " + dijkstra.getDistanceTo(graph.getVertex("ENG107").getLabel()));
-        Log.d("graphMessage", "Path to 2: " + dijkstra.getPathTo(graph.getVertex("ENG107").getLabel()));
-        Log.d("graphMessage", "X: " + graph.getVertex("ENG256").getCordinateX() + " Y: " + graph.getVertex("ENG256").getCordinateY());
-
-
     }
 }
