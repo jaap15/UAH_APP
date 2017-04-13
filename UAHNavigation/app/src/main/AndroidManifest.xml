@@ -16,32 +16,31 @@
 
     <application
         android:allowBackup="false"
+        android:background="#0077C8"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:background="#0077C8"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-        </activity>
-        <activity android:name=".SplashScreenActivity"
+        <activity android:name=".MainActivity"></activity>
+        <activity
+            android:name=".SplashScreenActivity"
             android:theme="@style/SplashTheme">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <receiver android:name="edu.uah.uahnavigation.ProximityReceiver" >
+
+        <receiver android:name=".ProximityReceiver">
             <intent-filter>
                 <action android:name="ACTION_PROXIMITY_ALERT" />
             </intent-filter>
         </receiver>
+
         <activity android:name=".ClassTabActivity" />
         <activity android:name=".BuildingTabActivity" />
         <activity android:name=".InteriorNavigationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -57,9 +56,14 @@
 
         <activity
             android:name=".ExternalNavigationActivity"
-            android:label="@string/title_activity_external_navigation">
-        </activity>
-        <activity android:name=".ImageViewer">
+            android:label="@string/title_activity_external_navigation"></activity>
+        <activity android:name=".ImageViewer"></activity>
+        <activity android:name=".testInteriorActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

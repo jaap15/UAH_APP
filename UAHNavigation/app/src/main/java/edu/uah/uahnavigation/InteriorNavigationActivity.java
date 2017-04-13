@@ -1,5 +1,6 @@
 package edu.uah.uahnavigation;
 
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import java.io.BufferedReader;
@@ -30,6 +32,7 @@ public class InteriorNavigationActivity extends AppCompatActivity {
     private ImageView imageView, up, down;
     private String tmpFolderPath;
     private String startingFloor;
+    private Button back;
 
     int current = 0;
     String[] images;
@@ -40,12 +43,19 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interior_navigation);
 
+        Intent intent = getIntent();
+        final String sourceName = intent.getStringExtra("source");
+        Log.d("iMessage", "source " + sourceName);
+        final String destinationName = intent.getStringExtra("destination");
+        Log.d("iMessage", "destination " + destinationName);
+
         tmpFolderPath = getFilesDir() + "/" + "navigation";
         final AssetManager assetManager = getAssets();
 
         imageView = (ImageView)findViewById(R.id.imageViewFloorPlan);
         up = (ImageView)findViewById(R.id.imageViewUp);
         down = (ImageView)findViewById(R.id.imageViewDown);
+        back = (Button)findViewById(R.id.buttonBack);
 
         File direct = new File(tmpFolderPath);
 
@@ -55,11 +65,11 @@ public class InteriorNavigationActivity extends AppCompatActivity {
 
         graph = new Graph();
         readInputFile();
-        dijkstra = new Dijkstra(graph, graph.getVertex("E102").getLabel());
-        Log.d("graphMessage", "Distance to 2: " + dijkstra.getDistanceTo(graph.getVertex("ENG107").getLabel()));
-        Log.d("graphMessage", "Path to 2: " + dijkstra.getPathTo(graph.getVertex("ENG207").getLabel()));
-        Log.d("graphMessage", "X: " + graph.getVertex("ENG256").getCordinateX() + " Y: " + graph.getVertex("ENG256").getCordinateY());
-        path = (LinkedList<Vertex>) dijkstra.getPathTo("ENG207");
+        dijkstra = new Dijkstra(graph, graph.getVertex(sourceName).getLabel());
+        Log.d("graphMessage", "Distance to 2: " + dijkstra.getDistanceTo(graph.getVertex(destinationName).getLabel()));
+        Log.d("graphMessage", "Path to 2: " + dijkstra.getPathTo(graph.getVertex(destinationName).getLabel()));
+        Log.d("graphMessage", "X: " + graph.getVertex(destinationName).getCordinateX() + " Y: " + graph.getVertex(destinationName).getCordinateY());
+        path = (LinkedList<Vertex>) dijkstra.getPathTo(destinationName);
 
 
         try{
@@ -163,6 +173,14 @@ public class InteriorNavigationActivity extends AppCompatActivity {
 
                 }
 
+            }
+        });
+
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                goBack(v);
             }
         });
 
@@ -385,5 +403,12 @@ public class InteriorNavigationActivity extends AppCompatActivity {
             Log.d("aMessage", "Exception");
             e.printStackTrace();
         }
+    }
+
+    public void goBack(View v)
+    {
+        Intent i = new Intent(getApplicationContext(), testInteriorActivity.class);
+        startActivity(i);
+        finish();
     }
 }
