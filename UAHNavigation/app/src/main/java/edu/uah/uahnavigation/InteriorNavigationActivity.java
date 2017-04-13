@@ -10,27 +10,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.FileOutputStream;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Scanner;
 
 
 public class InteriorNavigationActivity extends AppCompatActivity {
 
     private Graph graph;
     private Dijkstra dijkstra;
+    private ImageView imageView, up, down;
+
+    int current = 0;
+    String[] images;
 
 
     @Override
@@ -38,9 +34,125 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interior_navigation);
 
+        final AssetManager assetManager = getAssets();
+
+        imageView = (ImageView)findViewById(R.id.imageViewFloorPlan);
+        up = (ImageView)findViewById(R.id.imageViewUp);
+        down = (ImageView)findViewById(R.id.imageViewDown);
+
         graph = new Graph();
         readInputFile();
         drawPath();
+        try{
+            images =assetManager.list("InteriorNavigationResources/ENG/FloorPlans");
+            Log.d("iMessage", "List " + images.length);
+        }catch (Exception e)
+        {
+            Log.d("iMessage", "Inside list of images catch");
+            e.printStackTrace();
+        }
+
+//        try{
+//
+//            InputStream inStream = assetManager.open("InteriorNavigationResources/ENG/FloorPlans/" + images[current]);
+//            Bitmap bitmap = BitmapFactory.decodeStream(inStream);
+//            imageView.setImageBitmap(bitmap);
+//        }catch (IOException e){
+//            e.printStackTrace();
+//        }
+
+        for(int i = 0; i < images.length; i++)
+        {
+            Log.d("iMessage", "Name: " + images[i]);
+        }
+
+        up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+
+                if(current<images.length-1){
+                    Log.d("iMessage", "If of up: " + current);
+                    current++;
+                    Log.d("iMessage", "After ++ of up: " + current);
+                    if(current==images.length-1)
+                    {
+                        up.setVisibility(View.GONE);
+                        InputStream inStream = null;
+                        try{
+                            inStream = assetManager.open("InteriorNavigationResources/ENG/FloorPlans/" + images[current]);
+                            Log.d("iMessage", "Up Loading image: " + images[current]);
+                        }catch (IOException e){
+                            e.printStackTrace();
+                        }
+
+                        Bitmap bitmap = BitmapFactory.decodeStream(inStream);
+                        imageView.setImageBitmap(bitmap);
+                    }
+                    else
+                    {
+                        down.setVisibility(View.VISIBLE);
+                        InputStream inStream = null;
+                        try{
+                            inStream = assetManager.open("InteriorNavigationResources/ENG/FloorPlans/" + images[current]);
+                            Log.d("iMessage", "Up Loading image: " + images[current]);
+                        }catch (IOException e){
+                            e.printStackTrace();
+                        }
+
+                        Bitmap bitmap = BitmapFactory.decodeStream(inStream);
+                        imageView.setImageBitmap(bitmap);
+                    }
+                }
+                else
+                {
+                    Log.d("iMessage", "Else of up: " + current);
+                }
+
+            }
+        });
+
+        down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                if(current > 0)
+                {
+                    current--;
+                    if(current == 0)
+                    {
+                        down.setVisibility(View.INVISIBLE);
+                        InputStream inStream = null;
+                        try{
+                            inStream = assetManager.open("InteriorNavigationResources/ENG/FloorPlans/" + images[current]);
+                            Log.d("iMessage", "Down Loading image: " + images[current]);
+
+                        }catch (IOException e){
+                            e.printStackTrace();
+                        }
+
+                        Bitmap bitmap = BitmapFactory.decodeStream(inStream);
+                        imageView.setImageBitmap(bitmap);
+                    }
+                    else
+                    {
+                        up.setVisibility(View.VISIBLE);
+                        InputStream inStream = null;
+                        try{
+                            inStream = assetManager.open("InteriorNavigationResources/ENG/FloorPlans/" + images[current]);
+                            Log.d("iMessage", "Down Loading image: " + images[current]);
+
+                        }catch (IOException e){
+                            e.printStackTrace();
+                        }
+
+                        Bitmap bitmap = BitmapFactory.decodeStream(inStream);
+                        imageView.setImageBitmap(bitmap);
+                    }
+
+                }
+
+            }
+        });
+
 
     }
 
@@ -48,7 +160,7 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         AssetManager assetManager = getAssets();
         InputStream inStream = null;
         try{
-            inStream = assetManager.open("InteriorNavigationResources/ENG/Floor1.png");
+            inStream = assetManager.open("InteriorNavigationResources/ENG/FloorPlans/Floor1.png");
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -57,7 +169,7 @@ public class InteriorNavigationActivity extends AppCompatActivity {
 
         Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
 
-        ImageView imageView = (ImageView)findViewById(R.id.imageViewFloorPlan);
+//        imageView = (ImageView)findViewById(R.id.imageViewFloorPlan);
         Canvas canvas = new Canvas(mutableBitmap);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(Color.RED);
@@ -67,7 +179,7 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         Log.d("graphMessage", "Distance to 2: " + dijkstra.getDistanceTo(graph.getVertex("ENG107").getLabel()));
         Log.d("graphMessage", "Path to 2: " + dijkstra.getPathTo(graph.getVertex("ENG107").getLabel()));
         Log.d("graphMessage", "X: " + graph.getVertex("ENG256").getCordinateX() + " Y: " + graph.getVertex("ENG256").getCordinateY());
-        LinkedList<Vertex> path = (LinkedList<Vertex>) dijkstra.getPathTo("ENG135");
+        LinkedList<Vertex> path = (LinkedList<Vertex>) dijkstra.getPathTo("ENG112");
 
         for(int i = 0; i < path.size()-1;i++)
         {
