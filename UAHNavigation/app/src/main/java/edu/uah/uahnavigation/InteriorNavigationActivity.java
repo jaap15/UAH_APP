@@ -44,9 +44,9 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_interior_navigation);
 
         Intent intent = getIntent();
-        final String sourceName = intent.getStringExtra("source");
+        final String sourceName = intent.getStringExtra("source").toUpperCase();
         Log.d("iMessage", "source " + sourceName);
-        final String destinationName = intent.getStringExtra("destination");
+        final String destinationName = intent.getStringExtra("destination").toUpperCase();
         Log.d("iMessage", "destination " + destinationName);
 
         tmpFolderPath = getFilesDir() + "/" + "navigation";
