@@ -202,7 +202,6 @@ public class InteriorNavigationActivity extends AppCompatActivity {
 
         Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
 
-//        imageView = (ImageView)findViewById(R.id.imageViewFloorPlan);
         Canvas canvas = new Canvas(mutableBitmap);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(Color.RED);
@@ -225,7 +224,10 @@ public class InteriorNavigationActivity extends AppCompatActivity {
             }
             else
             {
+                Log.d("drawMessage", "Drawing Line");
                 canvas.drawLine(path.get(i).getCordinateX(),path.get(i).getCordinateY(),path.get(i+1).getCordinateX(),path.get(i+1).getCordinateY(),paint);
+                Log.d("drawMessage", "Vertex1 " + path.get(i).getLabel() + " x: " + path.get(i).getCordinateX() + " y: " + path.get(i).getCordinateY());
+                Log.d("drawMessage", "Vertex2 " + path.get(i+1).getLabel() + " x: " + path.get(i+1).getCordinateX() + " y: " + path.get(i+1).getCordinateY());
                 path.remove(i);
                 sizePath--;
             }
