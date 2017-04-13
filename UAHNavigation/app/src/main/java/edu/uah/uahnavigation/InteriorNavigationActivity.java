@@ -83,9 +83,12 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         Log.d("dMessage", "d1: ");
         for(int i = 0; i < images.length; i++)
         {
-            if(path.get(0).getFloor() ==  images[i])
+            Log.d("dMessage", "Floor " + path.get(0).getFloor());
+            Log.d("dMessage", "images[i] " + images[i]);
+            if(path.get(0).getFloor().toString().equalsIgnoreCase(images[i]))
             {
                 current =  i;
+                Log.d("dMessage", "Setting current to " + i);
             }
         }
         Log.d("dMessage", "d2: ");
@@ -101,9 +104,11 @@ public class InteriorNavigationActivity extends AppCompatActivity {
             {
                 isStairs = false;
             }
+            Log.d("iMessage", "draw calls: " + i);
             drawPath2(images[i],isStairs);
         }
         Log.d("dMessage", "d3: ");
+        Log.d("dMessage", "current: " + current);
         try{
             Log.d("dMessage", "Image: " + tmpFolderPath +"/" + images[current]);
             Bitmap bitmap = BitmapFactory.decodeFile(tmpFolderPath +"/" + images[current]);
@@ -190,57 +195,64 @@ public class InteriorNavigationActivity extends AppCompatActivity {
     }
 
     private void drawPath2(String imageName,boolean startStairs){
+        Log.d("iMessage", "drawPath2 d1: " + imageName + startStairs);
         AssetManager assetManager = getAssets();
         InputStream inStream = null;
         try{
+            Log.d("iMessage", "drawPath2 d2");
             inStream = assetManager.open("InteriorNavigationResources/ENG/FloorPlans/"+ imageName);
+            Log.d("iMessage", "drawPath2 d3");
         }catch (IOException e){
+            Log.d("iMessage", "drawPath2 d2 catch");
             e.printStackTrace();
         }
-
+        Log.d("iMessage", "drawPath2 d4");
         Bitmap bitmap = BitmapFactory.decodeStream(inStream);
-
+        Log.d("iMessage", "drawPath2 d5");
         Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
 
+        Log.d("iMessage", "drawPath2 d6");
         Canvas canvas = new Canvas(mutableBitmap);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(Color.RED);
         paint.setStrokeWidth(15);
 
-        int sizePath = path.size()-1;
-        while( !path.isEmpty())
-        {
-            int i = 0;
-            Log.d("graphMessage", "Vertex " + i + ": " + path.get(i));
+        if(path.get(0).getFloor().toString().equalsIgnoreCase(imageName)) {
+            int sizePath = path.size() - 1;
+            Log.d("iMessage", "drawPath2 d7 size: " + sizePath);
+            while (!path.isEmpty()) {
+                int i = 0;
+                Log.d("graphMessage", "Vertex " + i + ": " + path.get(i));
 
 
-            if((!startStairs && path.get(i).getLabel().startsWith("S")) || path.size() == 1)
-            {
-                paint.setARGB(200,70,185,99);
-                canvas.drawCircle(path.get(i).getCordinateX(),path.get(i).getCordinateY(), 20, paint);
-                path.remove(i);
-                sizePath--;
-                break;
+                if ((!startStairs && path.get(i).getLabel().startsWith("S")) || path.size() == 1) {
+                    paint.setARGB(200, 70, 185, 99);
+                    canvas.drawCircle(path.get(i).getCordinateX(), path.get(i).getCordinateY(), 20, paint);
+                    path.remove(i);
+                    sizePath--;
+                    break;
+                } else {
+                    Log.d("drawMessage", "Drawing Line");
+                    canvas.drawLine(path.get(i).getCordinateX(), path.get(i).getCordinateY(), path.get(i + 1).getCordinateX(), path.get(i + 1).getCordinateY(), paint);
+                    Log.d("drawMessage", "Vertex1 " + path.get(i).getLabel() + " x: " + path.get(i).getCordinateX() + " y: " + path.get(i).getCordinateY());
+                    Log.d("drawMessage", "Vertex2 " + path.get(i + 1).getLabel() + " x: " + path.get(i + 1).getCordinateX() + " y: " + path.get(i + 1).getCordinateY());
+                    path.remove(i);
+                    sizePath--;
+                }
+
             }
-            else
-            {
-                Log.d("drawMessage", "Drawing Line");
-                canvas.drawLine(path.get(i).getCordinateX(),path.get(i).getCordinateY(),path.get(i+1).getCordinateX(),path.get(i+1).getCordinateY(),paint);
-                Log.d("drawMessage", "Vertex1 " + path.get(i).getLabel() + " x: " + path.get(i).getCordinateX() + " y: " + path.get(i).getCordinateY());
-                Log.d("drawMessage", "Vertex2 " + path.get(i+1).getLabel() + " x: " + path.get(i+1).getCordinateX() + " y: " + path.get(i+1).getCordinateY());
-                path.remove(i);
-                sizePath--;
-            }
-
         }
 
-
         try {
+            Log.d("iMessage", "drawPath2 d8");
             OutputStream out = new FileOutputStream(this.tmpFolderPath +"/" + imageName);
+            Log.d("iMessage", "drawPath2 d9");
             mutableBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            Log.d("iMessage", "drawPath2 d10");
             out.close();
         }catch (IOException e)
         {
+            Log.d("iMessage", "drawPath2 d8 catch");
             e.printStackTrace();
         }
     }
@@ -249,7 +261,7 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         AssetManager assetManager = getAssets();
         InputStream inStream = null;
         try{
-            inStream = assetManager.open("InteriorNavigationResources/ENG/FloorPlans/Floor1.png");
+            inStream = assetManager.open("InteriorNavigationResources/ENG/FloorPlans/Floor1.PNG");
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -257,8 +269,6 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         Bitmap bitmap = BitmapFactory.decodeStream(inStream);
 
         Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-
-//        imageView = (ImageView)findViewById(R.id.imageViewFloorPlan);
         Canvas canvas = new Canvas(mutableBitmap);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(Color.RED);
@@ -361,8 +371,8 @@ public class InteriorNavigationActivity extends AppCompatActivity {
                         graph.addVertex(new Vertex(SourceNode), false);
                         graph.addVertex(new Vertex(DestinationNode), false);
 
-                        graph.getVertex(SourceNode).setFloor(FloorPlan + ".png");
-                        graph.getVertex(DestinationNode).setFloor(FloorPlan + ".png");
+                        graph.getVertex(SourceNode).setFloor(FloorPlan);
+                        graph.getVertex(DestinationNode).setFloor(FloorPlan);
                         Edge e = new Edge(graph.getVertex(SourceNode), graph.getVertex(DestinationNode), Weight);
                         graph.addEdge(e.getOne(), e.getTwo(), e.getWeight());
                         count++;
