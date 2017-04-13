@@ -22,6 +22,7 @@ public class Vertex {
     private String label;
     private int x;
     private int y;
+    private String floor;
 
     /**
      *
@@ -160,6 +161,16 @@ public class Vertex {
     public int getCordinateY()
     {
         return this.y;
+    }
+
+    public void setFloor(String floor)
+    {
+        this.floor = floor;
+    }
+
+    public String getFloor()
+    {
+        return this.floor;
     }
 
 }
