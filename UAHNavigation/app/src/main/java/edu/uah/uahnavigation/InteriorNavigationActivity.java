@@ -219,6 +219,8 @@ public class InteriorNavigationActivity extends AppCompatActivity {
             {
                 paint.setARGB(200,70,185,99);
                 canvas.drawCircle(path.get(i).getCordinateX(),path.get(i).getCordinateY(), 20, paint);
+                path.remove(i);
+                sizePath--;
                 break;
             }
             else
@@ -357,15 +359,8 @@ public class InteriorNavigationActivity extends AppCompatActivity {
                         graph.addVertex(new Vertex(SourceNode), false);
                         graph.addVertex(new Vertex(DestinationNode), false);
 
-                        if(!SourceNode.startsWith("S"))
-                        {
-                            graph.getVertex(SourceNode).setFloor(FloorPlan + ".png");
-                        }
-                        if(!DestinationNode.startsWith("S"))
-                        {
-                            graph.getVertex(DestinationNode).setFloor(FloorPlan + ".png");
-                        }
-
+                        graph.getVertex(SourceNode).setFloor(FloorPlan + ".png");
+                        graph.getVertex(DestinationNode).setFloor(FloorPlan + ".png");
                         Edge e = new Edge(graph.getVertex(SourceNode), graph.getVertex(DestinationNode), Weight);
                         graph.addEdge(e.getOne(), e.getTwo(), e.getWeight());
                         count++;
