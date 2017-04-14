@@ -95,14 +95,13 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         for(int i = 0; i < images.length; i++)
         {
             Log.d("iMessage", "Name: " + images[i]);
-            boolean isStairs;
-            if( path.get(0).getLabel().startsWith("S"))
-            {
-                isStairs = true;
-            }
-            else
-            {
-                isStairs = false;
+            boolean isStairs = false;
+            if(!path.isEmpty()) {
+                if (path.get(0).getLabel().startsWith("S")) {
+                    isStairs = true;
+                } else {
+                    isStairs = false;
+                }
             }
             Log.d("iMessage", "draw calls: " + i);
             drawPath2(images[i],isStairs);
@@ -217,30 +216,37 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         paint.setColor(Color.RED);
         paint.setStrokeWidth(15);
 
-        if(path.get(0).getFloor().toString().equalsIgnoreCase(imageName)) {
-            int sizePath = path.size() - 1;
-            Log.d("iMessage", "drawPath2 d7 size: " + sizePath);
-            while (!path.isEmpty()) {
-                int i = 0;
-                Log.d("graphMessage", "Vertex " + i + ": " + path.get(i));
+        if(!path.isEmpty()) {
+            if (path.get(0).getFloor().toString().equalsIgnoreCase(imageName)) {
+                int sizePath = path.size() - 1;
+                Log.d("iMessage", "drawPath2 d7 size: " + sizePath);
+                while (!path.isEmpty()) {
+                    int i = 0;
+                    Log.d("graphMessage", "Vertex " + i + ": " + path.get(i));
 
 
-                if ((!startStairs && path.get(i).getLabel().startsWith("S")) || path.size() == 1) {
-                    paint.setARGB(200, 70, 185, 99);
-                    canvas.drawCircle(path.get(i).getCordinateX(), path.get(i).getCordinateY(), 20, paint);
-                    path.remove(i);
-                    sizePath--;
-                    break;
-                } else {
-                    Log.d("drawMessage", "Drawing Line");
-                    canvas.drawLine(path.get(i).getCordinateX(), path.get(i).getCordinateY(), path.get(i + 1).getCordinateX(), path.get(i + 1).getCordinateY(), paint);
-                    Log.d("drawMessage", "Vertex1 " + path.get(i).getLabel() + " x: " + path.get(i).getCordinateX() + " y: " + path.get(i).getCordinateY());
-                    Log.d("drawMessage", "Vertex2 " + path.get(i + 1).getLabel() + " x: " + path.get(i + 1).getCordinateX() + " y: " + path.get(i + 1).getCordinateY());
-                    path.remove(i);
-                    sizePath--;
+                    if ((!startStairs && path.get(i).getLabel().startsWith("S")) || path.size() == 1) {
+                        Log.d("drawMessage", "Ending draw");
+                        paint.setARGB(200, 70, 185, 99);
+                        canvas.drawCircle(path.get(i).getCordinateX(), path.get(i).getCordinateY(), 20, paint);
+                        path.remove(i);
+                        sizePath--;
+                        break;
+                    } else {
+                        Log.d("drawMessage", "Drawing Line");
+                        canvas.drawLine(path.get(i).getCordinateX(), path.get(i).getCordinateY(), path.get(i + 1).getCordinateX(), path.get(i + 1).getCordinateY(), paint);
+                        Log.d("drawMessage", "Vertex1 " + path.get(i).getLabel() + " x: " + path.get(i).getCordinateX() + " y: " + path.get(i).getCordinateY());
+                        Log.d("drawMessage", "Vertex2 " + path.get(i + 1).getLabel() + " x: " + path.get(i + 1).getCordinateX() + " y: " + path.get(i + 1).getCordinateY());
+                        path.remove(i);
+                        sizePath--;
+                    }
+
                 }
-
             }
+        }
+        else
+        {
+            Log.d("iMessage", "drawPath2 path is empty");
         }
 
         try {
