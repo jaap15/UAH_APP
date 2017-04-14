@@ -201,7 +201,18 @@ public class InteriorNavigationActivity extends AppCompatActivity {
 
     private void setFloorName(String imgName)
     {
-        floorName.setText(imgName.substring(0, imgName.lastIndexOf('.')));
+        imgName = imgName.substring(0, imgName.lastIndexOf('.'));
+        String floorNum = imgName.substring(imgName.length() - 1);
+        imgName = imgName.substring(0, imgName.length() - 1);
+        imgName = imgName + " "  + floorNum;
+        if(floorNum.equalsIgnoreCase("0"))
+        {
+            floorName.setText("Basement");
+        }
+        else
+        {
+            floorName.setText(imgName);
+        }
     }
 
     private void drawPath2(String imageName,boolean startStairs){
