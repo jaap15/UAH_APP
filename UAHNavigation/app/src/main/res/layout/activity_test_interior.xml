@@ -41,10 +41,25 @@
             android:inputType="textPersonName"
             android:text="ENG207" />
 
+        <TextView
+            android:id="@+id/textViewBuilding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Building" />
+
+        <EditText
+            android:id="@+id/editTextBuilding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="ENG" />
+
         <Button
             android:id="@+id/buttonFind"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Find" />
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,6 +37,9 @@ public class InteriorNavigationActivity extends AppCompatActivity {
     private String startingFloor;
     private Button back;
     private TextView floorName;
+    private String sourceName ,destinationName ,buildingName, assetFloorPath;
+    private String assetBasePath;
+    private boolean graphExist = false;
 
     int current = 0;
     String[] images;
@@ -47,10 +51,15 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_interior_navigation);
 
         Intent intent = getIntent();
-        final String sourceName = intent.getStringExtra("source").toUpperCase();
+        sourceName = intent.getStringExtra("source").toUpperCase();
         Log.d("iMessage", "source " + sourceName);
-        final String destinationName = intent.getStringExtra("destination").toUpperCase();
+        destinationName = intent.getStringExtra("destination").toUpperCase();
         Log.d("iMessage", "destination " + destinationName);
+        buildingName = intent.getStringExtra("building").toUpperCase();
+        Log.d("iMessage", "building " + buildingName);
+
+        assetBasePath = "InteriorNavigationResources/" + buildingName + "/";
+        assetFloorPath = assetBasePath + "FloorPlans";
 
         tmpFolderPath = getFilesDir() + "/" + "navigation";
         final AssetManager assetManager = getAssets();
@@ -68,16 +77,20 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         }
 
         graph = new Graph();
-        readInputFile();
-        dijkstra = new Dijkstra(graph, graph.getVertex(sourceName).getLabel());
-        Log.d("graphMessage", "Distance to 2: " + dijkstra.getDistanceTo(graph.getVertex(destinationName).getLabel()));
-        Log.d("graphMessage", "Path to 2: " + dijkstra.getPathTo(graph.getVertex(destinationName).getLabel()));
-        Log.d("graphMessage", "X: " + graph.getVertex(destinationName).getCordinateX() + " Y: " + graph.getVertex(destinationName).getCordinateY());
-        path = (LinkedList<Vertex>) dijkstra.getPathTo(destinationName);
+        graphExist = readInputFile();
 
+        Log.d("iMessage", "graphExist: " + graphExist);
+        if(graphExist)
+        {
+            dijkstra = new Dijkstra(graph, graph.getVertex(sourceName).getLabel());
+            Log.d("graphMessage", "Distance to 2: " + dijkstra.getDistanceTo(graph.getVertex(destinationName).getLabel()));
+            Log.d("graphMessage", "Path to 2: " + dijkstra.getPathTo(graph.getVertex(destinationName).getLabel()));
+            Log.d("graphMessage", "X: " + graph.getVertex(destinationName).getCordinateX() + " Y: " + graph.getVertex(destinationName).getCordinateY());
+            path = (LinkedList<Vertex>) dijkstra.getPathTo(destinationName);
+        }
 
         try{
-            images =assetManager.list("InteriorNavigationResources/ENG/FloorPlans");
+            images =assetManager.list(assetFloorPath);
             Log.d("iMessage", "List " + images.length);
         }catch (Exception e)
         {
@@ -87,24 +100,38 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         Log.d("dMessage", "d1: ");
         for(int i = 0; i < images.length; i++)
         {
-            Log.d("dMessage", "Floor " + path.get(0).getFloor());
             Log.d("dMessage", "images[i] " + images[i]);
-            if(path.get(0).getFloor().toString().equalsIgnoreCase(images[i]))
+            if(graphExist)
             {
-                current =  i;
-                Log.d("dMessage", "Setting current to " + i);
+                if (path.get(0).getFloor().toString().equalsIgnoreCase(images[i])) {
+                    current = i;
+                    Log.d("dMessage", "Setting current to " + i);
+                }
             }
+            else
+            {
+                String flrName = images[i].substring(0, images[i].lastIndexOf('.'));
+                String floorNum = flrName.substring(flrName.length() - 1);
+                if(floorNum.equalsIgnoreCase("0"))
+                {
+                    current = 1;
+                }
+            }
+
         }
         Log.d("dMessage", "d2: ");
         for(int i = 0; i < images.length; i++)
         {
             Log.d("iMessage", "Name: " + images[i]);
             boolean isStairs = false;
-            if(!path.isEmpty()) {
-                if (path.get(0).getLabel().startsWith("S")) {
-                    isStairs = true;
-                } else {
-                    isStairs = false;
+            if(graphExist)
+            {
+                if (!path.isEmpty()) {
+                    if (path.get(0).getLabel().startsWith("S")) {
+                        isStairs = true;
+                    } else {
+                        isStairs = false;
+                    }
                 }
             }
             Log.d("iMessage", "draw calls: " + i);
@@ -221,7 +248,7 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         InputStream inStream = null;
         try{
             Log.d("iMessage", "drawPath2 d2");
-            inStream = assetManager.open("InteriorNavigationResources/ENG/FloorPlans/"+ imageName);
+            inStream = assetManager.open(assetFloorPath + "/"+ imageName);
             Log.d("iMessage", "drawPath2 d3");
         }catch (IOException e){
             Log.d("iMessage", "drawPath2 d2 catch");
@@ -238,39 +265,40 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         paint.setColor(Color.RED);
         paint.setStrokeWidth(15);
 
-        if(!path.isEmpty()) {
-            if (path.get(0).getFloor().toString().equalsIgnoreCase(imageName)) {
-                int sizePath = path.size() - 1;
-                Log.d("iMessage", "drawPath2 d7 size: " + sizePath);
-                while (!path.isEmpty()) {
-                    int i = 0;
-                    Log.d("graphMessage", "Vertex " + i + ": " + path.get(i));
-
-
-                    if ((!startStairs && path.get(i).getLabel().startsWith("S")) || path.size() == 1) {
-                        Log.d("drawMessage", "Ending draw");
-                        paint.setARGB(200, 70, 185, 99);
-                        canvas.drawCircle(path.get(i).getCordinateX(), path.get(i).getCordinateY(), 20, paint);
-                        path.remove(i);
-                        sizePath--;
-                        break;
-                    } else {
-                        Log.d("drawMessage", "Drawing Line");
-                        canvas.drawLine(path.get(i).getCordinateX(), path.get(i).getCordinateY(), path.get(i + 1).getCordinateX(), path.get(i + 1).getCordinateY(), paint);
-                        Log.d("drawMessage", "Vertex1 " + path.get(i).getLabel() + " x: " + path.get(i).getCordinateX() + " y: " + path.get(i).getCordinateY());
-                        Log.d("drawMessage", "Vertex2 " + path.get(i + 1).getLabel() + " x: " + path.get(i + 1).getCordinateX() + " y: " + path.get(i + 1).getCordinateY());
-                        path.remove(i);
-                        sizePath--;
-                    }
-
-                }
-            }
-        }
-        else
+        if(graphExist)
         {
-            Log.d("iMessage", "drawPath2 path is empty");
-        }
+            if (!path.isEmpty()) {
+                if (path.get(0).getFloor().toString().equalsIgnoreCase(imageName)) {
+                    int sizePath = path.size() - 1;
+                    Log.d("iMessage", "drawPath2 d7 size: " + sizePath);
+                    while (!path.isEmpty()) {
+                        int i = 0;
+                        Log.d("graphMessage", "Vertex " + i + ": " + path.get(i));
 
+
+                        if ((!startStairs && path.get(i).getLabel().startsWith("S")) || path.size() == 1) {
+                            Log.d("drawMessage", "Ending draw");
+                            paint.setARGB(200, 70, 185, 99);
+                            canvas.drawCircle(path.get(i).getCordinateX(), path.get(i).getCordinateY(), 20, paint);
+                            path.remove(i);
+                            sizePath--;
+                            break;
+                        } else {
+                            Log.d("drawMessage", "Drawing Line");
+                            canvas.drawLine(path.get(i).getCordinateX(), path.get(i).getCordinateY(), path.get(i + 1).getCordinateX(), path.get(i + 1).getCordinateY(), paint);
+                            Log.d("drawMessage", "Vertex1 " + path.get(i).getLabel() + " x: " + path.get(i).getCordinateX() + " y: " + path.get(i).getCordinateY());
+                            Log.d("drawMessage", "Vertex2 " + path.get(i + 1).getLabel() + " x: " + path.get(i + 1).getCordinateX() + " y: " + path.get(i + 1).getCordinateY());
+                            path.remove(i);
+                            sizePath--;
+                        }
+
+                    }
+                }
+            } else {
+                Log.d("iMessage", "drawPath2 path is empty");
+            }
+
+        }
         try {
             Log.d("iMessage", "drawPath2 d8");
             OutputStream out = new FileOutputStream(this.tmpFolderPath +"/" + imageName);
@@ -285,63 +313,11 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         }
     }
 
-    private void drawPath(){
-        AssetManager assetManager = getAssets();
-        InputStream inStream = null;
-        try{
-            inStream = assetManager.open("InteriorNavigationResources/ENG/FloorPlans/Floor1.PNG");
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-
-        Bitmap bitmap = BitmapFactory.decodeStream(inStream);
-
-        Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-        Canvas canvas = new Canvas(mutableBitmap);
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(Color.RED);
-        paint.setStrokeWidth(15);
-
-        int sizePath = path.size()-1;
-        while( !path.isEmpty())
-        {
-            int i = 0;
-            Log.d("graphMessage", "Vertex " + i + ": " + path.get(i));
-
-
-            if(path.get(i).getLabel().startsWith("S") || path.size() == 1)
-            {
-                paint.setARGB(200,70,185,99);
-                canvas.drawCircle(path.get(i).getCordinateX(),path.get(i).getCordinateY(), 20, paint);
-                break;
-            }
-            else
-            {
-                canvas.drawLine(path.get(i).getCordinateX(),path.get(i).getCordinateY(),path.get(i+1).getCordinateX(),path.get(i+1).getCordinateY(),paint);
-                path.remove(i);
-                sizePath--;
-            }
-
-        }
-
-
-        imageView.setImageBitmap(mutableBitmap);
-
-        try {
-            OutputStream out = new FileOutputStream(this.tmpFolderPath +"/testing.png");
-            mutableBitmap.compress(Bitmap.CompressFormat.PNG, 80, out);
-            out.close();
-        }catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    private void readInputFile() {
+    private boolean readInputFile() {
         int START_LINE = 2;
         AssetManager mngr = getAssets();
         try{
-            InputStream in = mngr.open("InteriorNavigationResources/ENG/Graph.txt");   //Need to generalize this path
+            InputStream in = mngr.open(assetBasePath + "Graph.txt");   //Need to generalize this path
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             StringBuilder out = new StringBuilder();
             String line = "";
@@ -434,10 +410,17 @@ public class InteriorNavigationActivity extends AppCompatActivity {
             Log.d("aMessage","Total Edges: " + TotalEdges);
             Log.d("aMessage","Total Source Nodes: " + TotalSources);
 
-        } catch(IOException e) {
+        }
+        catch (FileNotFoundException e){
+            Log.d("aMessage", "Graph.txt doesn't exist!!");
+            return false;
+        }
+        catch(IOException e) {
             Log.d("aMessage", "Exception");
             e.printStackTrace();
         }
+
+        return true;
     }
 
     public void goBack(View v)

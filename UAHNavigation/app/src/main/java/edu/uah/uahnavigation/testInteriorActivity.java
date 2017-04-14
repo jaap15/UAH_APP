@@ -10,7 +10,7 @@ import android.widget.EditText;
 public class testInteriorActivity extends AppCompatActivity {
 
     Button find;
-    EditText sourceEditText, destinationEditText;
+    EditText sourceEditText, destinationEditText, buildingEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +20,7 @@ public class testInteriorActivity extends AppCompatActivity {
         find = (Button)findViewById(R.id.buttonFind);
         sourceEditText = (EditText)findViewById(R.id.editTextStart);
         destinationEditText = (EditText)findViewById(R.id.editTextDest);
+        buildingEditText = (EditText)findViewById(R.id.editTextBuilding);
 
 
         find.setOnClickListener(new View.OnClickListener() {
@@ -28,14 +29,17 @@ public class testInteriorActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(), InteriorNavigationActivity.class);
                 String s = sourceEditText.getText().toString();
                 String d = destinationEditText.getText().toString();
-                if(!s.isEmpty() && !d.isEmpty())
+                String b = buildingEditText.getText().toString();
+                if(!s.isEmpty() && !d.isEmpty()&& !b.isEmpty())
                 {
                     i.putExtra("source", s);
                     i.putExtra("destination", d);
+                    i.putExtra("building", b);
                 }
                 else {
                     i.putExtra("source", "E102");
                     i.putExtra("destination", "ENG246");
+                    i.putExtra("building", "ENG");
                 }
                 startActivity(i);
             }
