@@ -9,10 +9,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.test.suitebuilder.TestMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,6 +35,7 @@ public class InteriorNavigationActivity extends AppCompatActivity {
     private String tmpFolderPath;
     private String startingFloor;
     private Button back;
+    private TextView floorName;
 
     int current = 0;
     String[] images;
@@ -56,6 +59,7 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         up = (ImageView)findViewById(R.id.imageViewUp);
         down = (ImageView)findViewById(R.id.imageViewDown);
         back = (Button)findViewById(R.id.buttonBack);
+        floorName = (TextView)findViewById(R.id.textViewFloorName);
 
         File direct = new File(tmpFolderPath);
 
@@ -109,6 +113,7 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         Log.d("dMessage", "d3: ");
         Log.d("dMessage", "current: " + current);
         try{
+            setFloorName(images[current]);
             Log.d("dMessage", "Image: " + tmpFolderPath +"/" + images[current]);
             Bitmap bitmap = BitmapFactory.decodeFile(tmpFolderPath +"/" + images[current]);
             imageView.setImageBitmap(bitmap);
@@ -142,7 +147,7 @@ public class InteriorNavigationActivity extends AppCompatActivity {
                     {
                         down.setVisibility(View.VISIBLE);
                     }
-
+                    setFloorName(images[current]);
                     Bitmap bitmap = BitmapFactory.decodeFile(tmpFolderPath +"/" + images[current]);
                     Log.d("iMessage", "Up Loading image: " + images[current]);
                     imageView.setImageBitmap(bitmap);
@@ -171,6 +176,7 @@ public class InteriorNavigationActivity extends AppCompatActivity {
                     {
                         up.setVisibility(View.VISIBLE);
                     }
+                    setFloorName(images[current]);
                     Bitmap bitmap = BitmapFactory.decodeFile(tmpFolderPath +"/" + images[current]);
                     Log.d("iMessage", "Else Down Loading image: " + images[current]);
                     imageView.setImageBitmap(bitmap);
@@ -191,6 +197,11 @@ public class InteriorNavigationActivity extends AppCompatActivity {
 //        direct.delete();
 
 
+    }
+
+    private void setFloorName(String imgName)
+    {
+        floorName.setText(imgName.substring(0, imgName.lastIndexOf('.')));
     }
 
     private void drawPath2(String imageName,boolean startStairs){
