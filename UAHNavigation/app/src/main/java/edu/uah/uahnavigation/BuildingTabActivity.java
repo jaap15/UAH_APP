@@ -155,31 +155,4 @@ public class BuildingTabActivity extends BaseActivity  implements View.OnClickLi
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        switch (id)
-        {
-            case R.id.Swap_Semesters:
-                Toast.makeText(getApplicationContext(),"Swap Semesters",Toast.LENGTH_LONG).show();
-                return true;
-            case R.id.Campus_Map:
-                Toast.makeText(getApplicationContext(),"Campus Map",Toast.LENGTH_LONG).show();
-                return true;
-            case R.id.About:
-                Toast.makeText(getApplicationContext(),"About",Toast.LENGTH_LONG).show();
-                return true;
-            case R.id.Contact_Us:
-                Toast.makeText(getApplicationContext(),"Contact Us",Toast.LENGTH_LONG).show();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 }

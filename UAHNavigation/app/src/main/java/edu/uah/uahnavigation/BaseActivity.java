@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 public class BaseActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
@@ -116,19 +117,17 @@ public class BaseActivity extends AppCompatActivity implements
         switch (id)
         {
             case R.id.Swap_Semesters:
-                startActivity(new Intent(this, MainActivity.class));
+                Toast.makeText(getApplicationContext(),"Swap Semesters",Toast.LENGTH_LONG).show();
                 return true;
-
             case R.id.Campus_Map:
-//                startActivity(new Intent(this, OtherActivity.class));
+                Toast.makeText(getApplicationContext(),"Campus Map",Toast.LENGTH_LONG).show();
+                startActivity(new Intent(this, CampusMapActivity.class));
                 return true;
-
             case R.id.About:
-//                startActivity(new Intent(this, NoHamburger.class));
+                Toast.makeText(getApplicationContext(),"About",Toast.LENGTH_LONG).show();
                 return true;
-
             case R.id.Contact_Us:
-//                startActivity(new Intent(this, NoToolbar.class));
+                Toast.makeText(getApplicationContext(),"Contact Us",Toast.LENGTH_LONG).show();
                 return true;
         }
 
