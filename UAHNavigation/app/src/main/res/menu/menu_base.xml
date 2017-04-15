@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/action_main"
+        android:id="@+id/Swap_Semesters"
         android:icon="@android:drawable/ic_btn_speak_now"
-        android:title="Main Activity"/>
+        android:title="Swap Semesters"/>
     <item
-        android:id="@+id/action_other"
+        android:id="@+id/Campus_Map"
         android:icon="@android:drawable/ic_btn_speak_now"
-        android:title="Other Activity"/>
+        android:title="Campus Map"/>
     <item
-        android:id="@+id/action_noHamburger"
+        android:id="@+id/About"
         android:icon="@android:drawable/ic_btn_speak_now"
-        android:title="No Hamburger"/>
+        android:title="About"/>
     <item
-        android:id="@+id/action_noToolbar"
+        android:id="@+id/Contact_Us"
         android:icon="@android:drawable/ic_btn_speak_now"
-        android:title="No Toolbar"/>
+        android:title="Contact Us"/>
 </menu>

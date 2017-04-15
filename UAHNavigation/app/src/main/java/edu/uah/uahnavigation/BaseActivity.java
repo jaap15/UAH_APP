@@ -115,19 +115,19 @@ public class BaseActivity extends AppCompatActivity implements
         //noinspection SimplifiableIfStatement
         switch (id)
         {
-            case R.id.action_main:
+            case R.id.Swap_Semesters:
                 startActivity(new Intent(this, MainActivity.class));
                 return true;
 
-            case R.id.action_other:
+            case R.id.Campus_Map:
 //                startActivity(new Intent(this, OtherActivity.class));
                 return true;
 
-            case R.id.action_noHamburger :
+            case R.id.About:
 //                startActivity(new Intent(this, NoHamburger.class));
                 return true;
 
-            case R.id.action_noToolbar :
+            case R.id.Contact_Us:
 //                startActivity(new Intent(this, NoToolbar.class));
                 return true;
         }

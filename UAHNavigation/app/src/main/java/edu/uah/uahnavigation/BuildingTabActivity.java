@@ -172,7 +172,7 @@ public class BuildingTabActivity extends BaseActivity  implements View.OnClickLi
         //noinspection SimplifiableIfStatement
         switch (id)
         {
-            case R.id.action_main: return true;
+            case R.id.Swap_Semesters: return true;
         }
 
         return super.onOptionsItemSelected(item);

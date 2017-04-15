@@ -10,9 +10,11 @@
 
     <style name="AppThemeDrawer" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="colorControlNormal">@android:color/white</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
