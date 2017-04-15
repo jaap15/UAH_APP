@@ -22,9 +22,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @RunWith(AndroidJUnit4.class)
 public class InteriorNavigationActivityAcceptanceTests {
 
-    @Rule
-    public ActivityTestRule<InteriorNavigationActivity> InteriorActivityRule =
-            new ActivityTestRule<>(InteriorNavigationActivity.class);
+//    @Rule
+//    public ActivityTestRule<InteriorNavigationActivity> InteriorActivityRule =
+//            new ActivityTestRule<>(InteriorNavigationActivity.class);
 
     @Test
     public void testGreet() {
