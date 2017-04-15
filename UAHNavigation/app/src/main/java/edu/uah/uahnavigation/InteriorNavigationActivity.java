@@ -275,6 +275,11 @@ public class InteriorNavigationActivity extends AppCompatActivity {
                 if (path.get(0).getFloor().toString().equalsIgnoreCase(imageName)) {
                     int sizePath = path.size() - 1;
                     Log.d("iMessage", "drawPath2 d7 size: " + sizePath);
+                    float xCoor = path.get(0).getCordinateX();
+                    float yCoor = path.get(0).getCordinateY();
+
+//                    canvas.drawCircle(path.get(0).getCordinateX(), path.get(0).getCordinateY(), 20, paint);
+
                     while (!path.isEmpty()) {
                         int i = 0;
                         Log.d("graphMessage", "Vertex " + i + ": " + path.get(i));
@@ -309,6 +314,20 @@ public class InteriorNavigationActivity extends AppCompatActivity {
                         }
 
                     }
+
+                    inStream = null;
+                    try{
+                        Log.d("destMessage", "drawPath2 d2");
+                        inStream = assetManager.open(assetImageBasePath + "sourceIcon.png");
+                        Log.d("destMessage", "drawPath2 d3");
+                    }catch (IOException e){
+                        Log.d("destMessage", "drawPath2 d2 catch");
+                        e.printStackTrace();
+                    }
+                    Log.d("destMessage", "drawPath2 d4");
+                    Bitmap sourceBitmap = BitmapFactory.decodeStream(inStream);
+
+                    canvas.drawBitmap(sourceBitmap, xCoor - (sourceBitmap.getWidth()/2), yCoor - sourceBitmap.getHeight(), null);
                 }
             } else {
                 Log.d("iMessage", "drawPath2 path is empty");
