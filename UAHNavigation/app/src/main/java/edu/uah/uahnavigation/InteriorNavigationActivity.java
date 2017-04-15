@@ -37,7 +37,7 @@ public class InteriorNavigationActivity extends AppCompatActivity {
     private String startingFloor;
     private Button back;
     private TextView floorName;
-    private String sourceName ,destinationName ,buildingName, assetFloorPath;
+    private String sourceName ,destinationName ,buildingName, assetFloorPath,assetImageBasePath;
     private String assetBasePath;
     private boolean graphExist = false;
 
@@ -58,6 +58,7 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         buildingName = intent.getStringExtra("building").toUpperCase();
         Log.d("iMessage", "building " + buildingName);
 
+        assetImageBasePath = "InteriorNavigationResources/Images/";
         assetBasePath = "InteriorNavigationResources/Buildings/" + buildingName + "/";
         assetFloorPath = assetBasePath + "FloorPlans";
 
@@ -260,10 +261,13 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
 
         Log.d("iMessage", "drawPath2 d6");
-        Canvas canvas = new Canvas(mutableBitmap);
+        Bitmap result = Bitmap.createBitmap(mutableBitmap.getWidth(),mutableBitmap.getHeight(),mutableBitmap.getConfig());
+        Canvas canvas = new Canvas(result);
+        canvas.drawBitmap(mutableBitmap,0f,0f,null);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(Color.RED);
+        paint.setColor(Color.BLUE);
         paint.setStrokeWidth(15);
+        paint.setARGB(210, 51, 102, 255);
 
         if(graphExist)
         {
@@ -278,8 +282,20 @@ public class InteriorNavigationActivity extends AppCompatActivity {
 
                         if ((!startStairs && path.get(i).getLabel().startsWith("S")) || path.size() == 1) {
                             Log.d("drawMessage", "Ending draw");
-                            paint.setARGB(200, 70, 185, 99);
-                            canvas.drawCircle(path.get(i).getCordinateX(), path.get(i).getCordinateY(), 20, paint);
+                            inStream = null;
+                            try{
+                                Log.d("destMessage", "drawPath2 d2");
+                                inStream = assetManager.open(assetImageBasePath + "destinationIcon.png");
+                                Log.d("destMessage", "drawPath2 d3");
+                            }catch (IOException e){
+                                Log.d("destMessage", "drawPath2 d2 catch");
+                                e.printStackTrace();
+                            }
+                            Log.d("destMessage", "drawPath2 d4");
+                            Bitmap destBitmap = BitmapFactory.decodeStream(inStream);
+
+                            canvas.drawBitmap(destBitmap, path.get(i).getCordinateX() - (destBitmap.getWidth()/2), path.get(i).getCordinateY() - destBitmap.getHeight(), null);
+
                             path.remove(i);
                             sizePath--;
                             break;
@@ -303,7 +319,7 @@ public class InteriorNavigationActivity extends AppCompatActivity {
             Log.d("iMessage", "drawPath2 d8");
             OutputStream out = new FileOutputStream(this.tmpFolderPath +"/" + imageName);
             Log.d("iMessage", "drawPath2 d9");
-            mutableBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            result.compress(Bitmap.CompressFormat.PNG, 100, out);
             Log.d("iMessage", "drawPath2 d10");
             out.close();
         }catch (IOException e)
