@@ -58,7 +58,7 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         buildingName = intent.getStringExtra("building").toUpperCase();
         Log.d("iMessage", "building " + buildingName);
 
-        assetBasePath = "InteriorNavigationResources/" + buildingName + "/";
+        assetBasePath = "InteriorNavigationResources/Buildings/" + buildingName + "/";
         assetFloorPath = assetBasePath + "FloorPlans";
 
         tmpFolderPath = getFilesDir() + "/" + "navigation";
