@@ -1,19 +1,21 @@
 package edu.uah.uahnavigation;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.LayoutRes;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class BaseActivity extends AppCompatActivity implements
@@ -118,6 +120,7 @@ public class BaseActivity extends AppCompatActivity implements
         {
             case R.id.Swap_Semesters:
                 Toast.makeText(getApplicationContext(),"Swap Semesters",Toast.LENGTH_LONG).show();
+                createInformationDialog("Not implemented yet!", "Close", "Swap Semesters");
                 return true;
             case R.id.Campus_Map:
                 Toast.makeText(getApplicationContext(),"Campus Map",Toast.LENGTH_LONG).show();
@@ -125,13 +128,40 @@ public class BaseActivity extends AppCompatActivity implements
                 return true;
             case R.id.About:
                 Toast.makeText(getApplicationContext(),"About",Toast.LENGTH_LONG).show();
+                createInformationDialog(Util.getAbout(), "Close", "About");
                 return true;
             case R.id.Contact_Us:
                 Toast.makeText(getApplicationContext(),"Contact Us",Toast.LENGTH_LONG).show();
+                createInformationDialog(Util.getContactUs(), "Close", "Contact Us");
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void createInformationDialog(String message, String buttonText, String title)
+    {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this, R.style.InformationDialogTheme);
+
+        builder.setTitle(title);
+
+        builder.setMessage(message);
+
+        builder.setPositiveButton(buttonText, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        android.app.AlertDialog dialog = builder.create();
+
+        dialog.show();
+        final Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        LinearLayout.LayoutParams positiveButtonLL = (LinearLayout.LayoutParams) positiveButton.getLayoutParams();
+        positiveButtonLL.gravity = Gravity.CENTER;
+        positiveButton.setLayoutParams(positiveButtonLL);
+
     }
 
 }
