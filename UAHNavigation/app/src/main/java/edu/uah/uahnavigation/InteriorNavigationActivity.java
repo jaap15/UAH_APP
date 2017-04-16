@@ -244,11 +244,11 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         imgName = imgName + " "  + floorNum;
         if(floorNum.equalsIgnoreCase("0"))
         {
-            floorName.setText("Basement");
+            floorName.setText(buildingName + ": Basement");
         }
         else
         {
-            floorName.setText(imgName);
+            floorName.setText(buildingName + ": " + imgName);
         }
     }
 
