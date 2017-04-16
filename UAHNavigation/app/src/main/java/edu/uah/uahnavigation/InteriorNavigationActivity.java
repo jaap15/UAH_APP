@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -311,20 +312,62 @@ public class InteriorNavigationActivity extends AppCompatActivity {
                     //Draw Legends
                     Paint paintText = new Paint(Paint.ANTI_ALIAS_FLAG);
                     paintText.setColor(Color.BLACK);
-                    paintText.setTextSize(25);
+                    paintText.setTextSize(15);
                     paintText.setStyle(Paint.Style.FILL);
                     paintText.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 
+                    Paint tablePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                    tablePaint.setColor(Color.BLACK);
+                    tablePaint.setStrokeWidth(8);
 
-                    canvas.drawText("Legends", 10, 20, paintText);
-                    canvas.drawBitmap(sourceBitmap, 50 - (sourceBitmap.getWidth()/2), 30, null);
-                    canvas.drawBitmap(stairsBitmap, 50 - (destBitmap.getWidth()/2), sourceBitmap.getHeight() + 40, null);
-                    canvas.drawBitmap(destBitmap, 50 - (destBitmap.getWidth()/2),stairsBitmap.getHeight() + sourceBitmap.getHeight() + 50, null);
+                    float legendYpadding = 40;
+                    float legendXpadding = 50;
+                    String legendTitle = "Legends";
+
+                    Rect legendTitleBounds = new Rect();
+                    Rect legendDescriptionBounds = new Rect();
+                    paintText.getTextBounds("Starting Position", 0 , 17, legendDescriptionBounds);
+                    paintText.setTextSize(25);
+                    paintText.getTextBounds(legendTitle, 0 , legendTitle.length(), legendTitleBounds);
+
+                    canvas.drawText(legendTitle, (legendDescriptionBounds.width()+sourceBitmap.getWidth())/2, legendYpadding, paintText);
+                    canvas.drawBitmap(sourceBitmap, legendXpadding - (sourceBitmap.getWidth()/2), legendYpadding + 10, null);
+                    canvas.drawBitmap(stairsBitmap, legendXpadding - (destBitmap.getWidth()/2), sourceBitmap.getHeight() + legendYpadding + 20, null);
+                    canvas.drawBitmap(destBitmap, legendXpadding - (destBitmap.getWidth()/2),stairsBitmap.getHeight() + sourceBitmap.getHeight() + legendYpadding + 30, null);
 
                     paintText.setTextSize(15);
-                    canvas.drawText("Starting Position", 125 - (sourceBitmap.getWidth()/2), (sourceBitmap.getHeight()/2) + 30, paintText);
-                    canvas.drawText("Go Up/Down Stairs", 125 - (sourceBitmap.getWidth()/2), sourceBitmap.getHeight() + (stairsBitmap.getHeight()/2) + 40, paintText);
-                    canvas.drawText("Destination", 125 - (sourceBitmap.getWidth()/2), sourceBitmap.getHeight() + stairsBitmap.getHeight() + (destBitmap.getHeight()/2) + 50, paintText);
+                    canvas.drawText("Starting Position", legendXpadding + 75 - (sourceBitmap.getWidth()/2), (sourceBitmap.getHeight()/2) + legendYpadding + 10, paintText);
+                    canvas.drawText("Go Up/Down Stairs", legendXpadding + 75 - (sourceBitmap.getWidth()/2), sourceBitmap.getHeight() + (stairsBitmap.getHeight()/2) + legendYpadding + 20, paintText);
+                    canvas.drawText("Destination", legendXpadding + 75 - (sourceBitmap.getWidth()/2), sourceBitmap.getHeight() + stairsBitmap.getHeight() + (destBitmap.getHeight()/2) + legendYpadding + 30, paintText);
+
+                    //Drawing table border
+                    float yHeight1 = 0;
+                    float xWidth1 = 0;
+                    float yHeight2 = 0;
+                    float xWidth2 = 0;
+                    //Top Border
+                    xWidth1 = legendXpadding -5 - (sourceBitmap.getWidth()/2);
+                    yHeight1 = legendYpadding - legendTitleBounds.height();
+                    xWidth2 = legendXpadding + legendDescriptionBounds.width()+sourceBitmap.getWidth();
+                    canvas.drawLine(xWidth1, yHeight1, xWidth2, yHeight1, tablePaint);
+                    //Bottom Border
+                    xWidth1 = legendXpadding -5 - (sourceBitmap.getWidth()/2);
+                    yHeight1 =  legendYpadding + 30 + sourceBitmap.getHeight() + stairsBitmap.getHeight() + destBitmap.getHeight();
+                    xWidth2 = legendXpadding + legendDescriptionBounds.width()+sourceBitmap.getWidth();
+                    canvas.drawLine(xWidth1, yHeight1, xWidth2, yHeight1, tablePaint);
+
+                    //Left Vertical Border
+                    xWidth1 = legendXpadding - 5 - (sourceBitmap.getWidth()/2);
+                    yHeight1 = legendYpadding - legendTitleBounds.height() - 4;
+                    xWidth2 = legendXpadding -5 - (sourceBitmap.getWidth()/2);
+                    yHeight2 = legendYpadding + 30 + sourceBitmap.getHeight() + stairsBitmap.getHeight() + destBitmap.getHeight() + 4;
+                    canvas.drawLine(xWidth1, yHeight1,xWidth2 , yHeight2, tablePaint);
+
+                    //Right Vertical Border
+                    xWidth1 = legendXpadding + legendDescriptionBounds.width()+sourceBitmap.getWidth();
+                    yHeight1 = legendYpadding - legendTitleBounds.height() - 4;
+                    yHeight2 = legendYpadding + 30 + sourceBitmap.getHeight() + stairsBitmap.getHeight() + destBitmap.getHeight() + 4;
+                    canvas.drawLine(xWidth1, yHeight1,xWidth1 , yHeight2, tablePaint);
 
                     while (!path.isEmpty()) {
                         int i = 0;
