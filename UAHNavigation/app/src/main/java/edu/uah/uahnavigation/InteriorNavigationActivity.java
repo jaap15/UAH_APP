@@ -316,7 +316,6 @@ public class InteriorNavigationActivity extends AppCompatActivity {
                     paintText.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 
 
-
                     canvas.drawText("Legends", 10, 20, paintText);
                     canvas.drawBitmap(sourceBitmap, 50 - (sourceBitmap.getWidth()/2), 30, null);
                     canvas.drawBitmap(stairsBitmap, 50 - (destBitmap.getWidth()/2), sourceBitmap.getHeight() + 40, null);
@@ -334,8 +333,14 @@ public class InteriorNavigationActivity extends AppCompatActivity {
 
                         if ((!startStairs && path.get(i).getLabel().startsWith("S")) || path.size() == 1) {
                             Log.d("drawMessage", "Ending draw");
-                            canvas.drawBitmap(destBitmap, path.get(i).getCordinateX() - (destBitmap.getWidth()/2), path.get(i).getCordinateY() - destBitmap.getHeight(), null);
-
+                            if(path.size() == 1)
+                            {
+                                canvas.drawBitmap(destBitmap, path.get(i).getCordinateX() - (destBitmap.getWidth()/2), path.get(i).getCordinateY() - destBitmap.getHeight(), null);
+                            }
+                            else
+                            {
+                                canvas.drawBitmap(stairsBitmap, path.get(i).getCordinateX() - (destBitmap.getWidth()/2), path.get(i).getCordinateY() - destBitmap.getHeight(), null);
+                            }
                             path.remove(i);
                             sizePath--;
                             break;
