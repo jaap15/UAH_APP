@@ -7,9 +7,17 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.test.suitebuilder.TestMethod;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.style.StyleSpan;
+import android.text.style.TypefaceSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -278,7 +286,46 @@ public class InteriorNavigationActivity extends AppCompatActivity {
                     float xCoor = path.get(0).getCordinateX();
                     float yCoor = path.get(0).getCordinateY();
 
-//                    canvas.drawCircle(path.get(0).getCordinateX(), path.get(0).getCordinateY(), 20, paint);
+                    Bitmap destBitmap = null;
+                    Bitmap sourceBitmap = null;
+                    Bitmap stairsBitmap = null;
+
+                    inStream = null;
+                    try{
+                        Log.d("destMessage", "drawPath2 d2");
+                        inStream = assetManager.open(assetImageBasePath + "destinationIcon.png");
+                        destBitmap = BitmapFactory.decodeStream(inStream);
+                        inStream = null;
+                        inStream = assetManager.open(assetImageBasePath + "sourceIcon.png");
+                        sourceBitmap = BitmapFactory.decodeStream(inStream);
+                        inStream = null;
+                        inStream = assetManager.open(assetImageBasePath + "stairsIcon.png");
+                        stairsBitmap = BitmapFactory.decodeStream(inStream);
+                        Log.d("destMessage", "drawPath2 d3");
+                    }catch (IOException e){
+                        Log.d("destMessage", "drawPath2 d2 catch");
+                        e.printStackTrace();
+                    }
+                    Log.d("destMessage", "drawPath2 d4");
+
+                    //Draw Legends
+                    Paint paintText = new Paint(Paint.ANTI_ALIAS_FLAG);
+                    paintText.setColor(Color.BLACK);
+                    paintText.setTextSize(25);
+                    paintText.setStyle(Paint.Style.FILL);
+                    paintText.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+
+
+
+                    canvas.drawText("Legends", 10, 20, paintText);
+                    canvas.drawBitmap(sourceBitmap, 50 - (sourceBitmap.getWidth()/2), 30, null);
+                    canvas.drawBitmap(stairsBitmap, 50 - (destBitmap.getWidth()/2), sourceBitmap.getHeight() + 40, null);
+                    canvas.drawBitmap(destBitmap, 50 - (destBitmap.getWidth()/2),stairsBitmap.getHeight() + sourceBitmap.getHeight() + 50, null);
+
+                    paintText.setTextSize(15);
+                    canvas.drawText("Starting Position", 125 - (sourceBitmap.getWidth()/2), (sourceBitmap.getHeight()/2) + 30, paintText);
+                    canvas.drawText("Go Up/Down Stairs", 125 - (sourceBitmap.getWidth()/2), sourceBitmap.getHeight() + (stairsBitmap.getHeight()/2) + 40, paintText);
+                    canvas.drawText("Destination", 125 - (sourceBitmap.getWidth()/2), sourceBitmap.getHeight() + stairsBitmap.getHeight() + (destBitmap.getHeight()/2) + 50, paintText);
 
                     while (!path.isEmpty()) {
                         int i = 0;
@@ -287,18 +334,6 @@ public class InteriorNavigationActivity extends AppCompatActivity {
 
                         if ((!startStairs && path.get(i).getLabel().startsWith("S")) || path.size() == 1) {
                             Log.d("drawMessage", "Ending draw");
-                            inStream = null;
-                            try{
-                                Log.d("destMessage", "drawPath2 d2");
-                                inStream = assetManager.open(assetImageBasePath + "destinationIcon.png");
-                                Log.d("destMessage", "drawPath2 d3");
-                            }catch (IOException e){
-                                Log.d("destMessage", "drawPath2 d2 catch");
-                                e.printStackTrace();
-                            }
-                            Log.d("destMessage", "drawPath2 d4");
-                            Bitmap destBitmap = BitmapFactory.decodeStream(inStream);
-
                             canvas.drawBitmap(destBitmap, path.get(i).getCordinateX() - (destBitmap.getWidth()/2), path.get(i).getCordinateY() - destBitmap.getHeight(), null);
 
                             path.remove(i);
@@ -314,18 +349,6 @@ public class InteriorNavigationActivity extends AppCompatActivity {
                         }
 
                     }
-
-                    inStream = null;
-                    try{
-                        Log.d("destMessage", "drawPath2 d2");
-                        inStream = assetManager.open(assetImageBasePath + "sourceIcon.png");
-                        Log.d("destMessage", "drawPath2 d3");
-                    }catch (IOException e){
-                        Log.d("destMessage", "drawPath2 d2 catch");
-                        e.printStackTrace();
-                    }
-                    Log.d("destMessage", "drawPath2 d4");
-                    Bitmap sourceBitmap = BitmapFactory.decodeStream(inStream);
 
                     canvas.drawBitmap(sourceBitmap, xCoor - (sourceBitmap.getWidth()/2), yCoor - sourceBitmap.getHeight(), null);
                 }
