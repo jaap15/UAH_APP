@@ -1,11 +1,14 @@
 package edu.uah.uahnavigation;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -44,6 +47,20 @@ import edu.uah.modules.*;
 public class ExternalNavigationActivity extends FragmentActivity implements OnMapReadyCallback, DirectionFinderListener {
 
     private GoogleMap mMap;
+
+    // Provides access to the system location services
+    private LocationManager locationManager = null;
+
+    private ProximityReceiver proxReceiver = null;
+
+    private static final long MIN_DISTANCE_UPDATE = 1; // in meters
+    private static final long MIN_TIME_UPDATE = 1000; // in milliseconds
+
+    private static final long POINT_RADIUS = 10;
+    private static final long POINT_EXPIRATION = -1;
+
+    private static final String PROX_ALERT_INTENT = "edu.uah.uahnavigation.ProximityReceiver";
+
     private int MY_LOCATION_REQUEST_CODE = 66;
     private List<Marker> originMarkers = new ArrayList<>();
     private List<Marker> destinationMarkers = new ArrayList<>();
@@ -51,8 +68,6 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
     private ProgressDialog progressDialog;
     private Button btnFindPath;
     private Intent i = getIntent();
-    private LocationManager locationManager = null;
-    private ProximityReceiver proxReceiver = null;
     private LocationListener locationListener;
     private String origin;
     private static final String LOGTAG = "WERT";
@@ -74,7 +89,14 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
         btnFindPath.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendRequest();
+                if (ContextCompat.checkSelfPermission(ExternalNavigationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    Location lctn = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    makeUseOfNewLocation(mMap, lctn);
+                    test();
+                } else {
+                    //sendRequest();
+                }
             }
         });
 
@@ -129,7 +151,7 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
         mMap.addMarker(new MarkerOptions().position(NUR).title("Nursing Building").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
         mMap.addMarker(new MarkerOptions().position(SST).title("Shelby Center").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
-        // Defining Zoom parameters
+//         Defining Zoom parameters
         mMap.setMinZoomPreference(10);
         mMap.setMaxZoomPreference(20);
 
@@ -160,12 +182,49 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_UPDATE, MIN_DISTANCE_UPDATE, locationListener);
         } else {
             // Show rationale and request permission.
         }
 
-        proximityAlerts();
+        addProximityAlerts(34.710720, -86.724797);
+        addProximityAlerts(34.719151, -86.646842); // OKT Entrance 1, West
+        addProximityAlerts(34.7191160, -86.645919); // OKT Entrance 2, East
+        addProximityAlerts(34.722555, -86.641134); // EB Entrance 1, front
+        addProximityAlerts(34.722943, -86.640297); // EB Entrance 2, side
+        addProximityAlerts(34.721973, -86.639889); // EB Entrance 3, back
+    }
+
+    private void test() {
+        Intent j = getIntent();
+        String sourceName = "";
+        String destinationName = "";
+        String buildingName = "";
+
+        try {
+            sourceName = j.getStringExtra("source").toUpperCase();
+        } catch (NullPointerException e) {
+
+        }
+
+        try {
+            destinationName = j.getStringExtra("destination").toUpperCase();
+        } catch (NullPointerException e) {
+            destinationName = "ENG246";
+        }
+
+        try {
+            buildingName = j.getStringExtra("building").toUpperCase();
+        } catch (NullPointerException e) {
+            buildingName = "ENG";
+        }
+
+        Intent i = new Intent(this, InteriorNavigationActivity.class);
+        i.putExtra("source", "E102");
+        i.putExtra("destination", destinationName);
+        i.putExtra("building", buildingName);
+        startActivity(i);
+        this.finish();
     }
 
     public void proximityAlerts() {
@@ -192,9 +251,42 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
         registerReceiver(proxReceiver, iFilter);
     }
 
+    private void addProximityAlerts(double latitude, double longitude) {
+        // Checking OS for GPS permission, ACCESS_FINE_LOCATION = GPS, ACCESS_COURSE_LOCATION = Wifi
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            // If granted
+            Intent intent = new Intent(PROX_ALERT_INTENT);
+            PendingIntent proximityIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+
+            locationManager.addProximityAlert(
+                    latitude,
+                    longitude,
+                    POINT_RADIUS,
+                    POINT_EXPIRATION,
+                    proximityIntent
+            );
+
+            IntentFilter filter = new IntentFilter(PROX_ALERT_INTENT);
+            registerReceiver(new ProximityReceiver(), filter);
+
+        } else {
+            Log.d("PROX", "Unable to create proximity alerts due to permission issues");
+        }
+    }
+
     public void makeUseOfNewLocation(GoogleMap mMap, Location location) {
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
         origin = location.getLatitude() + "," + location.getLongitude();
+        Location pointLocation = retrievelocationFromPreferences();
+        float distance = location.distanceTo(pointLocation);
+        Toast.makeText(ExternalNavigationActivity.this, "Distance from Point:"+distance, Toast.LENGTH_LONG).show();
+    }
+
+    private Location retrievelocationFromPreferences() {
+        Location location = new Location("POINT_LOCATION");
+        location.setLatitude(34.710720);
+        location.setLongitude(-86.724797);
+        return location;
     }
 
     private void sendRequest() {
@@ -226,7 +318,7 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
                 e.printStackTrace();
             }
         } else {
-            new DialogException(this, "No location data available", "Unable to get location data, please wait for GPS to respond", new String[]{"Cancel"});
+            new DialogException(this, "No location data available", "Unable to get location data, please wait for GPS signal", new String[]{"Cancel"});
         }
     }
 

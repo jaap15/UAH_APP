@@ -145,9 +145,14 @@ public class BuildingTabActivity extends BaseActivity  implements View.OnClickLi
     public void onClick(View view) {
         if(view.getId() == R.id.findbtn){
 
-            Buildings test = (Buildings)spinnerBuildings.getSelectedItem();
+            Buildings bldg = (Buildings)spinnerBuildings.getSelectedItem();
+            Rooms room = (Rooms)spinnerRooms.getSelectedItem();
             Intent i = new Intent(getBaseContext(), ExternalNavigationActivity.class);
-            i.putExtra("Address", test.getAddress());
+            i.putExtra("Address", bldg.getAddress());
+            i.putExtra("destination", bldg.getDescription()+room.getRoom());
+            Log.d("TESTTEST", "destination: " + bldg.getDescription()+room.getRoom());
+            i.putExtra("building", bldg.getDescription());
+            Log.d("TESTTEST", "building: " + bldg.getDescription());
             startActivity(i);  //Not a class activity but a new activity
         }
         else if(view.getId() == R.id.returnbtn){

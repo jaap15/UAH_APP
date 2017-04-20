@@ -45,11 +45,13 @@ public class MainActivity  extends BaseActivity implements View.OnClickListener 
             Intent i = new Intent(getBaseContext(), ClassTabActivity.class);
             i.putExtra("test", "test");
             startActivity(i);
+            finish();
         }
         else if(v.getId() == R.id.buildingbtn){
             Intent i = new Intent(getBaseContext(), BuildingTabActivity.class);
             i.putExtra("test", "test");
             startActivity(i);
+            finish();
         }
     }
 
