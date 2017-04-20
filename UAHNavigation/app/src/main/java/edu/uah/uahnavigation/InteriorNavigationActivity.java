@@ -60,11 +60,23 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_interior_navigation);
 
         Intent intent = getIntent();
-        sourceName = intent.getStringExtra("source").toUpperCase();
+        try {
+            sourceName = intent.getStringExtra("source").toUpperCase();
+        } catch (NullPointerException e) {
+            new DialogException(this, "Oops! Something went wrong!", "Unable to grab entrance data", new String[]{"Cancel"});
+        }
         Log.d("iMessage", "source " + sourceName);
-        destinationName = intent.getStringExtra("destination").toUpperCase();
+        try {
+            destinationName = intent.getStringExtra("destination").toUpperCase();
+        } catch (NullPointerException e) {
+            new DialogException(this, "Oops! Something went wrong!", "Unable to grab entrance data", new String[]{"Cancel"});
+        }
         Log.d("iMessage", "destination " + destinationName);
-        buildingName = intent.getStringExtra("building").toUpperCase();
+        try {
+            buildingName = intent.getStringExtra("building").toUpperCase();
+        } catch (NullPointerException e) {
+            new DialogException(this, "Oops! Something went wrong!", "Unable to grab entrance data", new String[]{"Cancel"});
+        }
         Log.d("iMessage", "building " + buildingName);
 
         assetImageBasePath = "InteriorNavigationResources/Images/";
