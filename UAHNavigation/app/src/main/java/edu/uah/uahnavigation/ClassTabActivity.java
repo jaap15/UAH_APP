@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -37,7 +38,7 @@ import static edu.uah.uahnavigation.R.id.spinnerSection;
 public class ClassTabActivity extends BaseActivity  implements View.OnClickListener{
 
         DatabaseSource dbSource;
-        private String LOGTAG = "QWER";
+        private String LOGTAG = "EXT";
         List<Majors> majors;
         List<Courses> courses;
         List<Courses> sections;
@@ -112,6 +113,8 @@ public class ClassTabActivity extends BaseActivity  implements View.OnClickListe
             adapterMajors = new MajorsSpinAdapter(this, android.R.layout.simple_spinner_item, majorsArray);
             spinnerMajors.setAdapter(adapterMajors);
             spinnerMajors.setSelection(0);
+            classInfoAdapter.setCourses(new Courses[]{});
+            classInfoAdapter.notifyDataSetChanged();
 
             // Setting up an action for Item Selected Event on our Majors spinner
             spinnerMajors.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -147,6 +150,8 @@ public class ClassTabActivity extends BaseActivity  implements View.OnClickListe
                         spinnerSections.setClickable(false);
 
                         findButton.setEnabled(false);
+                        classInfoAdapter.setCourses(new Courses[]{});
+                        classInfoAdapter.notifyDataSetChanged();
                     }
                     else {
                         // ProgressBar is visible
@@ -166,7 +171,7 @@ public class ClassTabActivity extends BaseActivity  implements View.OnClickListe
                         adapterCourses.setCourses(adapterArray);
                         adapterCourses.notifyDataSetChanged();
                         spinnerCourses.setAdapter(adapterCourses);
-                        spinnerCourses.setSelection(0, false);
+                        spinnerCourses.setSelection(0);
 
                         // ProgressBar is invisible
                         progressBar.setVisibility(View.INVISIBLE);
@@ -185,26 +190,27 @@ public class ClassTabActivity extends BaseActivity  implements View.OnClickListe
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
+                    Log.d(LOGTAG, "SPINNER COURSE ON ITEM SELECTED");
                     // Grabbing our active item in courses spinner
                     final Courses coursepos = adapterCourses.getItem(position);
 
-                    // Disabling some GUI elements when courses spinner is set to index 0
-                    if(spinnerCourses.getSelectedItemPosition() == 0){
-                        spinnerSections.setSelection(0, false);
-                        spinnerSections.setEnabled(false);
-                        spinnerSections.setClickable(false);
-                        progressBar.setVisibility(View.GONE);
-                    } else {
-                        // ProgressBar is visible
-                        progressBar.setVisibility(View.VISIBLE);
+                    // ProgressBar is visible
+                    progressBar.setVisibility(View.VISIBLE);
 
-                        // Enabling the sections spinner now that a course has been selected
-                        spinnerSections.setEnabled(true);
-                        spinnerSections.setClickable(true);
-                        findButton.setEnabled(true);
+                    // Enabling the sections spinner now that a course has been selected
+                    spinnerSections.setEnabled(true);
+                    spinnerSections.setClickable(true);
+                    findButton.setEnabled(true);
 
-                        // Filtering our data for sections related to selected course
-                        String selected_course = coursepos.getCourse();
+                    // Filtering our data for sections related to selected course
+                    String selected_course = null;
+                    try {
+                        selected_course = coursepos.getCourse();
+                    } catch (NullPointerException e) {
+
+                    }
+
+                    if (selected_course != null) {
                         long selected_major = coursepos.getMajor();
                         sections = dbSource.GetFromCourses("course==\"" + selected_course + "\" AND major_id==" + selected_major, null, null);
                         sectionsArray = sections.toArray(new Courses[sections.size()]);
@@ -213,13 +219,23 @@ public class ClassTabActivity extends BaseActivity  implements View.OnClickListe
                         adapterSection.setSections(sectionsArray);
                         adapterSection.notifyDataSetChanged();
                         spinnerSections.setAdapter(adapterSection);
-                        spinnerSections.setSelection(0, false);
+                        Log.d(LOGTAG, "SPINNER COURSE ON ITEM SELECTED 2");
+                    } else {
+                        sections = new ArrayList<Courses>();
+                        sectionsArray = sections.toArray(new Courses[sections.size()]);
 
-                        // ProgressBar is invisible
-                        progressBar.setVisibility(View.INVISIBLE);
-
-
+                        // Updating the spinner to reflect the filtered data
+                        adapterSection.setSections(sectionsArray);
+                        adapterSection.notifyDataSetChanged();
+                        spinnerSections.setAdapter(adapterSection);
+                        classInfoAdapter.setCourses(new Courses[]{});
+                        classInfoAdapter.notifyDataSetChanged();
                     }
+
+                    spinnerSections.setSelection(0);
+
+                    // ProgressBar is invisible
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
 
                 @Override
@@ -236,6 +252,7 @@ public class ClassTabActivity extends BaseActivity  implements View.OnClickListe
 
                     // Grabbing our active item in sections spinner
                     Courses sectionpos = adapterSection.getItem(position);
+                    Log.d(LOGTAG, "sectionpos: " + sectionpos + " " + sectionpos.getCourse() + " " + sectionpos.getRoom() + " " + sectionpos.getSection());
                     classInfoAdapter.setCourses(new Courses[]{sectionpos});
                     classInfoAdapter.notifyDataSetChanged();
                 }
@@ -265,10 +282,16 @@ public class ClassTabActivity extends BaseActivity  implements View.OnClickListe
                         room = dbSource.GetFromRooms("id=?", longToString, null);
                     } catch (IndexOutOfBoundsException e) {
                         new DialogException(this, "IndexOutofBoundsException", "room is equal to null", new String[]{"Cancel"});
+                        room = null;
                     }
 
                     if (room != null) {
-                        String[] selectArgs = new String[]{String.valueOf(room.get(0).getBuilding())};
+                        String[] selectArgs = new String[]{};
+                        try {
+                            selectArgs = new String[]{String.valueOf(room.get(0).getBuilding())};
+                        } catch (IndexOutOfBoundsException e) {
+
+                        }
 
                         List<Buildings> bldg = null;
                         try {
@@ -285,6 +308,7 @@ public class ClassTabActivity extends BaseActivity  implements View.OnClickListe
                             new DialogException(this, "IndexOutofBoundsException", "bldg.get(0).getAddress is empty", new String[]{"Cancel"});
                         }
                         startActivity(i);
+                        finish();
                     } else {
                         new DialogException(this, "IndexOutofBoundsException", "Rooms is equal to null", new String[]{"Cancel"});
                     }
@@ -293,8 +317,16 @@ public class ClassTabActivity extends BaseActivity  implements View.OnClickListe
                 }
                 } else if (view.getId() == R.id.returnbtn) {
                     startActivity(new Intent(this, MainActivity.class));
+                    finish();
                 }
         }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(getBaseContext(), MainActivity.class);
+        startActivity(i);
+        finish();
+    }
 
     public static Courses[] removeDuplicates(Courses[] arr) {
         Courses[] whitelist = Arrays.copyOfRange(arr, 0,1);
