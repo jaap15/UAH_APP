@@ -142,21 +142,43 @@ public class BuildingTabActivity extends BaseActivity  implements View.OnClickLi
     }
 
     @Override
+    public void onBackPressed() {
+        Intent i = new Intent(getBaseContext(), MainActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+    @Override
     public void onClick(View view) {
         if(view.getId() == R.id.findbtn){
 
             Buildings bldg = (Buildings)spinnerBuildings.getSelectedItem();
             Rooms room = (Rooms)spinnerRooms.getSelectedItem();
             Intent i = new Intent(getBaseContext(), ExternalNavigationActivity.class);
-            i.putExtra("Address", bldg.getAddress());
-            i.putExtra("destination", bldg.getDescription()+room.getRoom());
-            Log.d("TESTTEST", "destination: " + bldg.getDescription()+room.getRoom());
-            i.putExtra("building", bldg.getDescription());
-            Log.d("TESTTEST", "building: " + bldg.getDescription());
+
+            try {
+                i.putExtra("Address", bldg.getAddress());
+            } catch (NullPointerException e) {
+
+            }
+
+            try {
+                i.putExtra("destination", bldg.getDescription()+room.getRoom());
+            } catch (NullPointerException e) {
+
+            }
+
+            try {
+                i.putExtra("building", bldg.getDescription());
+            } catch (NullPointerException e) {
+
+            }
             startActivity(i);  //Not a class activity but a new activity
+            finish();
         }
         else if(view.getId() == R.id.returnbtn){
             startActivity(new Intent(this, MainActivity.class));
+            finish();
         }
     }
 

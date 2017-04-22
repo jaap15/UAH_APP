@@ -300,11 +300,39 @@ public class ClassTabActivity extends BaseActivity  implements View.OnClickListe
                             new DialogException(this, "IndexOutofBoundsException", "bldg is equal to null", new String[]{"Cancel"});
                         }
 
-                        Intent i = new Intent(getBaseContext(), ExternalNavigationActivity.class);
                         try {
-                            i.putExtra("Address", bldg.get(0).getAddress());
-                            Log.d(LOGTAG, "Address " + bldg.get(0).getAddress());
-                            startActivity(i);
+                            Intent i = new Intent(getBaseContext(), ExternalNavigationActivity.class);
+
+                            try {
+                                room = dbSource.GetFromRooms("id=?", new String[]{String.valueOf(crse.getRoom())}, null);
+                            } catch (IndexOutOfBoundsException e) {
+
+                            }
+
+                            try {
+                                bldg = dbSource.GetFromBuildings("id=?", new String[]{String.valueOf(room.get(0).getBuilding())}, null);
+                            } catch (IndexOutOfBoundsException e) {
+
+                            }
+
+                            try {
+                                i.putExtra("Address", bldg.get(0).getAddress());
+                            } catch (NullPointerException e) {
+
+                            }
+
+                            try {
+                                i.putExtra("destination", bldg.get(0).getDescription()+room.get(0).getRoom());
+                            } catch (NullPointerException e) {
+
+                            }
+
+                            try {
+                                i.putExtra("building", bldg.get(0).getDescription());
+                            } catch (NullPointerException e) {
+
+                            }
+                            startActivity(i);  //Not a class activity but a new activity
                             finish();
                         } catch (IndexOutOfBoundsException e) {
                             new DialogException(this, "Cannot find room", "External Navigation cannot work without a room number. If you want to navigate to a building, please visit the " +

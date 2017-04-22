@@ -20,31 +20,31 @@
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="26dp"
-        android:layout_above="@+id/buildingbtn"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp" />
 
     <Button
         android:text="BUILDING"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:id="@+id/buildingbtn"
+        android:layout_below="@+id/classbtn"
         android:layout_alignLeft="@+id/classbtn"
-        android:layout_alignStart="@+id/classbtn"
-        android:layout_marginBottom="54dp"
-        android:id="@+id/buildingbtn" />
+        android:layout_alignStart="@+id/classbtn" />
 
     <TextView
         android:text="Where would you like to go?"
-        android:textSize="22dp"
+        android:textSize="22sp"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView"
-        android:layout_above="@+id/classbtn"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="19dp" />
+        android:layout_below="@+id/imageView3"
+        android:layout_alignLeft="@+id/imageView3"
+        android:layout_alignStart="@+id/imageView3"
+        android:layout_marginTop="90dp" />
 
 
     <ImageView
