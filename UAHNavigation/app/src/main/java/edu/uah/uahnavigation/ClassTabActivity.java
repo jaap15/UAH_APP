@@ -304,11 +304,12 @@ public class ClassTabActivity extends BaseActivity  implements View.OnClickListe
                         try {
                             i.putExtra("Address", bldg.get(0).getAddress());
                             Log.d(LOGTAG, "Address " + bldg.get(0).getAddress());
+                            startActivity(i);
+                            finish();
                         } catch (IndexOutOfBoundsException e) {
-                            new DialogException(this, "IndexOutofBoundsException", "bldg.get(0).getAddress is empty", new String[]{"Cancel"});
+                            new DialogException(this, "Cannot find room", "External Navigation cannot work without a room number. If you want to navigate to a building, please visit the " +
+                                    "BUILDINGS tab!", new String[]{"Cancel"});
                         }
-                        startActivity(i);
-                        finish();
                     } else {
                         new DialogException(this, "IndexOutofBoundsException", "Rooms is equal to null", new String[]{"Cancel"});
                     }
