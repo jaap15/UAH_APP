@@ -1,15 +1,18 @@
 package edu.uah.uahnavigation;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -22,6 +25,8 @@ import static android.content.ContentValues.TAG;
 public class ProximityReceiver extends BroadcastReceiver {
 
     private static final int NOTIFICATION_ID = 1000;
+    private static final String LOGTAG = "WERT";
+    private LocationManager locationManager = null;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -37,7 +42,7 @@ public class ProximityReceiver extends BroadcastReceiver {
         } catch (NullPointerException e) {
 
         }
-        Log.d("PROX", "buildingname" + buildingName);
+        Log.d(LOGTAG, "buildingname" + buildingName);
 
         if (entering) {
             Toast.makeText(context, "Entering proximity alert", Toast.LENGTH_SHORT).show();
@@ -45,10 +50,8 @@ public class ProximityReceiver extends BroadcastReceiver {
             Notification myNotication = createNotification(context, buildingName);
             manager.notify(NOTIFICATION_ID, myNotication);
             goToInterior(context, intent);
-            Log.d("PROX", "entering");
         } else {
             Toast.makeText(context, "Exiting proximity alert", Toast.LENGTH_SHORT).show();
-            Log.d("PROX", "exiting");
         }
 
     }
@@ -77,7 +80,11 @@ public class ProximityReceiver extends BroadcastReceiver {
         }
 
         Intent i = new Intent(context, InteriorNavigationActivity.class);
-        i.putExtra("source", "E102");
+        if (buildingName == "ENG") {
+            i.putExtra("source", getENGEntrances(context));
+        } else if (buildingName == "MSB") {
+
+        }
         i.putExtra("destination", destinationName);
         i.putExtra("building", buildingName);
         context.startActivity(i);
@@ -100,5 +107,97 @@ public class ProximityReceiver extends BroadcastReceiver {
         builder.setLights(Color.WHITE, 300, 1500);
 
         return builder.build();
+    }
+
+    private String getENGEntrances(Context context) {
+
+        Location lctn = null;
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            lctn = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        } else {
+
+        }
+
+        Location[] entrances = new Location[4];
+        entrances[0] = new Location("E102");
+        entrances[1] = new Location("E121");
+        entrances[2] = new Location("E135");
+        entrances[3] = new Location("E147");
+        entrances[0].setLatitude(34.722765);
+        entrances[0].setLongitude(-86.641024);
+        entrances[1].setLatitude(34.722984);
+        entrances[1].setLongitude(-86.640461);
+        entrances[2].setLatitude(34.722840);
+        entrances[2].setLongitude(-86.639951);
+        entrances[3].setLatitude(34.722335);
+        entrances[3].setLongitude(-86.640101);
+
+
+        int smallestIndex=99;
+        if (lctn != null) {
+            float[] distances = new float[4];
+            distances[0] = lctn.distanceTo(entrances[0]);
+            distances[1] = lctn.distanceTo(entrances[1]);
+            distances[2] = lctn.distanceTo(entrances[2]);
+            distances[3] = lctn.distanceTo(entrances[3]);
+
+            float smallest = Integer.MAX_VALUE;
+            for (int i=0; i < 4; i++) {
+                if (distances[i] < smallest) {
+                    smallest = distances[i];
+                    smallestIndex = i;
+                }
+            }
+        }
+
+        return entrances[smallestIndex].getProvider();
+    }
+
+    private String getMSBEntrances(Context context) {
+
+        Location lctn = null;
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            lctn = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        } else {
+
+        }
+
+        Location[] entrances = new Location[4];
+        entrances[0] = new Location("E102");
+        entrances[1] = new Location("E121");
+        entrances[2] = new Location("E135");
+        entrances[3] = new Location("E147");
+        entrances[0].setLatitude(34.722765);
+        entrances[0].setLongitude(-86.641024);
+        entrances[1].setLatitude(34.722984);
+        entrances[1].setLongitude(-86.640461);
+        entrances[2].setLatitude(34.722840);
+        entrances[2].setLongitude(-86.639951);
+        entrances[3].setLatitude(34.722335);
+        entrances[3].setLongitude(-86.640101);
+
+
+        int smallestIndex=99;
+        if (lctn != null) {
+            float[] distances = new float[4];
+            distances[0] = lctn.distanceTo(entrances[0]);
+            distances[1] = lctn.distanceTo(entrances[1]);
+            distances[2] = lctn.distanceTo(entrances[2]);
+            distances[3] = lctn.distanceTo(entrances[3]);
+
+            float smallest = Integer.MAX_VALUE;
+            for (int i=0; i < 4; i++) {
+                if (distances[i] < smallest) {
+                    smallest = distances[i];
+                    smallestIndex = i;
+                }
+            }
+        }
+
+        return entrances[smallestIndex].getProvider();
     }
 }

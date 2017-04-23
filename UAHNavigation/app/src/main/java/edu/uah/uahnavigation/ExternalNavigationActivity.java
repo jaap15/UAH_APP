@@ -60,6 +60,7 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
     private static final long MIN_TIME_UPDATE = 1000; // in milliseconds
 
     // Variables used for proximityAlert
+    private PendingIntent proximityIntent;
     private static final long POINT_RADIUS = 100;
     private static final long POINT_EXPIRATION = -1;
     private static final String PROX_ALERT_INTENT = "edu.uah.uahnavigation.ProximityReceiver";
@@ -165,6 +166,13 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
             mMap.setMyLocationEnabled(true);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_UPDATE, MIN_DISTANCE_UPDATE, locationListener);
 
+            try {
+                locationManager.removeProximityAlert(proximityIntent);
+            } catch (IllegalArgumentException e) {
+
+            }
+
+            sendRequest();
             String bldgName = getIntent().getStringExtra("building");
             switch(bldgName) {
                 case "ENG": addProximityAlert(34.722665, -86.640562, 0); Log.d(LOGTAG, "ENG PROXIMITY ALERT"); drawCircle(new LatLng(34.722665, -86.640562), mMap); break;
@@ -173,7 +181,6 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
                 default:
             }
 
-            sendRequest();
         } else {
             // Show rationale and request permission.
             ActivityCompat.requestPermissions(this,
@@ -258,11 +265,12 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
         }
 
         Intent i = new Intent(this, InteriorNavigationActivity.class);
-        i.putExtra("source", "E102");
+        i.putExtra("source", "E147");
         i.putExtra("destination", destinationName);
         Log.d("TESTTEST", "Passing buildname to proximityReceiver: " + buildingName);
         i.putExtra("building", buildingName);
         startActivity(i);
+        finish();
     }
 
     private void addProximityAlert(double latitude, double longitude, int id) {
@@ -270,19 +278,31 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             // If granted
 
-            String destinationName = "";
-            String buildingName = "";
+            String destinationName = null;
+            String buildingName = null;
+
+            try {
+                destinationName = getIntent().getStringExtra("destination").toUpperCase();
+                Log.d(LOGTAG, "destinationName = " + destinationName);
+            } catch (NullPointerException e) {
+
+            }
 
             try {
                 buildingName = getIntent().getStringExtra("building").toUpperCase();
-                Log.d("PROX", "buildingname = " + buildingName);
+                Log.d(LOGTAG, "buildingname = " + buildingName);
             } catch (NullPointerException e) {
-                buildingName = "";
             }
 
             Intent k = new Intent(PROX_ALERT_INTENT);
-            k.putExtra("building", buildingName);
-            PendingIntent proximityIntent = PendingIntent.getBroadcast(this, 0+id, k, PendingIntent.FLAG_UPDATE_CURRENT);
+            if (buildingName != null) {
+                k.putExtra("building", buildingName);
+            }
+
+            if (destinationName != null) {
+                k.putExtra("destination", destinationName);
+            }
+            proximityIntent = PendingIntent.getBroadcast(this, 0+id, k, PendingIntent.FLAG_UPDATE_CURRENT);
 
             locationManager.addProximityAlert (
                     latitude,
@@ -321,7 +341,7 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
         try {
             lctn = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         } catch (SecurityException E) {
-
+            new DialogException(this, "SecurityException", "You must allow the UAH app to access GPS", new String[]{"Cancel"});
         }
 
         if (lctn != null) {
@@ -339,6 +359,7 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
                 new DirectionFinder(this, this, origin, destination).execute();
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
+                new DialogException(this, "UnsupportedEncodingException", "Unable to get location data, please check your GPS widget", new String[]{"Cancel"});
             }
         } else {
             new DialogException(this, "No location data available", "Unable to get location data, please check your GPS widget", new String[]{"Cancel"});
