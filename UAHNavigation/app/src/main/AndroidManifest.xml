@@ -23,10 +23,12 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppThemeDrawer" />
+            android:theme="@style/AppThemeDrawer"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SplashScreenActivity"
             android:theme="@style/SplashTheme">
+            android:screenOrientation="portrait"
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,10 +44,12 @@
 
         <activity
             android:name=".ClassTabActivity"
-            android:theme="@style/AppThemeDrawer" />
+            android:theme="@style/AppThemeDrawer"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".BuildingTabActivity"
-            android:theme="@style/AppThemeDrawer" />
+            android:theme="@style/AppThemeDrawer"
+            android:screenOrientation="portrait" />
         <activity android:name=".InteriorNavigationActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
