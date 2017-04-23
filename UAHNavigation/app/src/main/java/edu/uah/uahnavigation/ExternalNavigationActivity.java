@@ -105,12 +105,6 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
                 //sendRequest();
             }
         });
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-        } else {
-            // Show rationale and request permission.
-        }
     }
 
 
@@ -186,6 +180,7 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_LOCATION_REQUEST_CODE);
+
         }
     }
 
@@ -269,6 +264,11 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
         i.putExtra("destination", destinationName);
         Log.d("TESTTEST", "Passing buildname to proximityReceiver: " + buildingName);
         i.putExtra("building", buildingName);
+        try {
+            i.putExtra("from", j.getStringExtra("from"));
+        } catch (NullPointerException e) {
+
+        }
         startActivity(i);
         finish();
     }
@@ -301,6 +301,15 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
 
             if (destinationName != null) {
                 k.putExtra("destination", destinationName);
+            }
+
+            try {
+                k.putExtra("from", getIntent().getStringExtra("from"));
+                k.putExtra("topSpinner", getIntent().getIntExtra("topSpinner", 0));
+                k.putExtra("middleSpinner", getIntent().getIntExtra("middleSpinner", 0));
+                k.putExtra("bottomSpinner", getIntent().getIntExtra("bottomSpinner", 0));
+            } catch (NullPointerException e) {
+
             }
             proximityIntent = PendingIntent.getBroadcast(this, 0+id, k, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -431,13 +440,38 @@ public class ExternalNavigationActivity extends FragmentActivity implements OnMa
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == MY_LOCATION_REQUEST_CODE) {
-            if (permissions.length == 1 &&
-                    permissions[0] == Manifest.permission.ACCESS_FINE_LOCATION &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Log.d("WERT", "ALLOW FOR GPS");
+            if (permissions.length == 1 && permissions[0] == Manifest.permission.ACCESS_FINE_LOCATION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("WERT", "PERMISSION GRANTED");
 
             } else {
                 // Permission was denied. Display an error message.
+                Log.d("WERT", "PERMISSION NOT GRANTED");
             }
+
+            // Register the listener with the Location Manager to receive location updates
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                mMap.setMyLocationEnabled(true);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_UPDATE, MIN_DISTANCE_UPDATE, locationListener);
+
+                try {
+                    locationManager.removeProximityAlert(proximityIntent);
+                } catch (IllegalArgumentException e) {
+
+                }
+
+                sendRequest();
+                String bldgName = getIntent().getStringExtra("building");
+                switch(bldgName) {
+                    case "ENG": addProximityAlert(34.722665, -86.640562, 0); Log.d(LOGTAG, "ENG PROXIMITY ALERT"); drawCircle(new LatLng(34.722665, -86.640562), mMap); break;
+                    case "OKT": addProximityAlert(34.718763, -86.646563, 1); Log.d(LOGTAG, "OKT PROXIMITY ALERT"); drawCircle(new LatLng(34.718763, -86.646563), mMap); break;
+                    case "MSB": addProximityAlert(34.722449, -86.638581, 2); Log.d(LOGTAG, "MSB PROXIMITY ALERT"); drawCircle(new LatLng(34.722449, -86.638581), mMap); break;
+                    default:
+                }
+
+            }
+
         }
     }
 }
