@@ -85,6 +85,17 @@ public class BuildingTabActivity extends BaseActivity  implements View.OnClickLi
         spinnerBuildings.setAdapter(adapterBuildings);
         spinnerBuildings.setSelection(0);
 
+        try {
+            int topSpinner = getIntent().getIntExtra("topSpinner", 0);
+            int middleSpinner = getIntent().getIntExtra("middleSpinner", 0);
+            int bottomSpinner = getIntent().getIntExtra("bottomSpinner", 0);
+
+            spinnerBuildings.setSelection(topSpinner);
+            spinnerRooms.setSelection(middleSpinner);
+        } catch (NullPointerException e) {
+
+        }
+
         // Setting up an action for Item Selected Event on our Buildings spinner
         spinnerBuildings.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -173,6 +184,10 @@ public class BuildingTabActivity extends BaseActivity  implements View.OnClickLi
             } catch (NullPointerException e) {
 
             }
+            i.putExtra("from", "BuildingTabActivity");
+            i.putExtra("topSpinner", spinnerBuildings.getSelectedItemPosition());
+            i.putExtra("middleSpinner", spinnerRooms.getSelectedItemPosition());
+            i.putExtra("bottomSpinner", 0);
             startActivity(i);  //Not a class activity but a new activity
             finish();
         }

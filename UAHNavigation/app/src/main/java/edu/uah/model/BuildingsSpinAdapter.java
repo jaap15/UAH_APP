@@ -1,14 +1,19 @@
 package edu.uah.model;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Arrays;
+
+import edu.uah.uahnavigation.R;
 
 /**
  * Created by Daniel on 2/14/2017.
@@ -49,6 +54,10 @@ public class BuildingsSpinAdapter extends ArrayAdapter<Buildings>{
     public View getView(int position, View convertView, ViewGroup parent) {
         // I created a dynamic TextView here, but you can reference your own  custom layout for each spinner item
         TextView label = new TextView(context);
+//        View border = new View(context);
+//        border.setBackgroundColor(Color.GRAY);
+//        Drawable drawable = context.getResources().getDrawable(R.drawable.border);
+//        label.setBackground(drawable);
         label.setTextColor(Color.BLACK);
         label.setTextSize(20);
         // Then you can get the current item using the values array (Users array) and the current position

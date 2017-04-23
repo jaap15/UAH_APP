@@ -45,6 +45,8 @@ public class InteriorNavigationActivity extends AppCompatActivity {
     private String tmpFolderPath;
     private String startingFloor;
     private Button back;
+    private Button newSearch;
+    private Button close;
     private TextView floorName;
     private String sourceName ,destinationName ,buildingName, assetFloorPath,assetImageBasePath;
     private String assetBasePath;
@@ -93,6 +95,42 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         up = (ImageView)findViewById(R.id.imageViewUp);
         down = (ImageView)findViewById(R.id.imageViewDown);
         back = (Button)findViewById(R.id.buttonBack);
+        close = (Button)findViewById(R.id.buttonClose);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                System.exit(0);
+            }
+        });
+        newSearch = (Button)findViewById(R.id.buttonNewSearch);
+        newSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String menuReturn = getIntent().getStringExtra("from");
+                Log.d("WERT", "menuReturn: " + menuReturn);
+
+                if (menuReturn.equals("ClassTabActivity")) {
+                    Log.d("WERT", "IM INSIDE CLASSTABACTIVITY");
+                    Intent i = new Intent(getBaseContext(), ClassTabActivity.class);
+                    i.putExtra("topSpinner", getIntent().getIntExtra("topSpinner", 0));
+                    i.putExtra("middleSpinner", getIntent().getIntExtra("middleSpinner", 0));
+                    i.putExtra("bottomSpinner", getIntent().getIntExtra("bottomSpinner", 0));
+                    startActivity(i);  //Not a class activity but a new activity
+                    finish();
+                } else if (menuReturn.equals("BuildingTabActivity")) {
+                    Log.d("WERT", "IM INSIDE BUILDINGTABACTIVITY");
+                    Intent i = new Intent(getBaseContext(), BuildingTabActivity.class);
+                    i.putExtra("topSpinner", getIntent().getIntExtra("topSpinner", 0));
+                    i.putExtra("middleSpinner", getIntent().getIntExtra("middleSpinner", 0));
+                    i.putExtra("bottomSpinner", getIntent().getIntExtra("bottomSpinner", 0));
+                    startActivity(i);  //Not a class activity but a new activity
+                    finish();
+                }
+
+
+            }
+        });
         floorName = (TextView)findViewById(R.id.textViewFloorName);
 
         File direct = new File(tmpFolderPath);
@@ -247,7 +285,9 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                goBack(v);
+                finish();
+                Intent i = new Intent(getBaseContext(), MainActivity.class);
+                startActivity(i);
             }
         });
 

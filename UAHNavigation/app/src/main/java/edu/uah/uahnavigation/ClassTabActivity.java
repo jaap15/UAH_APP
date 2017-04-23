@@ -116,6 +116,18 @@ public class ClassTabActivity extends BaseActivity  implements View.OnClickListe
             classInfoAdapter.setCourses(new Courses[]{});
             classInfoAdapter.notifyDataSetChanged();
 
+            try {
+                int topSpinner = getIntent().getIntExtra("topSpinner", 0);
+                int middleSpinner = getIntent().getIntExtra("middleSpinner", 0);
+                int bottomSpinner = getIntent().getIntExtra("bottomSpinner", 0);
+
+                spinnerMajors.setSelection(topSpinner);
+                spinnerCourses.setSelection(middleSpinner);
+                spinnerSections.setSelection(bottomSpinner);
+            } catch (NullPointerException e) {
+
+            }
+
             // Setting up an action for Item Selected Event on our Majors spinner
             spinnerMajors.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -332,6 +344,12 @@ public class ClassTabActivity extends BaseActivity  implements View.OnClickListe
                             } catch (NullPointerException e) {
 
                             }
+
+                            i.putExtra("from", "ClassTabActivity");
+                            i.putExtra("topSpinner", spinnerMajors.getSelectedItemPosition());
+                            i.putExtra("middleSpinner", spinnerCourses.getSelectedItemPosition());
+                            i.putExtra("bottomSpinner", spinnerSections.getSelectedItemPosition());
+
                             startActivity(i);  //Not a class activity but a new activity
                             finish();
                         } catch (IndexOutOfBoundsException e) {

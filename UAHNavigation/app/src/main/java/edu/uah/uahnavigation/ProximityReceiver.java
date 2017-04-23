@@ -85,6 +85,15 @@ public class ProximityReceiver extends BroadcastReceiver {
         } else if (buildingName == "MSB") {
 
         }
+
+        try {
+            i.putExtra("from", intent.getStringExtra("from"));
+            i.putExtra("topSpinner", intent.getIntExtra("topSpinner", 0));
+            i.putExtra("middleSpinner", intent.getIntExtra("middleSpinner", 0));
+            i.putExtra("bottomSpinner", intent.getIntExtra("bottomSpinner", 0));
+        } catch (NullPointerException e) {
+
+        }
         i.putExtra("destination", destinationName);
         i.putExtra("building", buildingName);
         context.startActivity(i);
