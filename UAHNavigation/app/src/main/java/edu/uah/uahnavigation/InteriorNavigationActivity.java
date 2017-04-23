@@ -64,18 +64,21 @@ public class InteriorNavigationActivity extends AppCompatActivity {
             sourceName = intent.getStringExtra("source").toUpperCase();
         } catch (NullPointerException e) {
             new DialogException(this, "Oops! Something went wrong!", "Unable to grab entrance data", new String[]{"Cancel"});
+            return;
         }
         Log.d("iMessage", "source " + sourceName);
         try {
             destinationName = intent.getStringExtra("destination").toUpperCase();
         } catch (NullPointerException e) {
             new DialogException(this, "Oops! Something went wrong!", "Unable to grab entrance data", new String[]{"Cancel"});
+            return;
         }
         Log.d("iMessage", "destination " + destinationName);
         try {
             buildingName = intent.getStringExtra("building").toUpperCase();
         } catch (NullPointerException e) {
             new DialogException(this, "Oops! Something went wrong!", "Unable to grab entrance data", new String[]{"Cancel"});
+            return;
         }
         Log.d("iMessage", "building " + buildingName);
 
@@ -104,11 +107,16 @@ public class InteriorNavigationActivity extends AppCompatActivity {
         Log.d("iMessage", "graphExist: " + graphExist);
         if(graphExist)
         {
-            dijkstra = new Dijkstra(graph, graph.getVertex(sourceName).getLabel());
-            Log.d("graphMessage", "Distance to 2: " + dijkstra.getDistanceTo(graph.getVertex(destinationName).getLabel()));
-            Log.d("graphMessage", "Path to 2: " + dijkstra.getPathTo(graph.getVertex(destinationName).getLabel()));
-            Log.d("graphMessage", "X: " + graph.getVertex(destinationName).getCordinateX() + " Y: " + graph.getVertex(destinationName).getCordinateY());
-            path = (LinkedList<Vertex>) dijkstra.getPathTo(destinationName);
+            try {
+                dijkstra = new Dijkstra(graph, graph.getVertex(sourceName).getLabel());
+                Log.d("graphMessage", "Distance to 2: " + dijkstra.getDistanceTo(graph.getVertex(destinationName).getLabel()));
+                Log.d("graphMessage", "Path to 2: " + dijkstra.getPathTo(graph.getVertex(destinationName).getLabel()));
+                Log.d("graphMessage", "X: " + graph.getVertex(destinationName).getCordinateX() + " Y: " + graph.getVertex(destinationName).getCordinateY());
+                path = (LinkedList<Vertex>) dijkstra.getPathTo(destinationName);
+            } catch (NullPointerException e) {
+                new DialogException(this, "Oops! Something went wrong!", "Unable to build floor plan", new String[]{"Cancel"});
+                return;
+            }
         }
 
         try{

@@ -37,9 +37,9 @@ public class testInteriorActivity extends AppCompatActivity {
                     i.putExtra("building", b);
                 }
                 else {
-                    i.putExtra("source", "E102");
-                    i.putExtra("destination", "ENG246");
-                    i.putExtra("building", "ENG");
+                    i.putExtra("source", "E110");
+                    i.putExtra("destination", "MSB100");
+                    i.putExtra("building", "MSB");
                 }
                 startActivity(i);
             }
