@@ -57,7 +57,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCsgCn5kNQnz6lJ1ukgeRWkMVTGMOzjC2Y" />
+            android:value="AIzaSyD2Iv8zfpCI5pTNhJI78GuTcEoTbGiuGCo" />
 
         <activity
             android:name=".ExternalNavigationActivity"
